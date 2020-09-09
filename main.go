@@ -1,8 +1,12 @@
 package main
 
+import "fmt"
+
 func main() {
 	r := CreateTree([]int{1,2,3,4,5})
-	listOfDepth(r)
+	res := listOfDepth(r)
+
+	fmt.Println(res)
 }
 
 type ListNode struct {
