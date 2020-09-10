@@ -3,52 +3,14 @@ package main
 import "fmt"
 
 func main() {
-	r := CreateTree([]int{1,2,3,4,5})
+	r := CreateTree([]int{})
 	res := listOfDepth(r)
 
-	fmt.Println(res)
+	printListList(res)
 }
 
 //算法
-func listOfDepth(tree *TreeNode) []*ListNode {
-	treeNodes := make([]*TreeNode,0)
-	listNodes := make([]*ListNode,0)
 
-	if tree == nil {
-		return listNodes
-	}
-
-	treeNodes = append(treeNodes,tree)
-	var depthQ func([]*TreeNode)
-
-	depthQ = func(nodes []*TreeNode) {
-		nextTreeNodes := make([]*TreeNode,0)
-
-		oneNode := new(ListNode)
-		oneNode.Val = nodes[0].Val
-
-		for i:=1;i<len(nodes);i++{
-			oneNode.Next = &ListNode{Val: nodes[i].Val}
-
-			if nodes[i].Left != nil {
-				nextTreeNodes = append(nextTreeNodes,nodes[i].Left)
-			}
-
-			if nodes[i].Right != nil {
-				nextTreeNodes = append(nextTreeNodes,nodes[i].Right)
-			}
-		}
-
-		listNodes = append(listNodes,oneNode)
-		if len(nextTreeNodes) > 0 {
-			depthQ(nextTreeNodes)
-		}
-	}
-
-	depthQ(treeNodes)
-
-	return listNodes
-}
 
 // 链表
 type ListNode struct {
@@ -56,6 +18,20 @@ type ListNode struct {
 	Next *ListNode
 }
 
+func printListList(nodeList []*ListNode)  {
+	for i:=0;i<len(nodeList);i++{
+		fmt.Printf("\n--------------\n")
+		printListNodes(nodeList[i])
+	}
+}
+
+func printListNodes(node *ListNode)  {
+	if node != nil {
+		print(node.Val)
+		print(",")
+		printListNodes(node.Next)
+	}
+}
 //树
 type TreeNode struct {
 	Val   int
@@ -63,6 +39,7 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
+//根据一个int切片,创建一个二叉树
 func CreateTree(Nums []int) (root *TreeNode) {
 	root = new(TreeNode)
 
@@ -74,12 +51,12 @@ func CreateTree(Nums []int) (root *TreeNode) {
 		var f func(node *TreeNode)
 
 		f = func(node *TreeNode) {
-			if index++;index<len(Nums) {
+			if index++;index<len(Nums) && Nums[index] != 0 {
 				node.Left = &TreeNode{Val: Nums[index]}
 				treeNodes = append(treeNodes,node.Left)
 			}
 
-			if index++;index<len(Nums) {
+			if index++;index<len(Nums) && Nums[index] != 0 {
 				node.Right = &TreeNode{Val: Nums[index]}
 				treeNodes = append(treeNodes,node.Right)
 			}
