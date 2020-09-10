@@ -9,17 +9,7 @@ func main() {
 	fmt.Println(res)
 }
 
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
-
-type TreeNode struct {
-	Val   int
-	Left  *TreeNode
-	Right *TreeNode
-}
-
+//算法
 func listOfDepth(tree *TreeNode) []*ListNode {
 	treeNodes := make([]*TreeNode,0)
 	listNodes := make([]*ListNode,0)
@@ -58,6 +48,19 @@ func listOfDepth(tree *TreeNode) []*ListNode {
 	depthQ(treeNodes)
 
 	return listNodes
+}
+
+// 链表
+type ListNode struct {
+	Val  int
+	Next *ListNode
+}
+
+//树
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
 }
 
 func CreateTree(Nums []int) (root *TreeNode) {
