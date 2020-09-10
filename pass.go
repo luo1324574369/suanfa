@@ -1,5 +1,24 @@
 package main
 
+//https://leetcode-cn.com/problems/n-ary-tree-preorder-traversal/submissions/
+func preorder(root *Node) []int {
+	res := make([]int,0)
+
+	var front func(root *Node)
+	front = func(root *Node) {
+		if root != nil {
+			res = append(res,root.Val)
+			for _,v := range root.Children {
+				front(v)
+			}
+		}
+	}
+
+	front(root)
+
+	return res
+}
+
 // https://leetcode-cn.com/problems/list-of-depth-lcci/submissions/
 func listOfDepth(tree *TreeNode) []*ListNode {
 	treeNodes := make([]*TreeNode,0)
