@@ -1,11 +1,14 @@
 package main
 
-import "sort"
+import (
+	"math"
+	"sort"
+)
 
 //买卖股票的最佳时机 II
 //https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/
 func maxProfit2(prices []int) int {
-	pre_has := ^int(^uint(0) >> 1)
+	pre_has := math.MinInt32
 	pre_no_has := 0
 
 	for i:=0;i<len(prices);i++{
@@ -21,7 +24,7 @@ func maxProfit2(prices []int) int {
 //买卖股票的最佳时机
 //https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/
 func maxProfit1(prices []int) int {
-	pre_has := ^int(^uint(0) >> 1)
+	pre_has := math.MinInt32
 	pre_no_has := 0
 
 	for i:=0;i<len(prices);i++{
