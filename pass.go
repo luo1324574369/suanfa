@@ -5,13 +5,14 @@ import "sort"
 
 //买卖股票的最佳时机
 //https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/
-func maxProfit(prices []int) int {
+func maxProfit1(prices []int) int {
 	pre_has := ^int(^uint(0) >> 1)
 	pre_no_has := 0
 
 	for i:=0;i<len(prices);i++{
+		temp := pre_has
 		pre_has = max(pre_has,-prices[i])
-		pre_no_has = max(pre_no_has,pre_has+prices[i])
+		pre_no_has = max(pre_no_has,temp+prices[i])
 	}
 
 	return pre_no_has
