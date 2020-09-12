@@ -17,13 +17,6 @@ func maxProfit(prices []int) int {
 	return pre_no_has
 }
 
-func max(x int, y int) int {
-	if x > y {
-		return x
-	}
-	return y
-}
-
 //无重叠区间
 //https://leetcode-cn.com/problems/non-overlapping-intervals/
 func eraseOverlapIntervals(intervals [][]int) int {
