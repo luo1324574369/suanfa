@@ -5,6 +5,33 @@ import (
 	"sort"
 )
 
+//买卖股票的最佳时机 III
+//https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iii/
+func maxProfit3(prices []int) int {
+	maxK := 2
+	pl := len(prices)
+	dp := make([][3][2]int,pl)
+
+	for i:=0;i<pl;i++{
+		dp[i] = [3][2]int{}
+	}
+
+	for i := 0;i<pl;i++{
+		for j:=1;j<=maxK;j++{
+			if i == 0 {
+				dp[i][j][0] = 0
+				dp[i][j][1] = -prices[i]
+				continue
+			}
+
+			dp[i][j][0] = max(dp[i-1][j][0],dp[i-1][j][1] + prices[i])
+			dp[i][j][1] = max(dp[i-1][j][1],dp[i-1][j-1][0] - prices[i])
+		}
+	}
+
+	return dp[pl-1][maxK][0]
+}
+
 //买卖股票的最佳时机 II
 //https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/
 func maxProfit2(prices []int) int {
