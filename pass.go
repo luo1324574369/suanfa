@@ -1,6 +1,42 @@
 package main
 
-//https://leetcode-cn.com/problems/n-ary-tree-preorder-traversal/submissions/
+import "sort"
+
+//无重叠区间
+//https://leetcode-cn.com/problems/non-overlapping-intervals/
+func eraseOverlapIntervals(intervals [][]int) int {
+	li := len(intervals)
+	res := 0
+	if li == 0 {
+		return res
+	}
+
+	//冒泡排序
+	//for i:=0;i<li;i++{
+	//	for j:=0;j<li-i-1;j++{
+	//		if intervals[j][1] > intervals[j+1][1] {
+	//			intervals[j],intervals[j+1] = intervals[j+1],intervals[j]
+	//		}
+	//	}
+	//}
+	sort.Slice(intervals, func(i, j int) bool {
+		return intervals[i][1] < intervals[j][1]
+	})
+
+	end := intervals[0][1]
+	for i:=1;i<li;i++{
+		if intervals[i][0] < end {
+			res++
+		}else{
+			end = intervals[i][1]
+		}
+	}
+
+	return res
+}
+
+// N叉树的前序遍历
+// https://leetcode-cn.com/problems/n-ary-tree-preorder-traversal/submissions/
 func preorder(root *Node) []int {
 	res := make([]int,0)
 
@@ -19,6 +55,7 @@ func preorder(root *Node) []int {
 	return res
 }
 
+// 特定深度节点链表
 // https://leetcode-cn.com/problems/list-of-depth-lcci/submissions/
 func listOfDepth(tree *TreeNode) []*ListNode {
 	treeNodes := make([]*TreeNode,0)
