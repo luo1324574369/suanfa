@@ -7,7 +7,7 @@ import (
 
 //买买卖股票的最佳时机 IV
 //https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iv/
-func maxProfit(k int, prices []int) int {
+func maxProfit4(k int, prices []int) int {
 	maxK := k
 	pl := len(prices)
 	dp := make([][][2]int, pl)
