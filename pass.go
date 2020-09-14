@@ -7,7 +7,7 @@ import (
 
 //打家劫舍
 //https://leetcode-cn.com/problems/house-robber/
-func rob(nums []int) int {
+func rob1(nums []int) int {
 	nl := len(nums)
 
 	pre1 := 0
