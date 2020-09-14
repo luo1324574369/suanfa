@@ -5,6 +5,32 @@ import (
 	"sort"
 )
 
+//打家劫舍 II
+//https://leetcode-cn.com/problems/house-robber-ii/
+func rob2(nums []int) int {
+	nl := len(nums)
+
+	if nl == 1 {
+		return nums[0]
+	}
+
+	var r func(start int,end int) int
+
+	r = func(start int, end int) int {
+		pre1 := 0
+		pre2 := 0
+		for i:=end;i>=start;i--{
+			temp := pre1
+			pre1 = max(pre1, pre2+ nums[i])
+			pre2 = temp
+		}
+
+		return pre1
+	}
+
+	return max(r(0,nl-2),r(1,nl-1))
+}
+
 //打家劫舍
 //https://leetcode-cn.com/problems/house-robber/
 func rob1(nums []int) int {
