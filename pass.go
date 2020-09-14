@@ -5,6 +5,22 @@ import (
 	"sort"
 )
 
+//打家劫舍
+//https://leetcode-cn.com/problems/house-robber/
+func rob(nums []int) int {
+	nl := len(nums)
+
+	pre1 := 0
+	pre2 := 0
+	for i:=nl-1;i>=0;i--{
+		temp := pre1
+		pre1 = max(pre1, pre2+ nums[i])
+		pre2 = temp
+	}
+
+	return pre1
+}
+
 //买买卖股票的最佳时机 IV
 //https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iv/
 func maxProfit4(k int, prices []int) int {
