@@ -5,6 +5,26 @@ import (
 	"sort"
 )
 
+//打家劫舍 III
+//https://leetcode-cn.com/problems/house-robber-iii/
+func rob3(root *TreeNode) int {
+	var res []int
+	var r func(node *TreeNode) []int
+	r = func(node *TreeNode) []int {
+		if node == nil {
+			return []int{0,0}
+		}
+		l,r := r(node.Left),r(node.Right)
+		selected := node.Val + l[1] + r[1]
+		notSelected := max(l[0], l[1]) + max(r[0], r[1])
+		return []int{selected, notSelected}
+	}
+
+	res = r(root)
+
+	return max(res[0],res[1])
+}
+
 //打家劫舍 II
 //https://leetcode-cn.com/problems/house-robber-ii/
 func rob2(nums []int) int {
