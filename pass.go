@@ -4,6 +4,78 @@ import (
 	"math"
 	"sort"
 )
+//正则表达式匹配
+//https://leetcode-cn.com/problems/regular-expression-matching/
+func isMatch2(s string, p string) bool {
+	pl,sl := len(p),len(s)
+	if pl == 0 {
+		if sl == 0 {
+			return true
+		} else {
+			return false
+		}
+	}
+	firstMatch := false
+	if sl != 0 {
+		firstMatch = p[0] == s[0] || p[0] == '.'
+	}
+
+	if pl >= 2 && p[1] == '*' {
+		return isMatch(s,p[2:]) || (firstMatch && isMatch(s[1:],p))
+	}
+
+	return firstMatch && isMatch(s[1:],p[1:])
+}
+
+func isMatch(s string, p string) bool {
+	dp := make([][]int,len(s)+1)
+	for k,_ := range dp {
+		dp[k] = make([]int,len(p)+1)
+	}
+
+	var isM func(si int,pj int) bool
+
+	isM = func(si int,pj int) bool {
+		if dp[si][pj] != 0 {
+			return dp[si][pj] == 2
+		}
+
+		sl,pl := len(s[si:]),len(p[pj:])
+
+		if pl == 0 {
+			if sl == 0 {
+				return true
+			} else {
+				return false
+			}
+		}
+
+		firstMatch := false
+		if sl != 0 {
+			firstMatch = p[pj+0] == s[si+0] || p[pj+0] == '.'
+		}
+
+		if pl >= 2 && p[pj+1] == '*' {
+			r := isM(si,pj+2) || (firstMatch && isM(si+1,pj))
+			if r == true {
+				dp[si][pj] = 2
+			}else{
+				dp[si][pj] = 1
+			}
+			return r
+		}
+
+		r := firstMatch && isM(si+1,pj+1)
+		if r == true {
+			dp[si][pj] = 2
+		}else{
+			dp[si][pj] = 1
+		}
+		return r
+	}
+
+	return isM(0,0)
+}
 
 //打家劫舍 III
 //https://leetcode-cn.com/problems/house-robber-iii/
