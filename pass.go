@@ -4,6 +4,40 @@ import (
 	"math"
 	"sort"
 )
+
+//最大二叉树
+//https://leetcode-cn.com/problems/maximum-binary-tree/
+func constructMaximumBinaryTree(nums []int) *TreeNode {
+	root := new(TreeNode)
+	nl := len(nums)
+
+	if nl == 0 {
+		return root
+	}
+	root.Val = nums[0]
+
+	var insertNode func(t *TreeNode,i int)
+
+	insertNode = func(t *TreeNode, i int) {
+		if t.Val < i {
+			tNew := &TreeNode{Val: i,Left: t}
+			root = tNew
+		} else if t.Right == nil {
+			t.Right = &TreeNode{Val: i}
+		} else if t.Right.Val >= i {
+			insertNode(t.Right,i)
+		}else if t.Right.Val < i {
+			t.Right = &TreeNode{Val: i,Left: t.Right}
+		}
+	}
+
+	for i:=1;i<nl;i++{
+		insertNode(root,nums[i])
+	}
+
+	return root
+}
+
 //正则表达式匹配
 //https://leetcode-cn.com/problems/regular-expression-matching/
 func isMatch2(s string, p string) bool {
