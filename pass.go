@@ -7,10 +7,9 @@ import (
 
 //最大二叉树
 //https://leetcode-cn.com/problems/maximum-binary-tree/
-func constructMaximumBinaryTree(nums []int) *TreeNode {
+func constructMaximumBinaryTree1(nums []int) *TreeNode {
 	root := new(TreeNode)
 	nl := len(nums)
-
 	if nl == 0 {
 		return root
 	}
