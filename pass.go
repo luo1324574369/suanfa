@@ -5,6 +5,44 @@ import (
 	"sort"
 )
 
+//链表中的下一个更大节点
+//https://leetcode-cn.com/problems/next-greater-node-in-linked-list/
+func nextLargerNodes(head *ListNode) []int {
+	ans := make([]int,0)
+	stack := make([]int,0)
+
+	if head == nil {
+		return ans
+	}
+
+	var deep func(h *ListNode)
+	deep = func(h *ListNode) {
+		if h.Next != nil {
+			deep(h.Next)
+		}
+
+		for len(stack) > 0 && stack[len(stack)-1] <= h.Val {
+			stack = stack[:len(stack)-1]
+		}
+
+		if len(stack) == 0 {
+			ans = append(ans,0)
+		}else{
+			ans = append(ans,stack[len(stack)-1])
+		}
+
+		stack = append(stack,h.Val)
+	}
+
+	deep(head)
+
+	for i, j := 0, len(ans)-1; i < j; i, j = i+1, j-1 {
+		ans[i], ans[j] = ans[j], ans[i]
+	}
+
+	return ans
+}
+
 //最大二叉树 II
 //https://leetcode-cn.com/problems/maximum-binary-tree-ii/
 func insertIntoMaxTree(root *TreeNode, val int) *TreeNode {
