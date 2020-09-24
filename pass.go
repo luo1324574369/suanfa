@@ -5,6 +5,25 @@ import (
 	"sort"
 )
 
+//滑动窗口最大值
+//https://leetcode-cn.com/problems/sliding-window-maximum/
+func maxSlidingWindow(nums []int, k int) []int {
+	dq := &DQueue{}
+	res := make([]int,0)
+
+	for i:=0;i<len(nums);i++{
+		if i < k - 1 {
+			dq.Push(nums[i])
+		}else{
+			dq.Push(nums[i])
+			res = append(res,dq.Front())
+			dq.Pop(nums[i-k+1])
+		}
+	}
+
+	return res
+}
+
 //链表中的下一个更大节点
 //https://leetcode-cn.com/problems/next-greater-node-in-linked-list/
 func nextLargerNodes(head *ListNode) []int {
