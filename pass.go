@@ -5,6 +5,29 @@ import (
 	"sort"
 )
 
+//反转链表
+//https://leetcode-cn.com/problems/reverse-linked-list/
+func reverseList(head *ListNode) *ListNode {
+	if head == nil {
+		return head
+	}
+
+	var rl func(h *ListNode) *ListNode
+
+	rl = func(h *ListNode) *ListNode {
+		if h.Next == nil {
+			return h
+		}
+		last := rl(h.Next)
+		h.Next.Next = h
+		h.Next = nil
+
+		return last
+	}
+
+	return rl(head)
+}
+
 //滑动窗口最大值
 //https://leetcode-cn.com/problems/sliding-window-maximum/
 func maxSlidingWindow(nums []int, k int) []int {
