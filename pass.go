@@ -5,6 +5,44 @@ import (
 	"sort"
 )
 
+//全排列
+//https://leetcode-cn.com/problems/permutations/
+func permute(nums []int) [][]int {
+	var res [][]int
+	nl := len(nums)
+	if nl == 0 {
+		return res
+	}
+
+	useds := make([]bool,nl)
+
+	var backtrack func(path []int,used []bool)
+	backtrack = func(path []int, used []bool) {
+		if len(path) == nl {
+			tmp := make([]int, len(nums))
+			copy(tmp, path)
+			res = append(res,tmp)
+			return
+		}
+
+		for i:=0;i<nl;i++{
+			if !used[i] {
+				path = append(path,nums[i])
+				used[i] = true
+
+				backtrack(path,used)
+
+				path = path[:len(path)-1]
+				used[i] = false
+			}
+		}
+	}
+
+	backtrack(make([]int,0),useds)
+
+	return res
+}
+
 //反转链表 II
 //https://leetcode-cn.com/problems/reverse-linked-list-ii/
 func reverseBetween(head *ListNode, m int, n int) *ListNode {
