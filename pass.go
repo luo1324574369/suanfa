@@ -5,6 +5,36 @@ import (
 	"sort"
 )
 
+//反转链表 II
+//https://leetcode-cn.com/problems/reverse-linked-list-ii/
+func reverseBetween(head *ListNode, m int, n int) *ListNode {
+	if head == nil {
+		return head
+	}
+
+	var rlN func(h *ListNode,n int) *ListNode
+	var lastNext *ListNode
+	rlN = func(h *ListNode, n int) *ListNode {
+		if n == 1 {
+			lastNext = h.Next
+			return h
+		}
+
+		last := rlN(h.Next,n - 1)
+		h.Next.Next = h
+		h.Next = lastNext
+		return last
+	}
+
+	if m == 1 {
+		return rlN(head,n)
+	}
+
+	head.Next = reverseBetween(head.Next,m-1,n-1)
+
+	return head
+}
+
 //反转链表
 //https://leetcode-cn.com/problems/reverse-linked-list/
 func reverseList(head *ListNode) *ListNode {
