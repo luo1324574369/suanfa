@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+//N皇后 II
 //https://leetcode-cn.com/problems/n-queens-ii/
 func totalNQueens2(n int) int {
 	nl := n
