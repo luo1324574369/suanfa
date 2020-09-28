@@ -69,6 +69,48 @@ func solveNQueens(n int) [][]string {
 	return res
 }
 
+// 全排列 II
+//https://leetcode-cn.com/problems/permutations-ii/
+func permuteUnique(nums []int) [][]int {
+	var res [][]int
+	nl := len(nums)
+	if nl == 0 {
+		return res
+	}
+
+	useds := make([]bool,nl)
+	sort.Ints(nums)
+	var backtrack func(path []int,used []bool)
+	backtrack = func(path []int, used []bool) {
+		if len(path) == nl {
+			tmp := make([]int, len(nums))
+			copy(tmp, path)
+			res = append(res,tmp)
+			return
+		}
+
+		for i:=0;i<nl;i++{
+			if i > 0 && nums[i] == nums[i-1] && !useds[i-1] {
+				continue
+			}
+
+			if !used[i] {
+				path = append(path,nums[i])
+				used[i] = true
+
+				backtrack(path,used)
+
+				path = path[:len(path)-1]
+				used[i] = false
+			}
+		}
+	}
+
+	backtrack(make([]int,0),useds)
+
+	return res
+}
+
 //全排列
 //https://leetcode-cn.com/problems/permutations/
 func permute(nums []int) [][]int {
