@@ -6,6 +6,66 @@ import (
 	"strings"
 )
 
+//https://leetcode-cn.com/problems/n-queens-ii/
+func totalNQueens2(n int) int {
+	nl := n
+	var res [][]int
+	if nl == 0 {
+		return 0
+	}
+
+	isValid := func(path []int,row int,col int) bool {
+		for i:=0;i<=row-1;i++{
+			if path[i] == 1 << col {
+				return false
+			}
+		}
+
+		for i, j := row-1, col-1; i >= 0 && j >= 0; i,j = i-1,j-1 {
+			if path[i] == 1 << j {
+				return false
+			}
+		}
+
+		for i, j := row-1, col+1; i >= 0 && j >=0 && j < nl; i,j = i-1,j+1 {
+			if path[i] == 1 << j {
+				return false
+			}
+		}
+		return true
+	}
+
+	makeQ := func(totalLen int, pos int) int {
+		if pos < 0 {
+			return 0
+		}
+		return 1 << pos
+	}
+
+	path := make([]int,nl)
+
+	var backtrack func(row int)
+	backtrack = func(row int) {
+		if row == nl {
+			tmp := make([]int, nl)
+			copy(tmp, path)
+			res = append(res,tmp)
+			return
+		}
+
+		for i:=0;i<nl;i++{
+			if isValid(path,row,i) {
+				path[row] = makeQ(nl,i)
+				backtrack(row+1)
+				path[row] = makeQ(nl,-1)
+			}
+		}
+	}
+
+	backtrack(0)
+	return len(res)
+}
+
 //N 皇后
 //https://leetcode-cn.com/problems/n-queens/
 func solveNQueens(n int) [][]string {
