@@ -6,6 +6,39 @@ import (
 	"strings"
 )
 
+//子集 II
+//https://leetcode-cn.com/problems/subsets-ii/
+func subsetsWithDup(nums []int) [][]int {
+	res := make([][]int,0)
+	nl := len(nums)
+	if nl == 0 {
+		return res
+	}
+
+	used := make([]bool,nl)
+	sort.Ints(nums)
+
+	var backtrack func(path []int, start int, used []bool)
+	backtrack = func(path []int, start int,used []bool) {
+		tmp := make([]int,len(path))
+		copy(tmp,path)
+		res = append(res,tmp)
+		for i:=start+1;i<nl;i++ {
+			if i>0 && nums[i] == nums[i-1] && !used[i-1] {
+				continue
+			}
+			tmp = append(tmp,nums[i])
+			used[i] = true
+			backtrack(tmp,i,used)
+			tmp = tmp[:len(tmp)-1]
+			used[i] = false
+		}
+	}
+
+	backtrack([]int{},-1,used)
+	return res
+}
+
 //子集
 //https://leetcode-cn.com/problems/subsets/
 func subsets(nums []int) [][]int {
