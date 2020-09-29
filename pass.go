@@ -6,6 +6,36 @@ import (
 	"strings"
 )
 
+//组合
+//https://leetcode-cn.com/problems/combinations/
+func combine(n int, k int) [][]int {
+	var res [][]int
+	nl := n
+	if nl == 0 {
+		return res
+	}
+
+	var backtrack func(path []int, start int)
+	backtrack = func(path []int, start int) {
+		if len(path) == k {
+			tmp := make([]int, k)
+			copy(tmp, path)
+			res = append(res, tmp)
+			return
+		}
+
+		for i := start + 1; i < nl; i++ {
+			path = append(path, i+1)
+			backtrack(path, i)
+			path = path[:len(path)-1]
+		}
+	}
+
+	backtrack(make([]int, 0), -1)
+
+	return res
+}
+
 //子集 II
 //https://leetcode-cn.com/problems/subsets-ii/
 func subsetsWithDup(nums []int) [][]int {
