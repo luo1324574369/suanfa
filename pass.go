@@ -6,6 +6,29 @@ import (
 	"strings"
 )
 
+//子集
+//https://leetcode-cn.com/problems/subsets/
+func subsets(nums []int) [][]int {
+	res := make([][]int,0)
+	nl := len(nums)
+	if nl == 0 {
+		return res
+	}
+	var backtrack func(path []int, start int)
+	backtrack = func(path []int, start int) {
+		tmp := make([]int,len(path))
+		copy(tmp,path)
+		res = append(res,tmp)
+		for i:=start+1;i<nl;i++ {
+			tmp = append(tmp,nums[i])
+			backtrack(tmp,i)
+			tmp = tmp[:len(tmp)-1]
+		}
+	}
+	backtrack([]int{},-1)
+	return res
+}
+
 //N皇后 II
 //https://leetcode-cn.com/problems/n-queens-ii/
 func totalNQueens2(n int) int {
