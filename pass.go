@@ -6,6 +6,28 @@ import (
 	"strings"
 )
 
+//两数之和
+//https://leetcode-cn.com/problems/two-sum/
+func twoSum(nums []int, target int) []int {
+	nl := len(nums)
+	if nl < 2 {
+		return []int{}
+	}
+
+	tmp := make(map[int]int, nl)
+
+	for i:=0;i<nl;i++ {
+		t := target - nums[i]
+		if tt,ok := tmp[t]; ok {
+			return []int{i,tt}
+		}else {
+			tmp[nums[i]] = i
+		}
+	}
+
+	return []int{}
+}
+
 //组合
 //https://leetcode-cn.com/problems/combinations/
 func combine(n int, k int) [][]int {
