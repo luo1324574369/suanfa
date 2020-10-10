@@ -6,6 +6,71 @@ import (
 	"strings"
 )
 
+//最小覆盖子串
+//https://leetcode-cn.com/problems/minimum-window-substring/
+func minWindow(s string, t string) string {
+	left, right := 0, 0
+	res := ""
+	window := ""
+
+	lt, ls := len(t), len(s)
+
+	match := 0
+	nMap := make(map[uint8]int, lt)
+	wMap := make(map[uint8]int, lt)
+
+	if lt == 0 {
+		return ""
+	}
+
+	for i := 0; i < lt; i++ {
+		nMap[t[i]]++
+	}
+
+	for right < ls {
+		window = s[left : right+1]
+
+		if _, ok := nMap[s[right]]; ok {
+			if _, ok2 := wMap[s[right]]; ok2 {
+				wMap[s[right]]++
+			} else {
+				wMap[s[right]] = 1
+			}
+
+			if wMap[s[right]] == nMap[s[right]] {
+				match++
+			}
+		}
+
+		for match == len(nMap) {
+			if len(res) == 0 {
+				res = window
+			} else {
+				res = minLen(window, res)
+			}
+			left++
+
+			if _, ok := nMap[window[0]]; ok {
+				wMap[window[0]]--
+				if wMap[window[0]] < nMap[window[0]] {
+					match--
+				}
+			}
+			window = window[1:]
+		}
+		right++
+	}
+
+	return res
+}
+
+func minLen(s1 string, s2 string) string {
+	if len(s1) > len(s2) {
+		return s2
+	}
+	return s1
+}
+
 //两数之和
 //https://leetcode-cn.com/problems/two-sum/
 func twoSum(nums []int, target int) []int {
@@ -16,11 +81,11 @@ func twoSum(nums []int, target int) []int {
 
 	tmp := make(map[int]int, nl)
 
-	for i:=0;i<nl;i++ {
+	for i := 0; i < nl; i++ {
 		t := target - nums[i]
-		if tt,ok := tmp[t]; ok {
-			return []int{i,tt}
-		}else {
+		if tt, ok := tmp[t]; ok {
+			return []int{i, tt}
+		} else {
 			tmp[nums[i]] = i
 		}
 	}
@@ -61,56 +126,56 @@ func combine(n int, k int) [][]int {
 //子集 II
 //https://leetcode-cn.com/problems/subsets-ii/
 func subsetsWithDup(nums []int) [][]int {
-	res := make([][]int,0)
+	res := make([][]int, 0)
 	nl := len(nums)
 	if nl == 0 {
 		return res
 	}
 
-	used := make([]bool,nl)
+	used := make([]bool, nl)
 	sort.Ints(nums)
 
 	var backtrack func(path []int, start int, used []bool)
-	backtrack = func(path []int, start int,used []bool) {
-		tmp := make([]int,len(path))
-		copy(tmp,path)
-		res = append(res,tmp)
-		for i:=start+1;i<nl;i++ {
-			if i>0 && nums[i] == nums[i-1] && !used[i-1] {
+	backtrack = func(path []int, start int, used []bool) {
+		tmp := make([]int, len(path))
+		copy(tmp, path)
+		res = append(res, tmp)
+		for i := start + 1; i < nl; i++ {
+			if i > 0 && nums[i] == nums[i-1] && !used[i-1] {
 				continue
 			}
-			tmp = append(tmp,nums[i])
+			tmp = append(tmp, nums[i])
 			used[i] = true
-			backtrack(tmp,i,used)
+			backtrack(tmp, i, used)
 			tmp = tmp[:len(tmp)-1]
 			used[i] = false
 		}
 	}
 
-	backtrack([]int{},-1,used)
+	backtrack([]int{}, -1, used)
 	return res
 }
 
 //子集
 //https://leetcode-cn.com/problems/subsets/
 func subsets(nums []int) [][]int {
-	res := make([][]int,0)
+	res := make([][]int, 0)
 	nl := len(nums)
 	if nl == 0 {
 		return res
 	}
 	var backtrack func(path []int, start int)
 	backtrack = func(path []int, start int) {
-		tmp := make([]int,len(path))
-		copy(tmp,path)
-		res = append(res,tmp)
-		for i:=start+1;i<nl;i++ {
-			tmp = append(tmp,nums[i])
-			backtrack(tmp,i)
+		tmp := make([]int, len(path))
+		copy(tmp, path)
+		res = append(res, tmp)
+		for i := start + 1; i < nl; i++ {
+			tmp = append(tmp, nums[i])
+			backtrack(tmp, i)
 			tmp = tmp[:len(tmp)-1]
 		}
 	}
-	backtrack([]int{},-1)
+	backtrack([]int{}, -1)
 	return res
 }
 
@@ -123,21 +188,21 @@ func totalNQueens2(n int) int {
 		return 0
 	}
 
-	isValid := func(path []int,row int,col int) bool {
-		for i:=0;i<=row-1;i++{
-			if path[i] == 1 << col {
+	isValid := func(path []int, row int, col int) bool {
+		for i := 0; i <= row-1; i++ {
+			if path[i] == 1<<col {
 				return false
 			}
 		}
 
-		for i, j := row-1, col-1; i >= 0 && j >= 0; i,j = i-1,j-1 {
-			if path[i] == 1 << j {
+		for i, j := row-1, col-1; i >= 0 && j >= 0; i, j = i-1, j-1 {
+			if path[i] == 1<<j {
 				return false
 			}
 		}
 
-		for i, j := row-1, col+1; i >= 0 && j >=0 && j < nl; i,j = i-1,j+1 {
-			if path[i] == 1 << j {
+		for i, j := row-1, col+1; i >= 0 && j >= 0 && j < nl; i, j = i-1, j+1 {
+			if path[i] == 1<<j {
 				return false
 			}
 		}
@@ -151,22 +216,22 @@ func totalNQueens2(n int) int {
 		return 1 << pos
 	}
 
-	path := make([]int,nl)
+	path := make([]int, nl)
 
 	var backtrack func(row int)
 	backtrack = func(row int) {
 		if row == nl {
 			tmp := make([]int, nl)
 			copy(tmp, path)
-			res = append(res,tmp)
+			res = append(res, tmp)
 			return
 		}
 
-		for i:=0;i<nl;i++{
-			if isValid(path,row,i) {
-				path[row] = makeQ(nl,i)
-				backtrack(row+1)
-				path[row] = makeQ(nl,-1)
+		for i := 0; i < nl; i++ {
+			if isValid(path, row, i) {
+				path[row] = makeQ(nl, i)
+				backtrack(row + 1)
+				path[row] = makeQ(nl, -1)
 			}
 		}
 	}
@@ -184,20 +249,20 @@ func solveNQueens(n int) [][]string {
 		return res
 	}
 
-	isValid := func(path []string,row int,col int) bool {
-		for i:=0;i<=row-1;i++{
-			if path[i][col] == 'Q'{
+	isValid := func(path []string, row int, col int) bool {
+		for i := 0; i <= row-1; i++ {
+			if path[i][col] == 'Q' {
 				return false
 			}
 		}
 
-		for i, j := row-1, col-1; i >= 0 && j >= 0; i,j = i-1,j-1 {
+		for i, j := row-1, col-1; i >= 0 && j >= 0; i, j = i-1, j-1 {
 			if path[i][j] == 'Q' {
 				return false
 			}
 		}
 
-		for i, j := row-1, col+1; i >= 0 && j >=0 && j < nl; i,j = i-1,j+1 {
+		for i, j := row-1, col+1; i >= 0 && j >= 0 && j < nl; i, j = i-1, j+1 {
 			if path[i][j] == 'Q' {
 				return false
 			}
@@ -206,14 +271,14 @@ func solveNQueens(n int) [][]string {
 	}
 	makeQ := func(totalLen int, pos int) string {
 		if pos < 0 {
-			return strings.Repeat(".",totalLen)
+			return strings.Repeat(".", totalLen)
 		}
-		return strings.Repeat(".",pos) + "Q" + strings.Repeat(".",totalLen-pos-1)
+		return strings.Repeat(".", pos) + "Q" + strings.Repeat(".", totalLen-pos-1)
 	}
 
-	path := make([]string,nl)
-	for i:=0;i<nl;i++{
-		path[i] = makeQ(nl,-1)
+	path := make([]string, nl)
+	for i := 0; i < nl; i++ {
+		path[i] = makeQ(nl, -1)
 	}
 
 	var backtrack func(row int)
@@ -221,15 +286,15 @@ func solveNQueens(n int) [][]string {
 		if row == nl {
 			tmp := make([]string, nl)
 			copy(tmp, path)
-			res = append(res,tmp)
+			res = append(res, tmp)
 			return
 		}
 
-		for i:=0;i<nl;i++{
-			if isValid(path,row,i) {
-				path[row] = makeQ(nl,i)
-				backtrack(row+1)
-				path[row] = makeQ(nl,0)
+		for i := 0; i < nl; i++ {
+			if isValid(path, row, i) {
+				path[row] = makeQ(nl, i)
+				backtrack(row + 1)
+				path[row] = makeQ(nl, 0)
 			}
 		}
 	}
@@ -247,27 +312,27 @@ func permuteUnique(nums []int) [][]int {
 		return res
 	}
 
-	useds := make([]bool,nl)
+	useds := make([]bool, nl)
 	sort.Ints(nums)
-	var backtrack func(path []int,used []bool)
+	var backtrack func(path []int, used []bool)
 	backtrack = func(path []int, used []bool) {
 		if len(path) == nl {
 			tmp := make([]int, len(nums))
 			copy(tmp, path)
-			res = append(res,tmp)
+			res = append(res, tmp)
 			return
 		}
 
-		for i:=0;i<nl;i++{
+		for i := 0; i < nl; i++ {
 			if i > 0 && nums[i] == nums[i-1] && !useds[i-1] {
 				continue
 			}
 
 			if !used[i] {
-				path = append(path,nums[i])
+				path = append(path, nums[i])
 				used[i] = true
 
-				backtrack(path,used)
+				backtrack(path, used)
 
 				path = path[:len(path)-1]
 				used[i] = false
@@ -275,7 +340,7 @@ func permuteUnique(nums []int) [][]int {
 		}
 	}
 
-	backtrack(make([]int,0),useds)
+	backtrack(make([]int, 0), useds)
 
 	return res
 }
@@ -289,23 +354,23 @@ func permute(nums []int) [][]int {
 		return res
 	}
 
-	useds := make([]bool,nl)
+	useds := make([]bool, nl)
 
-	var backtrack func(path []int,used []bool)
+	var backtrack func(path []int, used []bool)
 	backtrack = func(path []int, used []bool) {
 		if len(path) == nl {
 			tmp := make([]int, len(nums))
 			copy(tmp, path)
-			res = append(res,tmp)
+			res = append(res, tmp)
 			return
 		}
 
-		for i:=0;i<nl;i++{
+		for i := 0; i < nl; i++ {
 			if !used[i] {
-				path = append(path,nums[i])
+				path = append(path, nums[i])
 				used[i] = true
 
-				backtrack(path,used)
+				backtrack(path, used)
 
 				path = path[:len(path)-1]
 				used[i] = false
@@ -313,7 +378,7 @@ func permute(nums []int) [][]int {
 		}
 	}
 
-	backtrack(make([]int,0),useds)
+	backtrack(make([]int, 0), useds)
 
 	return res
 }
@@ -325,7 +390,7 @@ func reverseBetween(head *ListNode, m int, n int) *ListNode {
 		return head
 	}
 
-	var rlN func(h *ListNode,n int) *ListNode
+	var rlN func(h *ListNode, n int) *ListNode
 	var lastNext *ListNode
 	rlN = func(h *ListNode, n int) *ListNode {
 		if n == 1 {
@@ -333,17 +398,17 @@ func reverseBetween(head *ListNode, m int, n int) *ListNode {
 			return h
 		}
 
-		last := rlN(h.Next,n - 1)
+		last := rlN(h.Next, n-1)
 		h.Next.Next = h
 		h.Next = lastNext
 		return last
 	}
 
 	if m == 1 {
-		return rlN(head,n)
+		return rlN(head, n)
 	}
 
-	head.Next = reverseBetween(head.Next,m-1,n-1)
+	head.Next = reverseBetween(head.Next, m-1, n-1)
 
 	return head
 }
@@ -375,14 +440,14 @@ func reverseList(head *ListNode) *ListNode {
 //https://leetcode-cn.com/problems/sliding-window-maximum/
 func maxSlidingWindow(nums []int, k int) []int {
 	dq := &DQueue{}
-	res := make([]int,0)
+	res := make([]int, 0)
 
-	for i:=0;i<len(nums);i++{
-		if i < k - 1 {
+	for i := 0; i < len(nums); i++ {
+		if i < k-1 {
 			dq.Push(nums[i])
-		}else{
+		} else {
 			dq.Push(nums[i])
-			res = append(res,dq.Front())
+			res = append(res, dq.Front())
 			dq.Pop(nums[i-k+1])
 		}
 	}
@@ -393,8 +458,8 @@ func maxSlidingWindow(nums []int, k int) []int {
 //链表中的下一个更大节点
 //https://leetcode-cn.com/problems/next-greater-node-in-linked-list/
 func nextLargerNodes(head *ListNode) []int {
-	ans := make([]int,0)
-	stack := make([]int,0)
+	ans := make([]int, 0)
+	stack := make([]int, 0)
 
 	if head == nil {
 		return ans
@@ -411,12 +476,12 @@ func nextLargerNodes(head *ListNode) []int {
 		}
 
 		if len(stack) == 0 {
-			ans = append(ans,0)
-		}else{
-			ans = append(ans,stack[len(stack)-1])
+			ans = append(ans, 0)
+		} else {
+			ans = append(ans, stack[len(stack)-1])
 		}
 
-		stack = append(stack,h.Val)
+		stack = append(stack, h.Val)
 	}
 
 	deep(head)
@@ -439,16 +504,16 @@ func insertIntoMaxTree(root *TreeNode, val int) *TreeNode {
 	temp := root
 	for {
 		if temp.Val < val {
-			tNew := &TreeNode{Val: val,Left: temp}
+			tNew := &TreeNode{Val: val, Left: temp}
 			root = tNew
 			return root
-		} else if temp.Right == nil{
+		} else if temp.Right == nil {
 			temp.Right = &TreeNode{Val: val}
 			return root
 		} else if temp.Right.Val >= val {
 			temp = temp.Right
 		} else if temp.Right.Val < val {
-			temp.Right = &TreeNode{Val: val,Left: temp.Right}
+			temp.Right = &TreeNode{Val: val, Left: temp.Right}
 			return root
 		}
 	}
@@ -464,8 +529,8 @@ func constructMaximumBinaryTree(nums []int) *TreeNode {
 	}
 	root.Val = nums[0]
 
-	for i:=1;i<nl;i++{
-		root = insertIntoMaxTree(root,nums[i])
+	for i := 1; i < nl; i++ {
+		root = insertIntoMaxTree(root, nums[i])
 	}
 
 	return root
@@ -474,7 +539,7 @@ func constructMaximumBinaryTree(nums []int) *TreeNode {
 //正则表达式匹配
 //https://leetcode-cn.com/problems/regular-expression-matching/
 func isMatch2(s string, p string) bool {
-	pl,sl := len(p),len(s)
+	pl, sl := len(p), len(s)
 	if pl == 0 {
 		if sl == 0 {
 			return true
@@ -488,26 +553,26 @@ func isMatch2(s string, p string) bool {
 	}
 
 	if pl >= 2 && p[1] == '*' {
-		return isMatch(s,p[2:]) || (firstMatch && isMatch(s[1:],p))
+		return isMatch(s, p[2:]) || (firstMatch && isMatch(s[1:], p))
 	}
 
-	return firstMatch && isMatch(s[1:],p[1:])
+	return firstMatch && isMatch(s[1:], p[1:])
 }
 
 func isMatch(s string, p string) bool {
-	dp := make([][]int,len(s)+1)
-	for k,_ := range dp {
-		dp[k] = make([]int,len(p)+1)
+	dp := make([][]int, len(s)+1)
+	for k, _ := range dp {
+		dp[k] = make([]int, len(p)+1)
 	}
 
-	var isM func(si int,pj int) bool
+	var isM func(si int, pj int) bool
 
-	isM = func(si int,pj int) bool {
+	isM = func(si int, pj int) bool {
 		if dp[si][pj] != 0 {
 			return dp[si][pj] == 2
 		}
 
-		sl,pl := len(s[si:]),len(p[pj:])
+		sl, pl := len(s[si:]), len(p[pj:])
 
 		if pl == 0 {
 			if sl == 0 {
@@ -523,25 +588,25 @@ func isMatch(s string, p string) bool {
 		}
 
 		if pl >= 2 && p[pj+1] == '*' {
-			r := isM(si,pj+2) || (firstMatch && isM(si+1,pj))
+			r := isM(si, pj+2) || (firstMatch && isM(si+1, pj))
 			if r == true {
 				dp[si][pj] = 2
-			}else{
+			} else {
 				dp[si][pj] = 1
 			}
 			return r
 		}
 
-		r := firstMatch && isM(si+1,pj+1)
+		r := firstMatch && isM(si+1, pj+1)
 		if r == true {
 			dp[si][pj] = 2
-		}else{
+		} else {
 			dp[si][pj] = 1
 		}
 		return r
 	}
 
-	return isM(0,0)
+	return isM(0, 0)
 }
 
 //打家劫舍 III
@@ -551,9 +616,9 @@ func rob3(root *TreeNode) int {
 	var r func(node *TreeNode) []int
 	r = func(node *TreeNode) []int {
 		if node == nil {
-			return []int{0,0}
+			return []int{0, 0}
 		}
-		l,r := r(node.Left),r(node.Right)
+		l, r := r(node.Left), r(node.Right)
 		selected := node.Val + l[1] + r[1]
 		notSelected := max(l[0], l[1]) + max(r[0], r[1])
 		return []int{selected, notSelected}
@@ -561,7 +626,7 @@ func rob3(root *TreeNode) int {
 
 	res = r(root)
 
-	return max(res[0],res[1])
+	return max(res[0], res[1])
 }
 
 //打家劫舍 II
@@ -573,21 +638,21 @@ func rob2(nums []int) int {
 		return nums[0]
 	}
 
-	var r func(start int,end int) int
+	var r func(start int, end int) int
 
 	r = func(start int, end int) int {
 		pre1 := 0
 		pre2 := 0
-		for i:=end;i>=start;i--{
+		for i := end; i >= start; i-- {
 			temp := pre1
-			pre1 = max(pre1, pre2+ nums[i])
+			pre1 = max(pre1, pre2+nums[i])
 			pre2 = temp
 		}
 
 		return pre1
 	}
 
-	return max(r(0,nl-2),r(1,nl-1))
+	return max(r(0, nl-2), r(1, nl-1))
 }
 
 //打家劫舍
@@ -597,9 +662,9 @@ func rob1(nums []int) int {
 
 	pre1 := 0
 	pre2 := 0
-	for i:=nl-1;i>=0;i--{
+	for i := nl - 1; i >= 0; i-- {
 		temp := pre1
-		pre1 = max(pre1, pre2+ nums[i])
+		pre1 = max(pre1, pre2+nums[i])
 		pre2 = temp
 	}
 
