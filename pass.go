@@ -6,6 +6,50 @@ import (
 	"strings"
 )
 
+// 找到字符串中所有字母异位词
+//https://leetcode-cn.com/problems/find-all-anagrams-in-a-string/
+func findAnagrams(s string, p string) []int {
+	left, right := 0, 0
+	var res []int
+	t := p
+	lt, ls := len(t), len(s)
+
+	match := 0
+	nMap := make(map[uint8]int, lt)
+	wMap := make(map[uint8]int, lt)
+
+	for i := 0; i < lt; i++ {
+		nMap[t[i]]++
+	}
+
+	for right < ls {
+		if _, ok := nMap[s[right]]; ok {
+			wMap[s[right]]++
+			if wMap[s[right]] == nMap[s[right]] {
+				match++
+			}
+		}
+
+		for match == len(nMap) && match > 0 {
+			if right - left + 1 == lt {
+				res = append(res,left)
+			}
+
+			if _, ok := nMap[s[left]]; ok {
+				wMap[s[left]]--
+				if wMap[s[left]] < nMap[s[left]] {
+					match--
+				}
+			}
+
+			left++
+		}
+		right++
+	}
+
+	return res
+}
+
 //最小覆盖子串
 //https://leetcode-cn.com/problems/minimum-window-substring/
 func minWindow(s string, t string) string {
