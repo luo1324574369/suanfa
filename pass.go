@@ -53,66 +53,46 @@ func findAnagrams(s string, p string) []int {
 //最小覆盖子串
 //https://leetcode-cn.com/problems/minimum-window-substring/
 func minWindow(s string, t string) string {
-	left, right := 0, 0
-	res := ""
-	window := ""
-
 	lt, ls := len(t), len(s)
+	left, right, rleft, rright := 0,0,0,1 << 32
 
 	match := 0
 	nMap := make(map[uint8]int, lt)
 	wMap := make(map[uint8]int, lt)
-
-	if lt == 0 {
-		return ""
-	}
 
 	for i := 0; i < lt; i++ {
 		nMap[t[i]]++
 	}
 
 	for right < ls {
-		window = s[left : right+1]
-
 		if _, ok := nMap[s[right]]; ok {
-			if _, ok2 := wMap[s[right]]; ok2 {
-				wMap[s[right]]++
-			} else {
-				wMap[s[right]] = 1
-			}
-
+			wMap[s[right]]++
 			if wMap[s[right]] == nMap[s[right]] {
 				match++
 			}
 		}
 
-		for match == len(nMap) {
-			if len(res) == 0 {
-				res = window
-			} else {
-				res = minLen(window, res)
+		for match == len(nMap) && match > 0 {
+			if right - left < rright - rleft {
+				rright,rleft = right,left
 			}
-			left++
 
-			if _, ok := nMap[window[0]]; ok {
-				wMap[window[0]]--
-				if wMap[window[0]] < nMap[window[0]] {
+			if _, ok := nMap[s[left]]; ok {
+				wMap[s[left]]--
+				if wMap[s[left]] < nMap[s[left]] {
 					match--
 				}
 			}
-			window = window[1:]
+			left++
 		}
 		right++
 	}
 
-	return res
-}
-
-func minLen(s1 string, s2 string) string {
-	if len(s1) > len(s2) {
-		return s2
+	if rright != 1 << 32{
+		return s[rleft:rright+1]
 	}
-	return s1
+
+	return ""
 }
 
 //两数之和
