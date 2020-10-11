@@ -6,6 +6,36 @@ import (
 	"strings"
 )
 
+//最长不含重复字符的子字符串
+//https://leetcode-cn.com/problems/zui-chang-bu-han-zhong-fu-zi-fu-de-zi-zi-fu-chuan-lcof/
+func lengthOfLongestSubstring(s string) int {
+	left,right,ls,rl,rr := 0,0,len(s),0,-1
+	nMap := map[uint8]int{}
+
+	for right < ls {
+		nMap[s[right]]++
+
+		for nMap[s[right]] > 1 {
+			if _, ok := nMap[s[left]]; ok {
+				nMap[s[left]]--
+			}
+			left++
+		}
+
+		if right-left > rr-rl {
+			rr, rl = right, left
+		}
+
+		right++
+	}
+
+	if rr != -1 {
+		return rr - rl + 1
+	}
+
+	return 0
+}
+
 // 找到字符串中所有字母异位词
 //https://leetcode-cn.com/problems/find-all-anagrams-in-a-string/
 func findAnagrams(s string, p string) []int {
