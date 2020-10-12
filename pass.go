@@ -125,9 +125,27 @@ func minWindow(s string, t string) string {
 	return ""
 }
 
+// 两数之和 II - 输入有序数组
+// https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/
+func twoSum2(numbers []int, target int) []int {
+	l,r := 0, len(numbers)-1
+
+	for l < r {
+		if numbers[l] + numbers[r] == target {
+			return []int{l+1,r+1}
+		} else if numbers[l] + numbers[r] > target {
+			r--
+		} else if numbers[l] + numbers[r] < target {
+			l++
+		}
+	}
+
+	return []int{}
+}
+
 //两数之和
 //https://leetcode-cn.com/problems/two-sum/
-func twoSum(nums []int, target int) []int {
+func twoSum1(nums []int, target int) []int {
 	nl := len(nums)
 	if nl < 2 {
 		return []int{}
