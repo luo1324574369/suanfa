@@ -6,6 +6,20 @@ import (
 	"strings"
 )
 
+//算法
+//位1的个数
+//https://leetcode-cn.com/problems/number-of-1-bits/
+func hammingWeight(num uint32) int {
+	res := 0
+
+	for num != 0 {
+		res++
+		num = num & (num - 1)
+	}
+
+	return res
+}
+
 //最长不含重复字符的子字符串
 //https://leetcode-cn.com/problems/zui-chang-bu-han-zhong-fu-zi-fu-de-zi-zi-fu-chuan-lcof/
 func lengthOfLongestSubstring(s string) int {
