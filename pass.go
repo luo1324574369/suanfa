@@ -6,7 +6,77 @@ import (
 	"strings"
 )
 
-//算法
+
+//计算器
+//https://leetcode-cn.com/problems/calculator-lcci/
+func calculate(s string) int {
+
+	var cal func() int
+	cal = func() int {
+		stack := []int{}
+		sign := uint8('+')
+		num := 0
+
+		for len(s) > 0 {
+			c := s[0]
+
+			if c == '(' {
+				s = s[1:]
+				num = cal()
+			}
+
+			for c >= '0' && c <= '9' {
+				num = 10 * num + int(c - '0')
+				s = s[1:]
+				if len(s) == 0 {
+					break
+				}
+				c = s[0]
+			}
+
+			if len(s) > 0 {
+				s = s[1:]
+			}
+
+			if (c < '0'|| c > '9' ) && c != ' ' || len(s) == 0{
+				switch sign {
+				case '+':
+					stack = append(stack,num)
+					break
+				case '-':
+					stack = append(stack,-num)
+					break
+				case '*':
+					top := stack[len(stack)-1]
+					stack = stack[:len(stack)-1]
+					stack = append(stack,top * num)
+					break
+				case '/':
+					top := stack[len(stack)-1]
+					stack = stack[:len(stack)-1]
+					stack = append(stack,top / num)
+					break
+				}
+				sign = c
+				num = 0
+			}
+
+			if c == ')' {
+				break
+			}
+		}
+
+		sumC := 0
+		for i:=0;i<len(stack);i++{
+			sumC += stack[i]
+		}
+
+		return sumC
+	}
+
+	return cal()
+}
+
 //位1的个数
 //https://leetcode-cn.com/problems/number-of-1-bits/
 func hammingWeight(num uint32) int {
