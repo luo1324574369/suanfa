@@ -7,6 +7,25 @@ import (
 )
 
 
+//和为K的子数组
+//https://leetcode-cn.com/problems/subarray-sum-equals-k/
+func subarraySum(nums []int,k int) int {
+	ans, sumI := 0,0
+	preSum := map[int]int{}
+	preSum[0] = 1
+
+	for i:=0;i<len(nums);i++{
+		sumI += nums[i]
+		if _,ok := preSum[sumI - k]; ok {
+			ans += preSum[sumI - k]
+		}
+		preSum[sumI] += 1
+	}
+
+	return ans
+}
+
+
 //计算器
 //https://leetcode-cn.com/problems/calculator-lcci/
 func calculate(s string) int {
