@@ -7,6 +7,37 @@ import (
 )
 
 
+//字符串相乘
+//https://leetcode-cn.com/problems/multiply-strings/
+func multiply(num1 string, num2 string) string {
+	l1,l2,l3 := len(num1),len(num2),len(num1) + len(num2)
+	res := make([]uint8,l3)
+
+	for i:=l2-1;i>=0;i--{
+		for j:=l1-1;j>=0;j--{
+			high,low := i+j,i+j+1
+			sum := res[low] + (num2[i] - '0') * (num1[j] - '0')
+			res[low] = sum % 10
+			res[high] += sum / 10
+		}
+	}
+
+	start := -1
+	for i:=0;i<len(res);i++{
+		if res[i] != 0 && start == -1 {
+			start = i
+		}
+
+		res[i] = res[i] + '0'
+	}
+
+	if start == -1 {
+		return "0"
+	}else{
+		return string(res[start:])
+	}
+}
+
 //和为K的子数组
 //https://leetcode-cn.com/problems/subarray-sum-equals-k/
 func subarraySum(nums []int,k int) int {
