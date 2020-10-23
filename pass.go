@@ -43,6 +43,10 @@ func floodFill(image [][]int, sr int, sc int, newColor int) [][]int {
 	return image
 }
 
+func inArea(image [][]int,sr int, sc int) bool {
+	return sr >= 0 && sr <= len(image)-1 && sc >= 0 && sc <= len(image[sr]) - 1
+}
+
 //字符串相乘
 //https://leetcode-cn.com/problems/multiply-strings/
 func multiply(num1 string, num2 string) string {
