@@ -7,6 +7,42 @@ import (
 )
 
 
+//颜色填充
+//https://leetcode-cn.com/problems/color-fill-lcci/
+func floodFill(image [][]int, sr int, sc int, newColor int) [][]int {
+	var fill func(sr int, sc int, oldColor int)
+
+	if !inArea(image,sr,sc) {
+		return image
+	}
+	oldColor := image[sr][sc]
+
+	fill = func(sr int, sc int, oldColor int) {
+		if !inArea(image,sr,sc) {
+			return
+		}
+		if image[sr][sc] != oldColor {
+			return
+		}
+		if image[sr][sc] == -1 {
+			return
+		}
+
+		image[sr][sc] = -1
+
+		fill(sr+1,sc,oldColor)
+		fill(sr-1,sc,oldColor)
+		fill(sr,sc+1,oldColor)
+		fill(sr,sc-1,oldColor)
+
+		image[sr][sc] = newColor
+	}
+
+	fill(sr,sc,oldColor)
+
+	return image
+}
+
 //字符串相乘
 //https://leetcode-cn.com/problems/multiply-strings/
 func multiply(num1 string, num2 string) string {
