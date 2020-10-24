@@ -1010,6 +1010,30 @@ func maxProfit1(prices []int) int {
 	return pre_no_has
 }
 
+
+//区间列表的交集
+//https://leetcode-cn.com/problems/interval-list-intersections/
+func intervalIntersection(A [][]int, B [][]int) [][]int {
+	i,j,la,lb := 0,0,len(A),len(B)
+	res := [][]int{}
+	for i < la && j < lb {
+		aa := A[i]
+		bb := B[j]
+
+		if aa[1] >= bb[0] && bb[1] >= aa[0] {
+			res = append(res,[]int{max(aa[0],bb[0]),min(aa[1],bb[1])})
+		}
+
+		if bb[1] > aa[1] {
+			i++
+		}else{
+			j++
+		}
+	}
+
+	return res
+}
+
 //合并区间
 //https://leetcode-cn.com/problems/merge-intervals/
 func merge(intervals [][]int) [][]int {
