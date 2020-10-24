@@ -1010,6 +1010,26 @@ func maxProfit1(prices []int) int {
 	return pre_no_has
 }
 
+//合并区间
+//https://leetcode-cn.com/problems/merge-intervals/
+func merge(intervals [][]int) [][]int {
+	var res [][]int
+
+	sort.Slice(intervals, func(i, j int) bool {
+		return intervals[i][0] < intervals[j][0]
+	})
+
+	for i:=0;i<len(intervals);i++{
+		if len(res) == 0 || intervals[i][0] > res[len(res)-1][1] {
+			res = append(res,intervals[i])
+		} else if intervals[i][1] > res[len(res)-1][1] {
+			res[len(res)-1][1] = intervals[i][1]
+		}
+	}
+
+	return res
+}
+
 //无重叠区间
 //https://leetcode-cn.com/problems/non-overlapping-intervals/
 func eraseOverlapIntervals(intervals [][]int) int {
