@@ -7,6 +7,34 @@ import (
 )
 
 
+//接雨水
+//https://leetcode-cn.com/problems/trapping-rain-water/
+func trap(height []int) int {
+	left,right := 0,len(height)-1
+	lMax, rMax := 0,0
+	res := 0
+
+	for left < right {
+		if height[left] <= height[right] {
+			if height[left] < lMax {
+				res += lMax - height[left]
+			}else{
+				lMax = height[left]
+			}
+			left++
+		}else if height[left] > height[right] {
+			if height[right] < rMax {
+				res += rMax - height[right]
+			}else{
+				rMax = height[right]
+			}
+			right--
+		}
+	}
+
+	return res
+}
+
 //颜色填充
 //https://leetcode-cn.com/problems/color-fill-lcci/
 func floodFill(image [][]int, sr int, sc int, newColor int) [][]int {
