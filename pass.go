@@ -6,6 +6,34 @@ import (
 	"strings"
 )
 
+//求根到叶子节点数字之和
+//https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/
+func sumNumbers(root *TreeNode) int {
+	sum := 0
+	var path func(r *TreeNode,path int)
+
+	path = func(r *TreeNode, pathSum int) {
+		if r.Left == nil && r.Right == nil {
+			sum += pathSum * 10 + r.Val
+		}
+
+		if r.Left != nil {
+			path(r.Left,pathSum * 10 + r.Val)
+		}
+
+		if r.Right != nil {
+			path(r.Right,pathSum * 10 + r.Val)
+		}
+	}
+
+	if root == nil {
+		return 0
+	}
+
+	path(root,0)
+
+	return sum
+}
 
 //接雨水
 //https://leetcode-cn.com/problems/trapping-rain-water/
