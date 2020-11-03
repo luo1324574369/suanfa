@@ -6,6 +6,104 @@ import (
 	"strings"
 )
 
+// LRU缓存机制
+// https://leetcode-cn.com/problems/lru-cache/
+type DoubleNode struct {
+	Key int
+	Value int
+	Next *DoubleNode
+	Pre *DoubleNode
+}
+
+type DoubleList struct {
+	Head *DoubleNode
+	Tail *DoubleNode
+	Len int
+}
+
+func DList() *DoubleList {
+	dl := &DoubleList{}
+	dl.Head = &DoubleNode{Key: 0,Value: 0}
+	dl.Tail = &DoubleNode{Key: 0,Value: 0}
+	dl.Head.Next = dl.Tail
+	dl.Tail.Pre = dl.Head
+	return dl
+}
+
+func (dl *DoubleList) Append(d *DoubleNode)  {
+	d.Next = dl.Tail
+	d.Pre = dl.Tail.Pre
+
+	dl.Tail.Pre.Next = d
+	dl.Tail.Pre = d
+	dl.Len++
+}
+
+func (dl *DoubleList) Delete(d *DoubleNode)  {
+	d.Pre.Next = d.Next
+	d.Next.Pre = d.Pre
+	dl.Len--
+}
+
+func (dl *DoubleList) DeleteHead() *DoubleNode {
+	if dl.Head.Next == dl.Tail {
+		return nil
+	}
+
+	tmp := dl.Head.Next
+	dl.Delete(tmp)
+	return tmp
+}
+
+type LRUCache struct {
+	Cap int
+	Len int
+	Map map[int]*DoubleNode
+	List *DoubleList
+}
+
+
+func Constructor(capacity int) LRUCache {
+	l := LRUCache{Cap: capacity}
+	l.Map = make(map[int]*DoubleNode,capacity)
+	l.List = DList()
+	return l
+}
+
+
+func (this *LRUCache) Get(key int) int {
+	if value,ok := this.Map[key]; ok {
+		this.List.Delete(value)
+		this.List.Append(value)
+
+		return value.Value
+	}
+
+	return -1
+}
+
+func (this *LRUCache) Put(key int, value int)  {
+	if v,ok := this.Map[key]; ok {
+		this.List.Delete(v)
+
+		d := &DoubleNode{Key: key,Value: value}
+		this.List.Append(d)
+		this.Map[key] = d
+		return
+	}
+
+	if this.Len == this.Cap {
+		head := this.List.DeleteHead()
+		delete(this.Map,head.Key)
+		this.Len--
+	}
+
+	d := &DoubleNode{Key: key,Value: value}
+	this.Map[key] = d
+	this.List.Append(d)
+	this.Len++
+}
+
 //求根到叶子节点数字之和
 //https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/
 func sumNumbers(root *TreeNode) int {
