@@ -1164,6 +1164,43 @@ func maxProfit1(prices []int) int {
 	return pre_no_has
 }
 
+// 删除被覆盖区间
+//https://leetcode-cn.com/problems/remove-covered-intervals/
+func removeCoveredIntervals(intervals [][]int) int {
+
+	sort.Slice(intervals, func(i, j int) bool {
+		if intervals[i][0] < intervals[j][0] {
+			return true
+		} else if intervals[i][0] == intervals[j][0] {
+			return intervals[i][1] > intervals[j][1]
+		}
+		return false
+	})
+
+	li := len(intervals)
+	res := 0
+
+	if li == 0 {
+		return res
+	}
+
+	left := intervals[0][0]
+	right := intervals[0][1]
+
+	for i:=1;i<li;i++{
+		if left <= intervals[i][0] && intervals[i][1] <= right {
+			res++
+		} else if intervals[i][1] > right {
+			right = intervals[i][1]
+		} else if right < intervals[i][0] {
+			left = intervals[i][0]
+			right = intervals[i][1]
+		}
+	}
+
+	return li - res
+}
+
 
 //区间列表的交集
 //https://leetcode-cn.com/problems/interval-list-intersections/
