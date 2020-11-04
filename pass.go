@@ -453,6 +453,69 @@ func minWindow(s string, t string) string {
 	return ""
 }
 
+//三数之和
+//https://leetcode-cn.com/problems/3sum/
+func threeSum(nums []int) [][]int {
+	var res [][]int
+
+	sort.Slice(nums, func(i, j int) bool {
+		return nums[i] < nums[j]
+	})
+
+	for i:=0;i<=len(nums)-1;{
+		vi := nums[i]
+
+		twoRes := twoNum(nums[i+1:],-vi)
+
+		for j:=0;j<len(twoRes);j++{
+			res = append(res,[]int{vi,twoRes[j][0],twoRes[j][1]})
+		}
+
+		for {
+			i++
+			if i >= len(nums) || vi != nums[i] {
+				break
+			}
+		}
+	}
+
+	return res
+}
+
+//输入有序数组,求和等于target的不重复值
+func  twoNum(numbers []int, target int) [][]int {
+	l,r := 0, len(numbers)-1
+	var res [][]int
+
+	for l < r {
+		if numbers[l] + numbers[r] == target {
+			res = append(res,[]int{numbers[l],numbers[r]})
+
+			vr := numbers[r]
+			for r > 0 && numbers[r] == vr {
+				r--
+			}
+
+			vl := numbers[l]
+			for l < len(numbers)-1 && numbers[l] == vl {
+				l++
+			}
+		} else if numbers[l] + numbers[r] > target {
+			vr := numbers[r]
+			for r > 0 && numbers[r] == vr {
+				r--
+			}
+		} else if numbers[l] + numbers[r] < target {
+			vl := numbers[l]
+			for l < len(numbers)-1 && numbers[l] == vl {
+				l++
+			}
+		}
+	}
+
+	return res
+}
+
 // 两数之和 II - 输入有序数组
 // https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/
 func twoSum2(numbers []int, target int) []int {
