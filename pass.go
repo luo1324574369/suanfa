@@ -9,28 +9,28 @@ import (
 // LRU缓存机制
 // https://leetcode-cn.com/problems/lru-cache/
 type DoubleNode struct {
-	Key int
+	Key   int
 	Value int
-	Next *DoubleNode
-	Pre *DoubleNode
+	Next  *DoubleNode
+	Pre   *DoubleNode
 }
 
 type DoubleList struct {
 	Head *DoubleNode
 	Tail *DoubleNode
-	Len int
+	Len  int
 }
 
 func DList() *DoubleList {
 	dl := &DoubleList{}
-	dl.Head = &DoubleNode{Key: 0,Value: 0}
-	dl.Tail = &DoubleNode{Key: 0,Value: 0}
+	dl.Head = &DoubleNode{Key: 0, Value: 0}
+	dl.Tail = &DoubleNode{Key: 0, Value: 0}
 	dl.Head.Next = dl.Tail
 	dl.Tail.Pre = dl.Head
 	return dl
 }
 
-func (dl *DoubleList) Append(d *DoubleNode)  {
+func (dl *DoubleList) Append(d *DoubleNode) {
 	d.Next = dl.Tail
 	d.Pre = dl.Tail.Pre
 
@@ -39,7 +39,7 @@ func (dl *DoubleList) Append(d *DoubleNode)  {
 	dl.Len++
 }
 
-func (dl *DoubleList) Delete(d *DoubleNode)  {
+func (dl *DoubleList) Delete(d *DoubleNode) {
 	d.Pre.Next = d.Next
 	d.Next.Pre = d.Pre
 	dl.Len--
@@ -56,23 +56,21 @@ func (dl *DoubleList) DeleteHead() *DoubleNode {
 }
 
 type LRUCache struct {
-	Cap int
-	Len int
-	Map map[int]*DoubleNode
+	Cap  int
+	Len  int
+	Map  map[int]*DoubleNode
 	List *DoubleList
 }
 
-
 func Constructor(capacity int) LRUCache {
 	l := LRUCache{Cap: capacity}
-	l.Map = make(map[int]*DoubleNode,capacity)
+	l.Map = make(map[int]*DoubleNode, capacity)
 	l.List = DList()
 	return l
 }
 
-
 func (this *LRUCache) Get(key int) int {
-	if value,ok := this.Map[key]; ok {
+	if value, ok := this.Map[key]; ok {
 		this.List.Delete(value)
 		this.List.Append(value)
 
@@ -82,11 +80,11 @@ func (this *LRUCache) Get(key int) int {
 	return -1
 }
 
-func (this *LRUCache) Put(key int, value int)  {
-	if v,ok := this.Map[key]; ok {
+func (this *LRUCache) Put(key int, value int) {
+	if v, ok := this.Map[key]; ok {
 		this.List.Delete(v)
 
-		d := &DoubleNode{Key: key,Value: value}
+		d := &DoubleNode{Key: key, Value: value}
 		this.List.Append(d)
 		this.Map[key] = d
 		return
@@ -94,11 +92,11 @@ func (this *LRUCache) Put(key int, value int)  {
 
 	if this.Len == this.Cap {
 		head := this.List.DeleteHead()
-		delete(this.Map,head.Key)
+		delete(this.Map, head.Key)
 		this.Len--
 	}
 
-	d := &DoubleNode{Key: key,Value: value}
+	d := &DoubleNode{Key: key, Value: value}
 	this.Map[key] = d
 	this.List.Append(d)
 	this.Len++
@@ -108,19 +106,19 @@ func (this *LRUCache) Put(key int, value int)  {
 //https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/
 func sumNumbers(root *TreeNode) int {
 	sum := 0
-	var path func(r *TreeNode,path int)
+	var path func(r *TreeNode, path int)
 
 	path = func(r *TreeNode, pathSum int) {
 		if r.Left == nil && r.Right == nil {
-			sum += pathSum * 10 + r.Val
+			sum += pathSum*10 + r.Val
 		}
 
 		if r.Left != nil {
-			path(r.Left,pathSum * 10 + r.Val)
+			path(r.Left, pathSum*10+r.Val)
 		}
 
 		if r.Right != nil {
-			path(r.Right,pathSum * 10 + r.Val)
+			path(r.Right, pathSum*10+r.Val)
 		}
 	}
 
@@ -128,7 +126,7 @@ func sumNumbers(root *TreeNode) int {
 		return 0
 	}
 
-	path(root,0)
+	path(root, 0)
 
 	return sum
 }
@@ -136,22 +134,22 @@ func sumNumbers(root *TreeNode) int {
 //接雨水
 //https://leetcode-cn.com/problems/trapping-rain-water/
 func trap(height []int) int {
-	left,right := 0,len(height)-1
-	lMax, rMax := 0,0
+	left, right := 0, len(height)-1
+	lMax, rMax := 0, 0
 	res := 0
 
 	for left < right {
 		if height[left] <= height[right] {
 			if height[left] < lMax {
 				res += lMax - height[left]
-			}else{
+			} else {
 				lMax = height[left]
 			}
 			left++
-		}else if height[left] > height[right] {
+		} else if height[left] > height[right] {
 			if height[right] < rMax {
 				res += rMax - height[right]
-			}else{
+			} else {
 				rMax = height[right]
 			}
 			right--
@@ -166,13 +164,13 @@ func trap(height []int) int {
 func floodFill(image [][]int, sr int, sc int, newColor int) [][]int {
 	var fill func(sr int, sc int, oldColor int)
 
-	if !inArea(image,sr,sc) {
+	if !inArea(image, sr, sc) {
 		return image
 	}
 	oldColor := image[sr][sc]
 
 	fill = func(sr int, sc int, oldColor int) {
-		if !inArea(image,sr,sc) {
+		if !inArea(image, sr, sc) {
 			return
 		}
 		if image[sr][sc] != oldColor {
@@ -184,40 +182,40 @@ func floodFill(image [][]int, sr int, sc int, newColor int) [][]int {
 
 		image[sr][sc] = -1
 
-		fill(sr+1,sc,oldColor)
-		fill(sr-1,sc,oldColor)
-		fill(sr,sc+1,oldColor)
-		fill(sr,sc-1,oldColor)
+		fill(sr+1, sc, oldColor)
+		fill(sr-1, sc, oldColor)
+		fill(sr, sc+1, oldColor)
+		fill(sr, sc-1, oldColor)
 
 		image[sr][sc] = newColor
 	}
 
-	fill(sr,sc,oldColor)
+	fill(sr, sc, oldColor)
 
 	return image
 }
 
-func inArea(image [][]int,sr int, sc int) bool {
-	return sr >= 0 && sr <= len(image)-1 && sc >= 0 && sc <= len(image[sr]) - 1
+func inArea(image [][]int, sr int, sc int) bool {
+	return sr >= 0 && sr <= len(image)-1 && sc >= 0 && sc <= len(image[sr])-1
 }
 
 //字符串相乘
 //https://leetcode-cn.com/problems/multiply-strings/
 func multiply(num1 string, num2 string) string {
-	l1,l2,l3 := len(num1),len(num2),len(num1) + len(num2)
-	res := make([]uint8,l3)
+	l1, l2, l3 := len(num1), len(num2), len(num1)+len(num2)
+	res := make([]uint8, l3)
 
-	for i:=l2-1;i>=0;i--{
-		for j:=l1-1;j>=0;j--{
-			high,low := i+j,i+j+1
-			sum := res[low] + (num2[i] - '0') * (num1[j] - '0')
+	for i := l2 - 1; i >= 0; i-- {
+		for j := l1 - 1; j >= 0; j-- {
+			high, low := i+j, i+j+1
+			sum := res[low] + (num2[i]-'0')*(num1[j]-'0')
 			res[low] = sum % 10
 			res[high] += sum / 10
 		}
 	}
 
 	start := -1
-	for i:=0;i<len(res);i++{
+	for i := 0; i < len(res); i++ {
 		if res[i] != 0 && start == -1 {
 			start = i
 		}
@@ -227,29 +225,28 @@ func multiply(num1 string, num2 string) string {
 
 	if start == -1 {
 		return "0"
-	}else{
+	} else {
 		return string(res[start:])
 	}
 }
 
 //和为K的子数组
 //https://leetcode-cn.com/problems/subarray-sum-equals-k/
-func subarraySum(nums []int,k int) int {
-	ans, sumI := 0,0
+func subarraySum(nums []int, k int) int {
+	ans, sumI := 0, 0
 	preSum := map[int]int{}
 	preSum[0] = 1
 
-	for i:=0;i<len(nums);i++{
+	for i := 0; i < len(nums); i++ {
 		sumI += nums[i]
-		if _,ok := preSum[sumI - k]; ok {
-			ans += preSum[sumI - k]
+		if _, ok := preSum[sumI-k]; ok {
+			ans += preSum[sumI-k]
 		}
 		preSum[sumI] += 1
 	}
 
 	return ans
 }
-
 
 //计算器
 //https://leetcode-cn.com/problems/calculator-lcci/
@@ -270,7 +267,7 @@ func calculate(s string) int {
 			}
 
 			for c >= '0' && c <= '9' {
-				num = 10 * num + int(c - '0')
+				num = 10*num + int(c-'0')
 				s = s[1:]
 				if len(s) == 0 {
 					break
@@ -282,23 +279,23 @@ func calculate(s string) int {
 				s = s[1:]
 			}
 
-			if (c < '0'|| c > '9' ) && c != ' ' || len(s) == 0{
+			if (c < '0' || c > '9') && c != ' ' || len(s) == 0 {
 				switch sign {
 				case '+':
-					stack = append(stack,num)
+					stack = append(stack, num)
 					break
 				case '-':
-					stack = append(stack,-num)
+					stack = append(stack, -num)
 					break
 				case '*':
 					top := stack[len(stack)-1]
 					stack = stack[:len(stack)-1]
-					stack = append(stack,top * num)
+					stack = append(stack, top*num)
 					break
 				case '/':
 					top := stack[len(stack)-1]
 					stack = stack[:len(stack)-1]
-					stack = append(stack,top / num)
+					stack = append(stack, top/num)
 					break
 				}
 				sign = c
@@ -311,7 +308,7 @@ func calculate(s string) int {
 		}
 
 		sumC := 0
-		for i:=0;i<len(stack);i++{
+		for i := 0; i < len(stack); i++ {
 			sumC += stack[i]
 		}
 
@@ -337,7 +334,7 @@ func hammingWeight(num uint32) int {
 //最长不含重复字符的子字符串
 //https://leetcode-cn.com/problems/zui-chang-bu-han-zhong-fu-zi-fu-de-zi-zi-fu-chuan-lcof/
 func lengthOfLongestSubstring(s string) int {
-	left,right,ls,rl,rr := 0,0,len(s),0,-1
+	left, right, ls, rl, rr := 0, 0, len(s), 0, -1
 	nMap := map[uint8]int{}
 
 	for right < ls {
@@ -389,8 +386,8 @@ func findAnagrams(s string, p string) []int {
 		}
 
 		for match == len(nMap) && match > 0 {
-			if right - left + 1 == lt {
-				res = append(res,left)
+			if right-left+1 == lt {
+				res = append(res, left)
 			}
 
 			if _, ok := nMap[s[left]]; ok {
@@ -412,7 +409,7 @@ func findAnagrams(s string, p string) []int {
 //https://leetcode-cn.com/problems/minimum-window-substring/
 func minWindow(s string, t string) string {
 	lt, ls := len(t), len(s)
-	left, right, rleft, rright := 0,0,0,1 << 32
+	left, right, rleft, rright := 0, 0, 0, 1<<32
 
 	match := 0
 	nMap := make(map[uint8]int, lt)
@@ -431,8 +428,8 @@ func minWindow(s string, t string) string {
 		}
 
 		for match == len(nMap) && match > 0 {
-			if right - left < rright - rleft {
-				rright,rleft = right,left
+			if right-left < rright-rleft {
+				rright, rleft = right, left
 			}
 
 			if _, ok := nMap[s[left]]; ok {
@@ -446,8 +443,8 @@ func minWindow(s string, t string) string {
 		right++
 	}
 
-	if rright != 1 << 32{
-		return s[rleft:rright+1]
+	if rright != 1<<32 {
+		return s[rleft : rright+1]
 	}
 
 	return ""
@@ -462,13 +459,64 @@ func threeSum(nums []int) [][]int {
 		return nums[i] < nums[j]
 	})
 
-	for i:=0;i<=len(nums)-1;{
+	for first := 0; first <= len(nums)-1; {
+		vFirst := -nums[first]
+
+		second, third := first+1, len(nums)-1
+		for second < third {
+			if nums[second]+nums[third] == vFirst {
+				res = append(res, []int{nums[first], nums[second], nums[third]})
+
+				vThird := nums[third]
+				for third > second && nums[third] == vThird {
+					third--
+				}
+
+				vSecond := nums[second]
+				for second < third && nums[third] == vSecond {
+					second++
+				}
+			}
+
+			if nums[second]+nums[third] > vFirst {
+				vThird := nums[third]
+				for third > second && nums[third] == vThird {
+					third--
+				}
+			}
+
+			if nums[second]+nums[third] < vFirst {
+				vSecond := nums[second]
+				for second < third && nums[second] == vSecond {
+					second++
+				}
+			}
+		}
+
+		for first < len(nums) && nums[first] == -vFirst {
+			first++
+		}
+	}
+
+	return res
+}
+
+//三数之和
+//https://leetcode-cn.com/problems/3sum/
+func threeSum1(nums []int) [][]int {
+	var res [][]int
+
+	sort.Slice(nums, func(i, j int) bool {
+		return nums[i] < nums[j]
+	})
+
+	for i := 0; i <= len(nums)-1; {
 		vi := nums[i]
 
-		twoRes := twoNum(nums[i+1:],-vi)
+		twoRes := twoNum(nums[i+1:], -vi)
 
-		for j:=0;j<len(twoRes);j++{
-			res = append(res,[]int{vi,twoRes[j][0],twoRes[j][1]})
+		for j := 0; j < len(twoRes); j++ {
+			res = append(res, []int{vi, twoRes[j][0], twoRes[j][1]})
 		}
 
 		for {
@@ -483,13 +531,13 @@ func threeSum(nums []int) [][]int {
 }
 
 //输入有序数组,求和等于target的不重复值
-func  twoNum(numbers []int, target int) [][]int {
-	l,r := 0, len(numbers)-1
+func twoNum(numbers []int, target int) [][]int {
+	l, r := 0, len(numbers)-1
 	var res [][]int
 
 	for l < r {
-		if numbers[l] + numbers[r] == target {
-			res = append(res,[]int{numbers[l],numbers[r]})
+		if numbers[l]+numbers[r] == target {
+			res = append(res, []int{numbers[l], numbers[r]})
 
 			vr := numbers[r]
 			for r > 0 && numbers[r] == vr {
@@ -500,12 +548,12 @@ func  twoNum(numbers []int, target int) [][]int {
 			for l < len(numbers)-1 && numbers[l] == vl {
 				l++
 			}
-		} else if numbers[l] + numbers[r] > target {
+		} else if numbers[l]+numbers[r] > target {
 			vr := numbers[r]
 			for r > 0 && numbers[r] == vr {
 				r--
 			}
-		} else if numbers[l] + numbers[r] < target {
+		} else if numbers[l]+numbers[r] < target {
 			vl := numbers[l]
 			for l < len(numbers)-1 && numbers[l] == vl {
 				l++
@@ -519,14 +567,14 @@ func  twoNum(numbers []int, target int) [][]int {
 // 两数之和 II - 输入有序数组
 // https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/
 func twoSum2(numbers []int, target int) []int {
-	l,r := 0, len(numbers)-1
+	l, r := 0, len(numbers)-1
 
 	for l < r {
-		if numbers[l] + numbers[r] == target {
-			return []int{l+1,r+1}
-		} else if numbers[l] + numbers[r] > target {
+		if numbers[l]+numbers[r] == target {
+			return []int{l + 1, r + 1}
+		} else if numbers[l]+numbers[r] > target {
 			r--
-		} else if numbers[l] + numbers[r] < target {
+		} else if numbers[l]+numbers[r] < target {
 			l++
 		}
 	}
@@ -1250,7 +1298,7 @@ func removeCoveredIntervals(intervals [][]int) int {
 	left := intervals[0][0]
 	right := intervals[0][1]
 
-	for i:=1;i<li;i++{
+	for i := 1; i < li; i++ {
 		if left <= intervals[i][0] && intervals[i][1] <= right {
 			res++
 		} else if intervals[i][1] > right {
@@ -1264,23 +1312,22 @@ func removeCoveredIntervals(intervals [][]int) int {
 	return li - res
 }
 
-
 //区间列表的交集
 //https://leetcode-cn.com/problems/interval-list-intersections/
 func intervalIntersection(A [][]int, B [][]int) [][]int {
-	i,j,la,lb := 0,0,len(A),len(B)
+	i, j, la, lb := 0, 0, len(A), len(B)
 	res := [][]int{}
 	for i < la && j < lb {
 		aa := A[i]
 		bb := B[j]
 
 		if aa[1] >= bb[0] && bb[1] >= aa[0] {
-			res = append(res,[]int{max(aa[0],bb[0]),min(aa[1],bb[1])})
+			res = append(res, []int{max(aa[0], bb[0]), min(aa[1], bb[1])})
 		}
 
 		if bb[1] > aa[1] {
 			i++
-		}else{
+		} else {
 			j++
 		}
 	}
@@ -1297,9 +1344,9 @@ func merge(intervals [][]int) [][]int {
 		return intervals[i][0] < intervals[j][0]
 	})
 
-	for i:=0;i<len(intervals);i++{
+	for i := 0; i < len(intervals); i++ {
 		if len(res) == 0 || intervals[i][0] > res[len(res)-1][1] {
-			res = append(res,intervals[i])
+			res = append(res, intervals[i])
 		} else if intervals[i][1] > res[len(res)-1][1] {
 			res[len(res)-1][1] = intervals[i][1]
 		}
