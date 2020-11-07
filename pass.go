@@ -6,6 +6,41 @@ import (
 	"strings"
 )
 
+//875. 爱吃香蕉的珂珂
+//https://leetcode-cn.com/problems/koko-eating-bananas/
+func minEatingSpeed(piles []int, H int) int {
+	maxSpeed, lp := 0, len(piles)
+
+	for i := 0; i < lp; i++ {
+		if piles[i] > maxSpeed {
+			maxSpeed = piles[i]
+		}
+	}
+
+	canFinish := func(speed int) bool {
+		t:=0
+		for j:=0;j<lp;j++{
+			t += piles[j] / speed
+			if piles[j] % speed > 0 {
+				t += 1
+			}
+		}
+		return t <= H
+	}
+
+	left, right := 1, maxSpeed
+	for left <= right {
+		mid := left + (right - left) / 2
+		if canFinish(mid) {
+			right = mid - 1
+		}else {
+			left = mid + 1
+		}
+	}
+
+	return left
+}
+
 //计数质数
 //https://leetcode-cn.com/problems/count-primes/
 func countPrimes(n int) int {
