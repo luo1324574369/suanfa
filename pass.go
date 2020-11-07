@@ -6,6 +6,50 @@ import (
 	"strings"
 )
 
+
+//1011. 在 D 天内送达包裹的能力
+//https://leetcode-cn.com/problems/capacity-to-ship-packages-within-d-days/
+func shipWithinDays(weights []int, D int) int {
+	maxSpeed,lw := 0,len(weights)
+	maxWeight := 0
+
+	for i := 0; i < lw; i++ {
+		if weights[i] > maxWeight {
+			maxWeight = weights[i]
+		}
+		maxSpeed += weights[i]
+	}
+
+	canFinish := func(speed int) bool {
+		t:=1
+		tmp := 0
+
+		for j:=0;j<lw;j++{
+			tmp += weights[j]
+
+			if tmp > speed {
+				t++
+				tmp = weights[j]
+			}
+		}
+
+		return t <= D
+	}
+
+	left, right := maxWeight, maxSpeed
+	for left <= right {
+		mid := left + (right - left) / 2
+		if canFinish(mid) {
+			right = mid - 1
+		}else {
+			left = mid + 1
+		}
+	}
+
+	return left
+}
+
+
 //875. 爱吃香蕉的珂珂
 //https://leetcode-cn.com/problems/koko-eating-bananas/
 func minEatingSpeed(piles []int, H int) int {
