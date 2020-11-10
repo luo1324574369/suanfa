@@ -6,6 +6,24 @@ import (
 	"strings"
 )
 
+//26. 删除排序数组中的重复项
+//https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/
+func removeDuplicates(nums []int) int {
+	ln := len(nums)
+	if ln == 0 {
+		return 0
+	}
+
+	i:=0
+	for j:=1;j<ln;j++{
+		if nums[i] != nums[j] {
+			nums[i+1] = nums[j]
+			i++
+		}
+	}
+
+	return i+1
+}
 
 //1011. 在 D 天内送达包裹的能力
 //https://leetcode-cn.com/problems/capacity-to-ship-packages-within-d-days/
