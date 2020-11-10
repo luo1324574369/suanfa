@@ -6,6 +6,37 @@ import (
 	"strings"
 )
 
+//5. 最长回文子串
+//https://leetcode-cn.com/problems/longest-palindromic-substring/
+func longestPalindrome(s string) string {
+	res := ""
+	ls := len(s)
+	var longStr func(l int,r int) string
+
+	longStr = func(l int, r int) string {
+		for l>=0&&r<ls&&s[l]==s[r] {
+			l--
+			r++
+		}
+		return s[l+1:r]
+	}
+
+	for i:=0;i<ls;i++{
+		s1 := longStr(i,i)
+		s2 := longStr(i,i+1)
+
+		if len(s1) > len(res) {
+			res = s1
+		}
+
+		if len(s2) > len(res) {
+			res = s2
+		}
+	}
+
+	return res
+}
+
 //26. 删除排序数组中的重复项
 //https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/
 func removeDuplicates(nums []int) int {
