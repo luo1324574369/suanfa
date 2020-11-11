@@ -1045,6 +1045,46 @@ func permute(nums []int) [][]int {
 	return res
 }
 
+//25. K 个一组翻转链表
+//https://leetcode-cn.com/problems/reverse-nodes-in-k-group/
+func reverseKGroup(head *ListNode, k int) *ListNode {
+	if head == nil {
+		return nil
+	}
+
+	b := head
+	for i :=0;i<k;i++ {
+		if b == nil {
+			return head
+		}
+		b = b.Next
+	}
+
+	newhead := rList(head,b)
+	head.Next = reverseKGroup(b,k)
+
+	return newhead
+}
+
+func rList(head *ListNode,b *ListNode) *ListNode {
+	if head == nil {
+		return head
+	}
+
+	var pre *ListNode
+	now,next := head,head
+
+	for now != b {
+		next = now.Next
+		now.Next = pre
+
+		pre = now
+		now = next
+	}
+
+	return pre
+}
+
 //反转链表 II
 //https://leetcode-cn.com/problems/reverse-linked-list-ii/
 func reverseBetween(head *ListNode, m int, n int) *ListNode {
@@ -1096,6 +1136,25 @@ func reverseList(head *ListNode) *ListNode {
 	}
 
 	return rl(head)
+}
+
+func reverseList2(head *ListNode) *ListNode {
+	if head == nil {
+		return head
+	}
+
+	var pre *ListNode
+	now,next := head,head
+
+	for now != nil {
+		next = now.Next
+		now.Next = pre
+
+		pre = now
+		now = next
+	}
+
+	return pre
 }
 
 //滑动窗口最大值
