@@ -6,6 +6,48 @@ import (
 	"strings"
 )
 
+
+//20. 有效的括号
+//https://leetcode-cn.com/problems/valid-parentheses/
+func isValid(s string) bool {
+	var stack []uint8
+
+	for i:=0;i<len(s);i++{
+		if s[i] == '(' || s[i] == '{' || s[i] == '[' {
+			stack = append(stack,s[i])
+		}
+
+		ls := len(stack)
+		if ls == 0 {
+			return false
+		}
+
+		if s[i] == ')' {
+			if stack[ls-1] != '(' {
+				return false
+			}
+			stack = stack[:ls-1]
+		}
+
+		if s[i] == '}' {
+			if stack[ls-1] != '{' {
+				return false
+			}
+			stack = stack[:ls-1]
+		}
+
+		if s[i] == ']' {
+			if stack[ls-1] != '[' {
+				return false
+			}
+			stack = stack[:ls-1]
+		}
+	}
+
+	return len(stack) == 0
+}
+
+
 //5. 最长回文子串
 //https://leetcode-cn.com/problems/longest-palindromic-substring/
 func longestPalindrome(s string) string {
