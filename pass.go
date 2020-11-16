@@ -6,6 +6,17 @@ import (
 	"strings"
 )
 
+//268. 丢失的数字
+//https://leetcode-cn.com/problems/missing-number/
+func missingNumber(nums []int) int {
+	ln := len(nums)
+	res := ln
+
+	for i:=0;i<ln;i++{
+		res += i - nums[i]
+	}
+	return res
+}
 
 //20. 有效的括号
 //https://leetcode-cn.com/problems/valid-parentheses/
