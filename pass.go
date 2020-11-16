@@ -13,7 +13,8 @@ func missingNumber(nums []int) int {
 	res := ln
 
 	for i:=0;i<ln;i++{
-		res += i - nums[i]
+		// res += i - nums[i]
+		res ^= i ^ nums[i]
 	}
 	return res
 }
