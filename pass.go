@@ -6,6 +6,32 @@ import (
 	"strings"
 )
 
+//234. 回文链表
+//https://leetcode-cn.com/problems/palindrome-linked-list/
+func isPalindrome(head *ListNode) bool {
+	slow,fast := head,head
+
+	for fast != nil && fast.Next != nil {
+		slow = slow.Next
+		fast = fast.Next.Next
+	}
+	if fast != nil {
+		slow = slow.Next
+	}
+
+	res := true
+	left,right := head,reverseList2(slow)
+	for left != nil && right != nil {
+		if left.Val != right.Val {
+			res = false
+			break
+		}
+		left = left.Next
+		right = right.Next
+	}
+	return res
+}
+
 //645. 错误的集合
 //https://leetcode-cn.com/problems/set-mismatch/
 func findErrorNums(nums []int) []int {
