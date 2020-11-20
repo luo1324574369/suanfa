@@ -6,6 +6,30 @@ import (
 	"strings"
 )
 
+//645. 错误的集合
+//https://leetcode-cn.com/problems/set-mismatch/
+func findErrorNums(nums []int) []int {
+	dup,miss := 0,0
+	ln := len(nums)
+	for i:=0;i<ln;i++{
+		ni := abs(nums[i])
+		if nums[ni - 1]  < 0 {
+			dup = ni
+			continue
+		}
+		nums[ni - 1] = - nums[ni - 1]
+	}
+
+	for i:=0;i<ln;i++{
+		if nums[i] > 0 {
+			miss = i+1
+			break
+		}
+	}
+
+	return []int{dup,miss}
+}
+
 //268. 丢失的数字
 //https://leetcode-cn.com/problems/missing-number/
 func missingNumber(nums []int) int {
