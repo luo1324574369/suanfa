@@ -6,6 +6,28 @@ import (
 	"strings"
 )
 
+//448. 找到所有数组中消失的数字
+//https://leetcode-cn.com/problems/find-all-numbers-disappeared-in-an-array/
+func findDisappearedNumbers(nums []int) []int {
+	var res []int
+	ln := len(nums)
+
+	for i:=0;i<ln;i++{
+		index := abs(nums[i]) - 1
+		if nums[index] > 0 {
+			nums[index] = nums[index] * -1
+		}
+	}
+
+	for i:=0;i<ln;i++{
+		if nums[i] > 0 {
+			res = append(res,i+1)
+		}
+	}
+
+	return res
+}
+
 //234. 回文链表
 //https://leetcode-cn.com/problems/palindrome-linked-list/
 func isPalindrome(head *ListNode) bool {
