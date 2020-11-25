@@ -2,9 +2,46 @@ package main
 
 import (
 	"math"
+	"math/rand"
 	"sort"
 	"strings"
+	"time"
 )
+
+//398. 随机数索引
+//https://leetcode-cn.com/problems/random-pick-index/
+type Solution struct {
+	nums []int
+	r *rand.Rand
+}
+
+
+func Constructor3(nums []int) Solution {
+	return Solution{
+		nums: nums,
+		r:rand.New(rand.NewSource(time.Now().Unix())),
+	}
+}
+
+
+func (this *Solution) Pick(target int) int {
+	res := -1
+	step := 0
+	for i:=0;i<len(this.nums);i++{
+		if this.nums[i] == target {
+			step++
+			if res == -1 {
+				res = i
+				continue
+			}
+
+			if this.r.Intn(step) == 0 {
+				res = i
+			}
+		}
+	}
+	return res
+}
 
 //448. 找到所有数组中消失的数字
 //https://leetcode-cn.com/problems/find-all-numbers-disappeared-in-an-array/
