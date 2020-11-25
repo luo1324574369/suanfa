@@ -8,6 +8,33 @@ import (
 	"time"
 )
 
+//判断子序列
+//https://leetcode-cn.com/problems/is-subsequence/
+func isSubsequence(s string, t string) bool {
+	ls,lt := len(s),len(t)
+	m := make(map[uint8][]int)
+
+	for i:=0;i<lt;i++{
+		m[t[i]] = append(m[t[i]],i)
+	}
+
+	k := 0
+	for j:=0;j<ls;j++{
+		sChar := s[j]
+		if _,ok := m[sChar]; ok {
+			index := leftBound(m[sChar],k)
+			if index < len(m[sChar]) {
+				k = m[sChar][index] + 1
+				continue
+			}
+		}
+
+		return false
+	}
+
+	return true
+}
+
 //398. 随机数索引
 //https://leetcode-cn.com/problems/random-pick-index/
 type Solution struct {
