@@ -8,6 +8,53 @@ import (
 	"time"
 )
 
+
+//241. 为运算表达式设计优先级
+//https://leetcode-cn.com/problems/different-ways-to-add-parentheses/
+func diffWaysToCompute(input string) []int {
+	li := len(input)
+
+	if li == 0 {
+		return []int{0}
+	}
+
+	var res []int
+	for i := 0; i < li; i++ {
+		if input[i] == '+' || input[i] == '-' || input[i] == '*' {
+			left := diffWaysToCompute(input[0:i])
+			right := diffWaysToCompute(input[i+1:])
+
+			for j:=0;j<len(left);j++{
+				for k:=0;k<len(right);k++{
+					if input[i] == '+' {
+						res = append(res,left[j] + right[k])
+					} else if input[i] == '-' {
+						res = append(res,left[j] - right[k])
+					} else if input[i] == '*' {
+						res = append(res,left[j] * right[k])
+					}
+
+				}
+			}
+		}
+	}
+
+	if len(res) == 0 {
+		return []int{toInt(input)}
+	}
+
+	return res
+}
+
+func toInt(s string) int {
+	sum := 0
+	for i:=0;i<len(s);i++{
+		sum = sum * 10 + int(s[i] - '0')
+	}
+	return sum
+}
+
+
 //判断子序列
 //https://leetcode-cn.com/problems/is-subsequence/
 func isSubsequence(s string, t string) bool {
