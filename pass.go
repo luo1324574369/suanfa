@@ -8,6 +8,15 @@ import (
 	"time"
 )
 
+//231. 2的幂
+//https://leetcode-cn.com/problems/power-of-two/
+func isPowerOfTwo(n int) bool {
+	if n > 0 && n & (n - 1) == 0 {
+		return true
+	}
+	return false
+}
+
 
 //241. 为运算表达式设计优先级
 //https://leetcode-cn.com/problems/different-ways-to-add-parentheses/
