@@ -8,6 +8,19 @@ import (
 	"time"
 )
 
+//172. 阶乘后的零
+//https://leetcode-cn.com/problems/factorial-trailing-zeroes/
+func trailingZeroes(n int) int {
+	d,res := 5,0
+
+	for n >= d {
+		res += n / d
+		d *= 5
+	}
+
+	return res
+}
+
 //231. 2的幂
 //https://leetcode-cn.com/problems/power-of-two/
 func isPowerOfTwo(n int) bool {
