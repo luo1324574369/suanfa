@@ -8,6 +8,51 @@ import (
 	"time"
 )
 
+//372. 超级次方
+//https://leetcode-cn.com/problems/super-pow/
+func superPow(a int, b []int) int {
+	base := 1337
+	var sPow func(a int,b []int) int
+	var myPow func(a int,k int) int
+
+	myPow = func(a int, k int) int {
+		res := 1
+		//
+		//for i := 0;i<k;i++ {
+		//	res *= a
+		//	res %= base
+		//}
+		if k == 0 {
+			return 1
+		}
+
+		if k % 2 == 1 {
+			res = (a * myPow(a,k-1)) % base
+		}else{
+			sub := myPow(a,k/2)
+			res = (sub * sub) % base
+		}
+
+		return res % base
+	}
+
+	sPow = func(a int, b []int) int {
+		if len(b) == 0 {
+			return 1
+		}
+
+		last := b[len(b)-1]
+		b = b[:len(b)-1]
+
+		part1 := myPow(a,last)
+		part2 := myPow(sPow(a,b),10)
+
+		return (part1 * part2) % base
+	}
+
+	return sPow(a,b)
+}
+
 //172. 阶乘后的零
 //https://leetcode-cn.com/problems/factorial-trailing-zeroes/
 func trailingZeroes(n int) int {
