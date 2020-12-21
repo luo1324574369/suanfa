@@ -8,6 +8,18 @@ import (
 	"time"
 )
 
+//746. 使用最小花费爬楼梯
+//https://leetcode-cn.com/problems/min-cost-climbing-stairs/
+func minCostClimbingStairs(cost []int) int {
+	lc := len(cost)
+	dbtable := make([]int,lc+1)
+
+	for i:=2;i<=lc;i++{
+		dbtable[i] = min(dbtable[i-1] + cost[i-1],dbtable[i-2] + cost[i-2])
+	}
+
+	return dbtable[lc]
+}
 
 //416. 分割等和子集
 //https://leetcode-cn.com/problems/partition-equal-subset-sum/
