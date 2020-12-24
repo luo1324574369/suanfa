@@ -8,6 +8,25 @@ import (
 	"time"
 )
 
+//387. 字符串中的第一个唯一字符
+//https://leetcode-cn.com/problems/first-unique-character-in-a-string/
+func firstUniqChar(s string) int {
+	a := [26]int{}
+	for i:=0;i < len(s);i++ {
+		a[s[i] - 'a'] = i
+	}
+
+	for j:=0;j< len(s);j++{
+		if j == a[s[j] - 'a'] {
+			return j
+		}else {
+			a[s[j] - 'a'] = -1
+		}
+	}
+
+	return -1
+}
+
 //746. 使用最小花费爬楼梯
 //https://leetcode-cn.com/problems/min-cost-climbing-stairs/
 func minCostClimbingStairs(cost []int) int {
