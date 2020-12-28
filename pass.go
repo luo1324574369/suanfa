@@ -8,6 +8,48 @@ import (
 	"time"
 )
 
+//135. 分发糖果 (使用决策树)
+//https://leetcode-cn.com/problems/candy/
+func candy(ratings []int) int {
+	lr := len(ratings)
+
+	if lr == 0 {
+		return 0
+	}
+
+	r2 := make([]int,lr)
+	index := 1
+	r2[0] = 1
+
+	for ;index < lr;{
+		if r2[index] == 0 {
+			r2[index]++
+		}
+
+		if index == 0 {
+			index++
+			continue
+		}
+
+		if ratings[index] > ratings[index-1] && r2[index] <= r2[index-1]{
+			r2[index] = r2[index-1] + 1
+		} else if ratings[index] < ratings[index-1] && r2[index] >= r2[index-1]{
+			r2[index-1]++
+			index--
+			continue
+		}
+
+		index++
+	}
+
+	sum := 0
+	for i:=0;i<len(r2);i++{
+		sum += r2[i]
+	}
+
+	return sum
+}
+
 //387. 字符串中的第一个唯一字符
 //https://leetcode-cn.com/problems/first-unique-character-in-a-string/
 func firstUniqChar(s string) int {
