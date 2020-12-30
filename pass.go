@@ -8,6 +8,21 @@ import (
 	"time"
 )
 
+//1046. 最后一块石头的重量
+//https://leetcode-cn.com/problems/last-stone-weight/
+func lastStoneWeight(stones []int) int {
+	sort.Sort(sort.Reverse(sort.IntSlice(stones)))
+
+	ls := len(stones)
+	for ; ls>1 ; ls-- {
+		diff := abs(stones[0] - stones[1])
+		stones = append(stones[2:],diff)
+		sort.Sort(sort.Reverse(sort.IntSlice(stones)))
+	}
+
+	return stones[0]
+}
+
 //135. 分发糖果 (使用决策树)
 //https://leetcode-cn.com/problems/candy/
 func candy(ratings []int) int {
