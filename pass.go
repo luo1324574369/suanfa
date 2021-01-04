@@ -8,6 +8,26 @@ import (
 	"time"
 )
 
+//509. 斐波那契数
+//https://leetcode-cn.com/problems/fibonacci-number/
+func fib(n int) int {
+	if n == 0 {
+		return 0
+	}
+	if n == 1 {
+		return 1
+	}
+
+	a := make([]int,2)
+	a[1] = 1
+
+	for index := 2;index<=n;index++{
+		a[index%2] = a[0] + a[1]
+	}
+
+	return a[n%2]
+}
+
 //1046. 最后一块石头的重量
 //https://leetcode-cn.com/problems/last-stone-weight/
 func lastStoneWeight(stones []int) int {
