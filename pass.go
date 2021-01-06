@@ -8,6 +8,40 @@ import (
 	"time"
 )
 
+//830. 较大分组的位置
+//https://leetcode-cn.com/problems/positions-of-large-groups/
+func largeGroupPositions(s string) [][]int {
+	var preChar uint8
+	num := 0
+	res := make([][]int,0)
+	temp := make([]int,2)
+
+	for i:=0;i<len(s);i++{
+		if s[i] != preChar {
+			if temp[1] != 0 {
+				res = append(res,temp)
+				temp = []int{0,0}
+			}
+			preChar = s[i]
+			temp[0] = i
+			num=1
+		}else{
+			num++
+		}
+
+		if num >= 3 {
+			temp[1] = i
+		}
+	}
+
+	if temp[1] != 0 {
+		res = append(res,temp)
+		temp = []int{0,0}
+	}
+
+	return res
+}
+
 //509. 斐波那契数
 //https://leetcode-cn.com/problems/fibonacci-number/
 func fib(n int) int {
