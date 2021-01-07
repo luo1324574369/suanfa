@@ -52,14 +52,12 @@ func fib(n int) int {
 		return 1
 	}
 
-	a := make([]int,2)
-	a[1] = 1
-
-	for index := 2;index<=n;index++{
-		a[index%2] = a[0] + a[1]
+	a,b := 0,1
+	for index:=0; index<n;index++{
+		a,b = b, a+b
 	}
 
-	return a[n%2]
+	return a
 }
 
 //1046. 最后一块石头的重量
