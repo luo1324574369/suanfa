@@ -8,6 +8,25 @@ import (
 	"time"
 )
 
+
+//剑指 Offer 10- II. 青蛙跳台阶问题
+//https://leetcode-cn.com/problems/qing-wa-tiao-tai-jie-wen-ti-lcof/submissions/
+func numWays(n int) int {
+	if n == 0 {
+		return 1
+	}
+	if n == 1 {
+		return 1
+	}
+
+	a,b := 1,1
+	for index := 0;index<n;index++ {
+		a,b = b, (a+b) % 1000000007
+	}
+
+	return a
+}
+
 //830. 较大分组的位置
 //https://leetcode-cn.com/problems/positions-of-large-groups/
 func largeGroupPositions(s string) [][]int {
