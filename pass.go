@@ -8,6 +8,21 @@ import (
 	"time"
 )
 
+//剑指 Offer 03. 数组中重复的数字
+//https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/solution/goduo-jie-fa-lets-go-by-allentime/
+func findRepeatNumber(nums []int) int {
+	for i:=0;i<len(nums);i++{
+		for i != nums[i] {
+			if nums[i] == nums[nums[i]] {
+				return nums[i]
+			}else{
+				nums[i],nums[nums[i]] = nums[nums[i]],nums[i]
+			}
+		}
+	}
+
+	return -1
+}
 
 //剑指 Offer 10- II. 青蛙跳台阶问题
 //https://leetcode-cn.com/problems/qing-wa-tiao-tai-jie-wen-ti-lcof/submissions/
