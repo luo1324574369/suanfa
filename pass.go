@@ -8,6 +8,23 @@ import (
 	"time"
 )
 
+// 338. 比特位计数
+// https://leetcode-cn.com/problems/counting-bits/
+func countBits(num int) []int {
+	highBit := 0
+	res := make([]int,num+1)
+
+	for i:=1;i<=num;i++{
+		if i & (i-1) == 0 {
+			highBit = i
+		}
+
+		res[i] = res[i-highBit] + 1
+	}
+
+	return res
+}
+
 //剑指 Offer 03. 数组中重复的数字
 //https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/solution/goduo-jie-fa-lets-go-by-allentime/
 func findRepeatNumber(nums []int) int {
