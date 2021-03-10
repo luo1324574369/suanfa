@@ -8,6 +8,23 @@ import (
 	"time"
 )
 
+//88. 合并两个有序数组
+//https://leetcode-cn.com/problems/merge-sorted-array/submissions/
+func merge(nums1 []int, m int, nums2 []int, n int) {
+	for p := m + n - 1; m > 0 && n > 0; p-- {
+		if nums2[n-1] >= nums1[m-1] {
+			nums1[p] = nums2[n-1]
+			n--
+		} else {
+			nums1[p] = nums1[m-1]
+			m--
+		}
+	}
+	for ; n > 0; n-- {
+		nums1[n-1] = nums2[n-1]
+	}
+}
+
 // 338. 比特位计数
 // https://leetcode-cn.com/problems/counting-bits/
 func countBits(num int) []int {
