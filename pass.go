@@ -8,6 +8,30 @@ import (
 	"time"
 )
 
+// 21. 合并两个有序链表
+// https://leetcode.cn/problems/merge-two-sorted-lists/
+func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
+	dummy := new(ListNode)
+	p := dummy
+	for list1 != nil && list2 != nil {
+		if list1.Val > list2.Val {
+			p.Next = list2
+			list2 = list2.Next
+		} else {
+			p.Next = list1
+			list1 = list1.Next
+		}
+		p = p.Next
+	}
+	if list1 != nil {
+		p.Next = list1
+	}
+	if list2 != nil {
+		p.Next = list2
+	}
+	return dummy.Next
+}
+
 //88. 合并两个有序数组
 //https://leetcode-cn.com/problems/merge-sorted-array/submissions/
 func merge(nums1 []int, m int, nums2 []int, n int) {
