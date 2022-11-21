@@ -8,6 +8,32 @@ import (
 	"time"
 )
 
+//86. 分隔链表
+//https://leetcode.cn/problems/partition-list/
+func partition(head *ListNode, x int) *ListNode {
+	dummy1 := new(ListNode)
+	dummy2 := new(ListNode)
+	p1 := dummy1
+	p2 := dummy2
+	p := head
+
+	for p != nil {
+		if p.Val < x {
+			p1.Next = p
+			p1 = p1.Next
+		} else {
+			p2.Next = p
+			p2 = p2.Next
+		}
+		temp := p.Next
+		p.Next = nil
+		p = temp
+	}
+
+	p1.Next = dummy2.Next
+	return dummy1.Next
+}
+
 // 21. 合并两个有序链表
 // https://leetcode.cn/problems/merge-two-sorted-lists/
 func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
@@ -53,10 +79,10 @@ func merge(nums1 []int, m int, nums2 []int, n int) {
 // https://leetcode-cn.com/problems/counting-bits/
 func countBits(num int) []int {
 	highBit := 0
-	res := make([]int,num+1)
+	res := make([]int, num+1)
 
-	for i:=1;i<=num;i++{
-		if i & (i-1) == 0 {
+	for i := 1; i <= num; i++ {
+		if i&(i-1) == 0 {
 			highBit = i
 		}
 
@@ -69,12 +95,12 @@ func countBits(num int) []int {
 //剑指 Offer 03. 数组中重复的数字
 //https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/solution/goduo-jie-fa-lets-go-by-allentime/
 func findRepeatNumber(nums []int) int {
-	for i:=0;i<len(nums);i++{
+	for i := 0; i < len(nums); i++ {
 		for i != nums[i] {
 			if nums[i] == nums[nums[i]] {
 				return nums[i]
-			}else{
-				nums[i],nums[nums[i]] = nums[nums[i]],nums[i]
+			} else {
+				nums[i], nums[nums[i]] = nums[nums[i]], nums[i]
 			}
 		}
 	}
@@ -92,9 +118,9 @@ func numWays(n int) int {
 		return 1
 	}
 
-	a,b := 1,1
-	for index := 0;index<n;index++ {
-		a,b = b, (a+b) % 1000000007
+	a, b := 1, 1
+	for index := 0; index < n; index++ {
+		a, b = b, (a+b)%1000000007
 	}
 
 	return a
@@ -105,19 +131,19 @@ func numWays(n int) int {
 func largeGroupPositions(s string) [][]int {
 	var preChar uint8
 	num := 0
-	res := make([][]int,0)
-	temp := make([]int,2)
+	res := make([][]int, 0)
+	temp := make([]int, 2)
 
-	for i:=0;i<len(s);i++{
+	for i := 0; i < len(s); i++ {
 		if s[i] != preChar {
 			if temp[1] != 0 {
-				res = append(res,temp)
-				temp = []int{0,0}
+				res = append(res, temp)
+				temp = []int{0, 0}
 			}
 			preChar = s[i]
 			temp[0] = i
-			num=1
-		}else{
+			num = 1
+		} else {
 			num++
 		}
 
@@ -127,8 +153,8 @@ func largeGroupPositions(s string) [][]int {
 	}
 
 	if temp[1] != 0 {
-		res = append(res,temp)
-		temp = []int{0,0}
+		res = append(res, temp)
+		temp = []int{0, 0}
 	}
 
 	return res
@@ -144,9 +170,9 @@ func fib(n int) int {
 		return 1
 	}
 
-	a,b := 0,1
-	for index:=0; index<n;index++{
-		a,b = b, a+b
+	a, b := 0, 1
+	for index := 0; index < n; index++ {
+		a, b = b, a+b
 	}
 
 	return a
@@ -158,9 +184,9 @@ func lastStoneWeight(stones []int) int {
 	sort.Sort(sort.Reverse(sort.IntSlice(stones)))
 
 	ls := len(stones)
-	for ; ls>1 ; ls-- {
+	for ; ls > 1; ls-- {
 		diff := abs(stones[0] - stones[1])
-		stones = append(stones[2:],diff)
+		stones = append(stones[2:], diff)
 		sort.Sort(sort.Reverse(sort.IntSlice(stones)))
 	}
 
@@ -176,11 +202,11 @@ func candy(ratings []int) int {
 		return 0
 	}
 
-	r2 := make([]int,lr)
+	r2 := make([]int, lr)
 	index := 1
 	r2[0] = 1
 
-	for ;index < lr;{
+	for index < lr {
 		if r2[index] == 0 {
 			r2[index]++
 		}
@@ -190,9 +216,9 @@ func candy(ratings []int) int {
 			continue
 		}
 
-		if ratings[index] > ratings[index-1] && r2[index] <= r2[index-1]{
+		if ratings[index] > ratings[index-1] && r2[index] <= r2[index-1] {
 			r2[index] = r2[index-1] + 1
-		} else if ratings[index] < ratings[index-1] && r2[index] >= r2[index-1]{
+		} else if ratings[index] < ratings[index-1] && r2[index] >= r2[index-1] {
 			r2[index-1]++
 			index--
 			continue
@@ -202,7 +228,7 @@ func candy(ratings []int) int {
 	}
 
 	sum := 0
-	for i:=0;i<len(r2);i++{
+	for i := 0; i < len(r2); i++ {
 		sum += r2[i]
 	}
 
@@ -213,15 +239,15 @@ func candy(ratings []int) int {
 //https://leetcode-cn.com/problems/first-unique-character-in-a-string/
 func firstUniqChar(s string) int {
 	a := [26]int{}
-	for i:=0;i < len(s);i++ {
-		a[s[i] - 'a'] = i
+	for i := 0; i < len(s); i++ {
+		a[s[i]-'a'] = i
 	}
 
-	for j:=0;j< len(s);j++{
-		if j == a[s[j] - 'a'] {
+	for j := 0; j < len(s); j++ {
+		if j == a[s[j]-'a'] {
 			return j
-		}else {
-			a[s[j] - 'a'] = -1
+		} else {
+			a[s[j]-'a'] = -1
 		}
 	}
 
@@ -232,10 +258,10 @@ func firstUniqChar(s string) int {
 //https://leetcode-cn.com/problems/min-cost-climbing-stairs/
 func minCostClimbingStairs(cost []int) int {
 	lc := len(cost)
-	dbtable := make([]int,lc+1)
+	dbtable := make([]int, lc+1)
 
-	for i:=2;i<=lc;i++{
-		dbtable[i] = min(dbtable[i-1] + cost[i-1],dbtable[i-2] + cost[i-2])
+	for i := 2; i <= lc; i++ {
+		dbtable[i] = min(dbtable[i-1]+cost[i-1], dbtable[i-2]+cost[i-2])
 	}
 
 	return dbtable[lc]
@@ -244,20 +270,22 @@ func minCostClimbingStairs(cost []int) int {
 //416. 分割等和子集
 //https://leetcode-cn.com/problems/partition-equal-subset-sum/
 func canPartition(nums []int) bool {
-	sum,ln:=0,len(nums)
-	for i:=0;i<ln;i++{
-		sum+=nums[i]
+	sum, ln := 0, len(nums)
+	for i := 0; i < ln; i++ {
+		sum += nums[i]
 	}
 
-	if sum % 2 != 0 {return false}
+	if sum%2 != 0 {
+		return false
+	}
 	sum = sum / 2
 
-	db1 := make([]bool,sum+1)
+	db1 := make([]bool, sum+1)
 	db1[0] = true
 
-	for i:=1;i<=ln;i++{
-		for j:=sum;j>=0;j--{
-			if j - nums[i-1] >= 0 {
+	for i := 1; i <= ln; i++ {
+		for j := sum; j >= 0; j-- {
+			if j-nums[i-1] >= 0 {
 				db1[j] = db1[j] || db1[j-nums[i-1]]
 			}
 		}
@@ -270,8 +298,8 @@ func canPartition(nums []int) bool {
 //https://leetcode-cn.com/problems/super-pow/
 func superPow(a int, b []int) int {
 	base := 1337
-	var sPow func(a int,b []int) int
-	var myPow func(a int,k int) int
+	var sPow func(a int, b []int) int
+	var myPow func(a int, k int) int
 
 	myPow = func(a int, k int) int {
 		res := 1
@@ -284,10 +312,10 @@ func superPow(a int, b []int) int {
 			return 1
 		}
 
-		if k % 2 == 1 {
-			res = (a * myPow(a,k-1)) % base
-		}else{
-			sub := myPow(a,k/2)
+		if k%2 == 1 {
+			res = (a * myPow(a, k-1)) % base
+		} else {
+			sub := myPow(a, k/2)
 			res = (sub * sub) % base
 		}
 
@@ -302,19 +330,19 @@ func superPow(a int, b []int) int {
 		last := b[len(b)-1]
 		b = b[:len(b)-1]
 
-		part1 := myPow(a,last)
-		part2 := myPow(sPow(a,b),10)
+		part1 := myPow(a, last)
+		part2 := myPow(sPow(a, b), 10)
 
 		return (part1 * part2) % base
 	}
 
-	return sPow(a,b)
+	return sPow(a, b)
 }
 
 //172. 阶乘后的零
 //https://leetcode-cn.com/problems/factorial-trailing-zeroes/
 func trailingZeroes(n int) int {
-	d,res := 5,0
+	d, res := 5, 0
 
 	for n >= d {
 		res += n / d
@@ -327,12 +355,11 @@ func trailingZeroes(n int) int {
 //231. 2的幂
 //https://leetcode-cn.com/problems/power-of-two/
 func isPowerOfTwo(n int) bool {
-	if n > 0 && n & (n - 1) == 0 {
+	if n > 0 && n&(n-1) == 0 {
 		return true
 	}
 	return false
 }
-
 
 //241. 为运算表达式设计优先级
 //https://leetcode-cn.com/problems/different-ways-to-add-parentheses/
@@ -349,14 +376,14 @@ func diffWaysToCompute(input string) []int {
 			left := diffWaysToCompute(input[0:i])
 			right := diffWaysToCompute(input[i+1:])
 
-			for j:=0;j<len(left);j++{
-				for k:=0;k<len(right);k++{
+			for j := 0; j < len(left); j++ {
+				for k := 0; k < len(right); k++ {
 					if input[i] == '+' {
-						res = append(res,left[j] + right[k])
+						res = append(res, left[j]+right[k])
 					} else if input[i] == '-' {
-						res = append(res,left[j] - right[k])
+						res = append(res, left[j]-right[k])
 					} else if input[i] == '*' {
-						res = append(res,left[j] * right[k])
+						res = append(res, left[j]*right[k])
 					}
 
 				}
@@ -373,28 +400,27 @@ func diffWaysToCompute(input string) []int {
 
 func toInt(s string) int {
 	sum := 0
-	for i:=0;i<len(s);i++{
-		sum = sum * 10 + int(s[i] - '0')
+	for i := 0; i < len(s); i++ {
+		sum = sum*10 + int(s[i]-'0')
 	}
 	return sum
 }
 
-
 //判断子序列
 //https://leetcode-cn.com/problems/is-subsequence/
 func isSubsequence(s string, t string) bool {
-	ls,lt := len(s),len(t)
+	ls, lt := len(s), len(t)
 	m := make(map[uint8][]int)
 
-	for i:=0;i<lt;i++{
-		m[t[i]] = append(m[t[i]],i)
+	for i := 0; i < lt; i++ {
+		m[t[i]] = append(m[t[i]], i)
 	}
 
 	k := 0
-	for j:=0;j<ls;j++{
+	for j := 0; j < ls; j++ {
 		sChar := s[j]
-		if _,ok := m[sChar]; ok {
-			index := leftBound(m[sChar],k)
+		if _, ok := m[sChar]; ok {
+			index := leftBound(m[sChar], k)
 			if index < len(m[sChar]) {
 				k = m[sChar][index] + 1
 				continue
@@ -411,22 +437,20 @@ func isSubsequence(s string, t string) bool {
 //https://leetcode-cn.com/problems/random-pick-index/
 type Solution struct {
 	nums []int
-	r *rand.Rand
+	r    *rand.Rand
 }
-
 
 func Constructor3(nums []int) Solution {
 	return Solution{
 		nums: nums,
-		r:rand.New(rand.NewSource(time.Now().Unix())),
+		r:    rand.New(rand.NewSource(time.Now().Unix())),
 	}
 }
-
 
 func (this *Solution) Pick(target int) int {
 	res := -1
 	step := 0
-	for i:=0;i<len(this.nums);i++{
+	for i := 0; i < len(this.nums); i++ {
 		if this.nums[i] == target {
 			step++
 			if res == -1 {
@@ -448,16 +472,16 @@ func findDisappearedNumbers(nums []int) []int {
 	var res []int
 	ln := len(nums)
 
-	for i:=0;i<ln;i++{
+	for i := 0; i < ln; i++ {
 		index := abs(nums[i]) - 1
 		if nums[index] > 0 {
 			nums[index] = nums[index] * -1
 		}
 	}
 
-	for i:=0;i<ln;i++{
+	for i := 0; i < ln; i++ {
 		if nums[i] > 0 {
-			res = append(res,i+1)
+			res = append(res, i+1)
 		}
 	}
 
@@ -467,7 +491,7 @@ func findDisappearedNumbers(nums []int) []int {
 //234. 回文链表
 //https://leetcode-cn.com/problems/palindrome-linked-list/
 func isPalindrome(head *ListNode) bool {
-	slow,fast := head,head
+	slow, fast := head, head
 
 	for fast != nil && fast.Next != nil {
 		slow = slow.Next
@@ -478,7 +502,7 @@ func isPalindrome(head *ListNode) bool {
 	}
 
 	res := true
-	left,right := head,reverseList2(slow)
+	left, right := head, reverseList2(slow)
 	for left != nil && right != nil {
 		if left.Val != right.Val {
 			res = false
@@ -493,25 +517,25 @@ func isPalindrome(head *ListNode) bool {
 //645. 错误的集合
 //https://leetcode-cn.com/problems/set-mismatch/
 func findErrorNums(nums []int) []int {
-	dup,miss := 0,0
+	dup, miss := 0, 0
 	ln := len(nums)
-	for i:=0;i<ln;i++{
+	for i := 0; i < ln; i++ {
 		ni := abs(nums[i])
-		if nums[ni - 1]  < 0 {
+		if nums[ni-1] < 0 {
 			dup = ni
 			continue
 		}
-		nums[ni - 1] = - nums[ni - 1]
+		nums[ni-1] = -nums[ni-1]
 	}
 
-	for i:=0;i<ln;i++{
+	for i := 0; i < ln; i++ {
 		if nums[i] > 0 {
-			miss = i+1
+			miss = i + 1
 			break
 		}
 	}
 
-	return []int{dup,miss}
+	return []int{dup, miss}
 }
 
 //268. 丢失的数字
@@ -520,7 +544,7 @@ func missingNumber(nums []int) int {
 	ln := len(nums)
 	res := ln
 
-	for i:=0;i<ln;i++{
+	for i := 0; i < ln; i++ {
 		// res += i - nums[i]
 		res ^= i ^ nums[i]
 	}
@@ -532,9 +556,9 @@ func missingNumber(nums []int) int {
 func isValid(s string) bool {
 	var stack []uint8
 
-	for i:=0;i<len(s);i++{
+	for i := 0; i < len(s); i++ {
 		if s[i] == '(' || s[i] == '{' || s[i] == '[' {
-			stack = append(stack,s[i])
+			stack = append(stack, s[i])
 		}
 
 		ls := len(stack)
@@ -567,25 +591,24 @@ func isValid(s string) bool {
 	return len(stack) == 0
 }
 
-
 //5. 最长回文子串
 //https://leetcode-cn.com/problems/longest-palindromic-substring/
 func longestPalindrome(s string) string {
 	res := ""
 	ls := len(s)
-	var longStr func(l int,r int) string
+	var longStr func(l int, r int) string
 
 	longStr = func(l int, r int) string {
-		for l>=0&&r<ls&&s[l]==s[r] {
+		for l >= 0 && r < ls && s[l] == s[r] {
 			l--
 			r++
 		}
-		return s[l+1:r]
+		return s[l+1 : r]
 	}
 
-	for i:=0;i<ls;i++{
-		s1 := longStr(i,i)
-		s2 := longStr(i,i+1)
+	for i := 0; i < ls; i++ {
+		s1 := longStr(i, i)
+		s2 := longStr(i, i+1)
 
 		if len(s1) > len(res) {
 			res = s1
@@ -607,21 +630,21 @@ func removeDuplicates(nums []int) int {
 		return 0
 	}
 
-	i:=0
-	for j:=1;j<ln;j++{
+	i := 0
+	for j := 1; j < ln; j++ {
 		if nums[i] != nums[j] {
 			nums[i+1] = nums[j]
 			i++
 		}
 	}
 
-	return i+1
+	return i + 1
 }
 
 //1011. 在 D 天内送达包裹的能力
 //https://leetcode-cn.com/problems/capacity-to-ship-packages-within-d-days/
 func shipWithinDays(weights []int, D int) int {
-	maxSpeed,lw := 0,len(weights)
+	maxSpeed, lw := 0, len(weights)
 	maxWeight := 0
 
 	for i := 0; i < lw; i++ {
@@ -632,10 +655,10 @@ func shipWithinDays(weights []int, D int) int {
 	}
 
 	canFinish := func(speed int) bool {
-		t:=1
+		t := 1
 		tmp := 0
 
-		for j:=0;j<lw;j++{
+		for j := 0; j < lw; j++ {
 			tmp += weights[j]
 
 			if tmp > speed {
@@ -649,17 +672,16 @@ func shipWithinDays(weights []int, D int) int {
 
 	left, right := maxWeight, maxSpeed
 	for left <= right {
-		mid := left + (right - left) / 2
+		mid := left + (right-left)/2
 		if canFinish(mid) {
 			right = mid - 1
-		}else {
+		} else {
 			left = mid + 1
 		}
 	}
 
 	return left
 }
-
 
 //875. 爱吃香蕉的珂珂
 //https://leetcode-cn.com/problems/koko-eating-bananas/
@@ -673,10 +695,10 @@ func minEatingSpeed(piles []int, H int) int {
 	}
 
 	canFinish := func(speed int) bool {
-		t:=0
-		for j:=0;j<lp;j++{
+		t := 0
+		for j := 0; j < lp; j++ {
 			t += piles[j] / speed
-			if piles[j] % speed > 0 {
+			if piles[j]%speed > 0 {
 				t += 1
 			}
 		}
@@ -685,10 +707,10 @@ func minEatingSpeed(piles []int, H int) int {
 
 	left, right := 1, maxSpeed
 	for left <= right {
-		mid := left + (right - left) / 2
+		mid := left + (right-left)/2
 		if canFinish(mid) {
 			right = mid - 1
-		}else {
+		} else {
 			left = mid + 1
 		}
 	}
@@ -699,18 +721,18 @@ func minEatingSpeed(piles []int, H int) int {
 //计数质数
 //https://leetcode-cn.com/problems/count-primes/
 func countPrimes(n int) int {
-	isNotPrime := make([]bool,n+1)
+	isNotPrime := make([]bool, n+1)
 	count := 0
 
-	for i:=2; i * i < n; i++ {
+	for i := 2; i*i < n; i++ {
 		if isNotPrime[i] == false {
-			for j:= i * i; j < n; j+=i {
+			for j := i * i; j < n; j += i {
 				isNotPrime[j] = true
 			}
 		}
 	}
 
-	for i:=2;i<n;i++ {
+	for i := 2; i < n; i++ {
 		if isNotPrime[i] == false {
 			count++
 		}
@@ -1615,26 +1637,26 @@ func reverseKGroup(head *ListNode, k int) *ListNode {
 	}
 
 	b := head
-	for i :=0;i<k;i++ {
+	for i := 0; i < k; i++ {
 		if b == nil {
 			return head
 		}
 		b = b.Next
 	}
 
-	newhead := rList(head,b)
-	head.Next = reverseKGroup(b,k)
+	newhead := rList(head, b)
+	head.Next = reverseKGroup(b, k)
 
 	return newhead
 }
 
-func rList(head *ListNode,b *ListNode) *ListNode {
+func rList(head *ListNode, b *ListNode) *ListNode {
 	if head == nil {
 		return head
 	}
 
 	var pre *ListNode
-	now,next := head,head
+	now, next := head, head
 
 	for now != b {
 		next = now.Next
@@ -1706,7 +1728,7 @@ func reverseList2(head *ListNode) *ListNode {
 	}
 
 	var pre *ListNode
-	now,next := head,head
+	now, next := head, head
 
 	for now != nil {
 		next = now.Next
