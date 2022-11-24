@@ -8,6 +8,39 @@ import (
 	"time"
 )
 
+//104. 二叉树的最大深度
+//https://leetcode.cn/problems/maximum-depth-of-binary-tree/
+func maxDepth(root *TreeNode) int {
+	if root == nil {
+		return 0
+	}
+	leftMax := maxDepth(root.Left)
+	rightMax := maxDepth(root.Right)
+	if leftMax > rightMax {
+		return leftMax + 1
+	}
+	return rightMax + 1
+}
+
+//283. 移动零
+//https://leetcode.cn/problems/move-zeroes/
+func moveZeroes(nums []int) {
+	slow := 0
+	fast := 0
+	l := len(nums)
+	for fast < l {
+		if nums[fast] != 0 {
+			nums[slow] = nums[fast]
+			slow++
+		}
+		fast++
+	}
+
+	for i := slow; i < l; i++ {
+		nums[i] = 0
+	}
+}
+
 //86. 分隔链表
 //https://leetcode.cn/problems/partition-list/
 func partition(head *ListNode, x int) *ListNode {
