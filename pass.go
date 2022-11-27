@@ -8,6 +8,45 @@ import (
 	"time"
 )
 
+//322. 零钱兑换
+//https://leetcode.cn/problems/coin-change/
+func coinChange(coins []int, amount int) int {
+	dpTable := make(map[int]int)
+	for i := 0; i <= amount; i++ {
+		dpTable[i] = -666
+	}
+	var dp func(coins []int, amount int) int
+	dp = func(coins []int, amount int) int {
+		if amount == 0 {
+			return 0
+		}
+		if amount < 0 {
+			return -1
+		}
+		if dpTable[amount] != -666 {
+			return dpTable[amount]
+		}
+		result := 9223372036854775807
+		for _, coin := range coins {
+			sub := dp(coins, amount-coin)
+			if sub == -1 {
+				continue
+			}
+			if result > sub {
+				result = sub
+			}
+		}
+
+		if result == 9223372036854775807 {
+			dpTable[amount] = -1
+		} else {
+			dpTable[amount] = result + 1
+		}
+		return dpTable[amount]
+	}
+	return dp(coins, amount)
+}
+
 //104. 二叉树的最大深度
 //https://leetcode.cn/problems/maximum-depth-of-binary-tree/
 func maxDepth(root *TreeNode) int {
