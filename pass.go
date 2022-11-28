@@ -8,6 +8,46 @@ import (
 	"time"
 )
 
+//567. 字符串的排列
+//https://leetcode.cn/problems/permutation-in-string/
+func checkInclusion(s1 string, s2 string) bool {
+	valid := 0
+	left := 0
+	right := 0
+	s1l := len(s1)
+	need := make(map[uint8]int)
+	window := make(map[uint8]int)
+	for i := 0; i < s1l; i++ {
+		need[s1[i]]++
+	}
+
+	for right < len(s2) {
+		c := s2[right]
+		right++
+		if _, ok := need[c]; ok {
+			window[c]++
+			if window[c] == need[c] {
+				valid++
+			}
+		}
+
+		for valid == len(need) {
+			if right-left == s1l {
+				return true
+			}
+			cleft := s2[left]
+			left++
+			if _, ok := need[cleft]; ok {
+				if window[cleft] == need[cleft] {
+					valid--
+				}
+				window[cleft]--
+			}
+		}
+	}
+	return false
+}
+
 //40. 组合总和 II
 //https://leetcode.cn/problems/combination-sum-ii/
 func combinationSum2(candidates []int, target int) [][]int {
@@ -1183,74 +1223,63 @@ func hammingWeight(num uint32) int {
 //最长不含重复字符的子字符串
 //https://leetcode-cn.com/problems/zui-chang-bu-han-zhong-fu-zi-fu-de-zi-zi-fu-chuan-lcof/
 func lengthOfLongestSubstring(s string) int {
-	left, right, ls, rl, rr := 0, 0, len(s), 0, -1
-	nMap := map[uint8]int{}
-
-	for right < ls {
-		nMap[s[right]]++
-
-		for nMap[s[right]] > 1 {
-			if _, ok := nMap[s[left]]; ok {
-				nMap[s[left]]--
-			}
-			left++
-		}
-
-		if right-left > rr-rl {
-			rr, rl = right, left
-		}
-
+	window := make(map[uint8]int)
+	left, right, res := 0, 0, 0
+	for right < len(s) {
+		c := s[right]
 		right++
+		window[c]++
+		for window[c] > 1 {
+			cleft := s[left]
+			left++
+			window[cleft]--
+		}
+		if right-left > res {
+			res = right - left
+		}
 	}
-
-	if rr != -1 {
-		return rr - rl + 1
-	}
-
-	return 0
+	return res
 }
 
-// 找到字符串中所有字母异位词
+//找到字符串中所有字母异位词
 //https://leetcode-cn.com/problems/find-all-anagrams-in-a-string/
-func findAnagrams(s string, p string) []int {
-	left, right := 0, 0
+
+func findAnagrams(s2 string, s1 string) []int {
 	var res []int
-	t := p
-	lt, ls := len(t), len(s)
-
-	match := 0
-	nMap := make(map[uint8]int, lt)
-	wMap := make(map[uint8]int, lt)
-
-	for i := 0; i < lt; i++ {
-		nMap[t[i]]++
+	valid := 0
+	left := 0
+	right := 0
+	s1l := len(s1)
+	need := make(map[uint8]int)
+	window := make(map[uint8]int)
+	for i := 0; i < s1l; i++ {
+		need[s1[i]]++
 	}
 
-	for right < ls {
-		if _, ok := nMap[s[right]]; ok {
-			wMap[s[right]]++
-			if wMap[s[right]] == nMap[s[right]] {
-				match++
+	for right < len(s2) {
+		c := s2[right]
+		right++
+		if _, ok := need[c]; ok {
+			window[c]++
+			if window[c] == need[c] {
+				valid++
 			}
 		}
 
-		for match == len(nMap) && match > 0 {
-			if right-left+1 == lt {
+		for valid == len(need) {
+			if right-left == s1l {
 				res = append(res, left)
 			}
-
-			if _, ok := nMap[s[left]]; ok {
-				wMap[s[left]]--
-				if wMap[s[left]] < nMap[s[left]] {
-					match--
-				}
-			}
-
+			cleft := s2[left]
 			left++
+			if _, ok := need[cleft]; ok {
+				if window[cleft] == need[cleft] {
+					valid--
+				}
+				window[cleft]--
+			}
 		}
-		right++
 	}
-
 	return res
 }
 
