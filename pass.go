@@ -8,6 +8,48 @@ import (
 	"time"
 )
 
+//40. 组合总和 II
+//https://leetcode.cn/problems/combination-sum-ii/
+func combinationSum2(candidates []int, target int) [][]int {
+	var result [][]int
+	cl := len(candidates)
+	pathSum := 0
+
+	sort.Ints(candidates)
+	var backtrack func(path []int, usedList []bool, start int)
+	backtrack = func(path []int, usedList []bool, start int) {
+		if pathSum == target {
+			tmpPath := make([]int, len(path))
+			copy(tmpPath, path)
+			result = append(result, tmpPath)
+			return
+		}
+		if pathSum > target {
+			return
+		}
+
+		// i := start 是为了去重
+		for i := start; i < cl; i++ {
+			// usedList 此时是为了保证相同元素的相对位置不变
+			if i > 0 && candidates[i] == candidates[i-1] && !usedList[i-1] {
+				continue
+			}
+			path = append(path, candidates[i])
+			pathSum += candidates[i]
+			usedList[i] = true
+			backtrack(path, usedList, i+1)
+			path = path[:len(path)-1]
+			pathSum -= candidates[i]
+			usedList[i] = false
+		}
+	}
+
+	var path []int
+	usedList := make([]bool, cl)
+	backtrack(path, usedList, 0)
+	return result
+}
+
 //322. 零钱兑换
 //https://leetcode.cn/problems/coin-change/
 func coinChange(coins []int, amount int) int {
@@ -26,7 +68,7 @@ func coinChange(coins []int, amount int) int {
 		if dpTable[amount] != -666 {
 			return dpTable[amount]
 		}
-		result := 9223372036854775807
+		result := 1<<31 - 1
 		for _, coin := range coins {
 			sub := dp(coins, amount-coin)
 			if sub == -1 {
@@ -37,7 +79,7 @@ func coinChange(coins []int, amount int) int {
 			}
 		}
 
-		if result == 9223372036854775807 {
+		if result == 1<<31-1 {
 			dpTable[amount] = -1
 		} else {
 			dpTable[amount] = result + 1
