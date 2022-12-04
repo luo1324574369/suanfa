@@ -8,6 +8,56 @@ import (
 	"time"
 )
 
+//698. 划分为k个相等的子集
+//https://leetcode.cn/problems/partition-to-k-equal-sum-subsets/
+func canPartitionKSubsets(nums []int, k int) bool {
+	used := 0
+	hashMap := make(map[int]bool)
+	lNums := len(nums)
+	var sum int
+	for _, num := range nums {
+		sum += num
+	}
+	target := float64(sum) / float64(k)
+
+	var backtrack func(start int, buketCurrentValue int, kNum int) bool
+	backtrack = func(start int, buketCurrentValue int, kNum int) bool {
+		if kNum == 0 {
+			// 箱子为空,证明刚刚好
+			return true
+		}
+		if float64(buketCurrentValue) == target {
+			// 满足箱子,走下一个循环
+			kNum--
+			res := backtrack(0, 0, kNum)
+			hashMap[used] = res
+			return res
+		}
+
+		if r, ok := hashMap[used]; ok {
+			return r
+		}
+
+		for i := start; i < lNums; i++ {
+			if float64(buketCurrentValue+nums[i]) > target {
+				continue
+			}
+			// 已经被使用过
+			if (used >> i & 1) == 1 {
+				continue
+			}
+			used |= 1 << i
+			if backtrack(i+1, buketCurrentValue+nums[i], kNum) {
+				return true
+			}
+			used ^= 1 << i
+		}
+		return false
+	}
+
+	return backtrack(0, 0, k)
+}
+
 //567. 字符串的排列
 //https://leetcode.cn/problems/permutation-in-string/
 func checkInclusion(s1 string, s2 string) bool {
