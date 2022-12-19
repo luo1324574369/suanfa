@@ -8,6 +8,62 @@ import (
 	"time"
 )
 
+//34. 在排序数组中查找元素的第一个和最后一个位置
+//https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/submissions/
+func searchRange(nums []int, target int) []int {
+	nl := len(nums)
+	if nl == 0 {
+		return []int{-1, -1}
+	}
+
+	leftB, rightB := -1, -1
+	left, right := 0, nl-1
+	for left <= right {
+		mid := left + (right-left)/2
+		if nums[mid] == target {
+			right = mid - 1
+		} else if nums[mid] > target {
+			right = mid - 1
+		} else if nums[mid] < target {
+			left = mid + 1
+		}
+	}
+
+	if left >= nl {
+		return []int{-1, -1}
+	}
+
+	if nums[left] != target {
+		return []int{-1, -1}
+	}
+
+	leftB = left
+
+	left, right = 0, nl-1
+	for left <= right {
+		mid := left + (right-left)/2
+		if nums[mid] == target {
+			left = mid + 1
+		} else if nums[mid] > target {
+			right = mid - 1
+		} else if nums[mid] < target {
+			left = mid + 1
+		}
+	}
+
+	if left == 0 {
+		return []int{-1, -1}
+	}
+
+	if nums[left-1] != target {
+		return []int{-1, -1}
+	}
+
+	rightB = left - 1
+
+	return []int{leftB, rightB}
+}
+
 //105. 从前序与中序遍历序列构造二叉树
 //https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
 func buildTree(preorder []int, inorder []int) *TreeNode {
