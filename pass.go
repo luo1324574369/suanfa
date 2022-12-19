@@ -8,6 +8,32 @@ import (
 	"time"
 )
 
+//105. 从前序与中序遍历序列构造二叉树
+//https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
+func buildTree(preorder []int, inorder []int) *TreeNode {
+
+	preL := len(preorder)
+	inL := len(inorder)
+
+	if preL == 0 || inL == 0 {
+		return nil
+	}
+
+	root := &TreeNode{Val: preorder[0]}
+	i := 0
+	for ; i < preL; i++ {
+		if preorder[0] == inorder[i] {
+			break
+		}
+	}
+	leftSize := i
+
+	root.Left = buildTree(preorder[1:1+leftSize], inorder[:i])
+	root.Right = buildTree(preorder[1+leftSize:], inorder[i+1:])
+
+	return root
+}
+
 //698. 划分为k个相等的子集
 //https://leetcode.cn/problems/partition-to-k-equal-sum-subsets/
 func canPartitionKSubsets(nums []int, k int) bool {
