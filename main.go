@@ -10,16 +10,16 @@ func main() {
 
 
 //*****************常用*************************//
-func binarySearch(nums []int,target int) int {
-	left,right := 0,len(nums)-1
+func binarySearch(nums []int, target int) int {
+	left, right := 0, len(nums)-1
 
 	for left <= right {
-		mid := left + (right - left) / 2
+		mid := left + (right-left)/2
 		if nums[mid] == target {
 			return mid
-		}else if nums[mid] > target {
+		} else if nums[mid] > target {
 			right = mid - 1
-		}else if nums[mid] < target {
+		} else if nums[mid] < target {
 			left = mid + 1
 		}
 	}
@@ -31,12 +31,12 @@ func leftBound(nums []int,target int) int {
 	left,right := 0,len(nums)-1
 
 	for left <= right {
-		mid := left + (right - left) / 2
+		mid := left + (right-left)/2
 		if nums[mid] == target {
 			right = mid - 1
-		}else if nums[mid] > target {
+		} else if nums[mid] > target {
 			right = mid - 1
-		}else if nums[mid] < target {
+		} else if nums[mid] < target {
 			left = mid + 1
 		}
 	}
@@ -48,16 +48,16 @@ func leftBound(nums []int,target int) int {
 	return left
 }
 
-func rightBound(nums []int,target int) int {
-	left,right := 0,len(nums)-1
+func rightBound(nums []int, target int) int {
+	left, right := 0, len(nums)-1
 
 	for left <= right {
-		mid := left + (right - left) / 2
+		mid := left + (right-left)/2
 		if nums[mid] == target {
 			left = mid + 1
-		}else if nums[mid] > target {
+		} else if nums[mid] > target {
 			right = mid - 1
-		}else if nums[mid] < target {
+		} else if nums[mid] < target {
 			left = mid + 1
 		}
 	}
@@ -69,9 +69,9 @@ func rightBound(nums []int,target int) int {
 	return right
 }
 
-func reverse(target []int,x int,y int){
+func reverse(target []int, x int, y int) {
 	for x < y {
-		target[x],target[y] = target[y],target[x]
+		target[x], target[y] = target[y], target[x]
 		x++
 		y--
 	}
@@ -102,7 +102,7 @@ func abs(x int) int {
 //*****************队列*************************//
 type DQueue struct {
 	data []int
-	len int
+	len  int
 }
 
 func (dq *DQueue) PopFront() (res int) {
@@ -132,12 +132,12 @@ func (dq *DQueue) Len() int {
 	return dq.len
 }
 
-func (dq *DQueue) PushBack(n int)  {
-	dq.data = append(dq.data,n)
+func (dq *DQueue) PushBack(n int) {
+	dq.data = append(dq.data, n)
 	dq.len++
 }
 
-func (dq *DQueue) Push(n int)  {
+func (dq *DQueue) Push(n int) {
 	for dq.Len() > 0 && dq.Back() < n {
 		dq.PopBack()
 	}
@@ -146,7 +146,7 @@ func (dq *DQueue) Push(n int)  {
 }
 
 func (dq *DQueue) Pop(n int) int {
-	if dq.Len() > 0  && dq.Front() == n{
+	if dq.Len() > 0 && dq.Front() == n {
 		return dq.PopFront()
 	}
 
@@ -162,7 +162,7 @@ type ListNode struct {
 func createListNode(nums []int) *ListNode {
 	list := new(ListNode)
 	temp := list
-	for _,v := range nums {
+	for _, v := range nums {
 		temp.Next = &ListNode{Val: v}
 		temp = temp.Next
 	}
@@ -170,16 +170,16 @@ func createListNode(nums []int) *ListNode {
 	return list.Next
 }
 
-func printListList(nodeList []*ListNode)  {
-	for i:=0;i<len(nodeList);i++{
+func printListList(nodeList []*ListNode) {
+	for i := 0; i < len(nodeList); i++ {
 		fmt.Printf("\n--------------\n")
 		printListNodes(nodeList[i])
 	}
 }
 
-func printListNodes(node *ListNode)  {
+func printListNodes(node *ListNode) {
 	if node != nil {
-		fmt.Printf("val:%d \n",node.Val)
+		fmt.Printf("val:%d \n", node.Val)
 		printListNodes(node.Next)
 	}
 }
@@ -239,58 +239,49 @@ type TreeNode struct {
 }
 
 type Node struct {
-	Val int
+	Val      int
 	Children []*Node
 }
 
 //根据一个int切片,创建一个二叉树
-func CreateTree(Nums []int) (root *TreeNode) {
-	root = new(TreeNode)
+func CreateTree(Nums []int) *TreeNode {
+	if len(Nums) == 0 {
+		return nil
+	}
 
-	if len(Nums) > 1 {
-		treeNodes := make([]*TreeNode,0)
-		root.Val = Nums[0]
-		index := 0
+	root := &TreeNode{
+		Val: Nums[0],
+	}
+	treeNodes := make([]*TreeNode, 0)
+	treeNodes = append(treeNodes, root)
 
-		var f func(node *TreeNode)
+	index := 0
+	for len(treeNodes) != 0 {
+		node := treeNodes[0]
+		treeNodes = treeNodes[1:]
 
-		f = func(node *TreeNode) {
-			if index++;index<len(Nums) && Nums[index] != -1 {
-				node.Left = &TreeNode{Val: Nums[index]}
-				treeNodes = append(treeNodes,node.Left)
-			}
-
-			if index++;index<len(Nums) && Nums[index] != -1 {
-				node.Right = &TreeNode{Val: Nums[index]}
-				treeNodes = append(treeNodes,node.Right)
-			}
-
-			if len(treeNodes) > 0 {
-				t := treeNodes[0]
-				treeNodes = treeNodes[1:]
-				f(t)
-			}
+		index++
+		if index < len(Nums) && Nums[index] != -1 {
+			left := &TreeNode{Val: Nums[index]}
+			node.Left = left
+			treeNodes = append(treeNodes, left)
 		}
-
-		f(root)
+		index++
+		if index < len(Nums) && Nums[index] != -1 {
+			right := &TreeNode{Val: Nums[index]}
+			node.Right = right
+			treeNodes = append(treeNodes, right)
+		}
 	}
-
-	if len(Nums) > 0 {
-		root.Val = Nums[0]
-	}
-
-	return
+	return root
 }
 
 //前序遍历树
 func frontPrintTree(root *TreeNode) {
-	if root != nil {
-		println(root.Val)
-		if root.Left != nil {
-			frontPrintTree(root.Left)
-		}
-		if root.Right != nil {
-			frontPrintTree(root.Right)
-		}
+	if root == nil {
+		return
 	}
+	println(root.Val)
+	frontPrintTree(root.Left)
+	frontPrintTree(root.Right)
 }
