@@ -8,8 +8,8 @@ import (
 	"time"
 )
 
-//34. 在排序数组中查找元素的第一个和最后一个位置
-//https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/submissions/
+// 34. 在排序数组中查找元素的第一个和最后一个位置
+// https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/submissions/
 func searchRange(nums []int, target int) []int {
 	nl := len(nums)
 	if nl == 0 {
@@ -64,8 +64,8 @@ func searchRange(nums []int, target int) []int {
 	return []int{leftB, rightB}
 }
 
-//105. 从前序与中序遍历序列构造二叉树
-//https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
+// 105. 从前序与中序遍历序列构造二叉树
+// https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
 func buildTree(preorder []int, inorder []int) *TreeNode {
 
 	preL := len(preorder)
@@ -90,8 +90,8 @@ func buildTree(preorder []int, inorder []int) *TreeNode {
 	return root
 }
 
-//698. 划分为k个相等的子集
-//https://leetcode.cn/problems/partition-to-k-equal-sum-subsets/
+// 698. 划分为k个相等的子集
+// https://leetcode.cn/problems/partition-to-k-equal-sum-subsets/
 func canPartitionKSubsets(nums []int, k int) bool {
 	used := 0
 	hashMap := make(map[int]bool)
@@ -140,8 +140,8 @@ func canPartitionKSubsets(nums []int, k int) bool {
 	return backtrack(0, 0, k)
 }
 
-//567. 字符串的排列
-//https://leetcode.cn/problems/permutation-in-string/
+// 567. 字符串的排列
+// https://leetcode.cn/problems/permutation-in-string/
 func checkInclusion(s1 string, s2 string) bool {
 	valid := 0
 	left := 0
@@ -180,8 +180,8 @@ func checkInclusion(s1 string, s2 string) bool {
 	return false
 }
 
-//40. 组合总和 II
-//https://leetcode.cn/problems/combination-sum-ii/
+// 40. 组合总和 II
+// https://leetcode.cn/problems/combination-sum-ii/
 func combinationSum2(candidates []int, target int) [][]int {
 	var result [][]int
 	cl := len(candidates)
@@ -222,47 +222,67 @@ func combinationSum2(candidates []int, target int) [][]int {
 	return result
 }
 
-//322. 零钱兑换
-//https://leetcode.cn/problems/coin-change/
+// 322. 零钱兑换
+// https://leetcode.cn/problems/coin-change/
 func coinChange(coins []int, amount int) int {
-	dpTable := make(map[int]int)
-	for i := 0; i <= amount; i++ {
-		dpTable[i] = -666
+	//dpTable := make(map[int]int)
+	//for i := 0; i <= amount; i++ {
+	//	dpTable[i] = -666
+	//}
+	//var dp func(coins []int, amount int) int
+	//dp = func(coins []int, amount int) int {
+	//	if amount == 0 {
+	//		return 0
+	//	}
+	//	if amount < 0 {
+	//		return -1
+	//	}
+	//	if dpTable[amount] != -666 {
+	//		return dpTable[amount]
+	//	}
+	//	result := 1<<31 - 1
+	//	for _, coin := range coins {
+	//		sub := dp(coins, amount-coin)
+	//		if sub == -1 {
+	//			continue
+	//		}
+	//		if result > sub {
+	//			result = sub
+	//		}
+	//	}
+	//
+	//	if result == 1<<31-1 {
+	//		dpTable[amount] = -1
+	//	} else {
+	//		dpTable[amount] = result + 1
+	//	}
+	//	return dpTable[amount]
+	//}
+	//return dp(coins, amount)
+	// 2023 新写,从底向上
+	if amount < 0 {
+		return -1
 	}
-	var dp func(coins []int, amount int) int
-	dp = func(coins []int, amount int) int {
-		if amount == 0 {
-			return 0
-		}
-		if amount < 0 {
-			return -1
-		}
-		if dpTable[amount] != -666 {
-			return dpTable[amount]
-		}
-		result := 1<<31 - 1
+	dp := make([]int, amount+1)
+	for i := 1; i <= amount; i++ {
+		dp[i] = amount + 1
+	}
+	for i := 0; i <= amount; i++ {
 		for _, coin := range coins {
-			sub := dp(coins, amount-coin)
-			if sub == -1 {
+			if i < coin {
 				continue
 			}
-			if result > sub {
-				result = sub
-			}
+			dp[i] = min(dp[i], dp[i-coin]+1)
 		}
-
-		if result == 1<<31-1 {
-			dpTable[amount] = -1
-		} else {
-			dpTable[amount] = result + 1
-		}
-		return dpTable[amount]
 	}
-	return dp(coins, amount)
+	if dp[amount] == amount+1 {
+		return -1
+	}
+	return dp[amount]
 }
 
-//104. 二叉树的最大深度
-//https://leetcode.cn/problems/maximum-depth-of-binary-tree/
+// 104. 二叉树的最大深度
+// https://leetcode.cn/problems/maximum-depth-of-binary-tree/
 func maxDepth(root *TreeNode) int {
 	if root == nil {
 		return 0
@@ -275,8 +295,8 @@ func maxDepth(root *TreeNode) int {
 	return rightMax + 1
 }
 
-//283. 移动零
-//https://leetcode.cn/problems/move-zeroes/
+// 283. 移动零
+// https://leetcode.cn/problems/move-zeroes/
 func moveZeroes(nums []int) {
 	slow := 0
 	fast := 0
@@ -294,8 +314,8 @@ func moveZeroes(nums []int) {
 	}
 }
 
-//86. 分隔链表
-//https://leetcode.cn/problems/partition-list/
+// 86. 分隔链表
+// https://leetcode.cn/problems/partition-list/
 func partition(head *ListNode, x int) *ListNode {
 	dummy1 := new(ListNode)
 	dummy2 := new(ListNode)
@@ -344,8 +364,8 @@ func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
 	return dummy.Next
 }
 
-//88. 合并两个有序数组
-//https://leetcode-cn.com/problems/merge-sorted-array/submissions/
+// 88. 合并两个有序数组
+// https://leetcode-cn.com/problems/merge-sorted-array/submissions/
 func merge(nums1 []int, m int, nums2 []int, n int) {
 	for p := m + n - 1; m > 0 && n > 0; p-- {
 		if nums2[n-1] >= nums1[m-1] {
@@ -378,8 +398,8 @@ func countBits(num int) []int {
 	return res
 }
 
-//剑指 Offer 03. 数组中重复的数字
-//https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/solution/goduo-jie-fa-lets-go-by-allentime/
+// 剑指 Offer 03. 数组中重复的数字
+// https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/solution/goduo-jie-fa-lets-go-by-allentime/
 func findRepeatNumber(nums []int) int {
 	for i := 0; i < len(nums); i++ {
 		for i != nums[i] {
@@ -394,8 +414,8 @@ func findRepeatNumber(nums []int) int {
 	return -1
 }
 
-//剑指 Offer 10- II. 青蛙跳台阶问题
-//https://leetcode-cn.com/problems/qing-wa-tiao-tai-jie-wen-ti-lcof/submissions/
+// 剑指 Offer 10- II. 青蛙跳台阶问题
+// https://leetcode-cn.com/problems/qing-wa-tiao-tai-jie-wen-ti-lcof/submissions/
 func numWays(n int) int {
 	if n == 0 {
 		return 1
@@ -412,8 +432,8 @@ func numWays(n int) int {
 	return a
 }
 
-//830. 较大分组的位置
-//https://leetcode-cn.com/problems/positions-of-large-groups/
+// 830. 较大分组的位置
+// https://leetcode-cn.com/problems/positions-of-large-groups/
 func largeGroupPositions(s string) [][]int {
 	var preChar uint8
 	num := 0
@@ -446,8 +466,8 @@ func largeGroupPositions(s string) [][]int {
 	return res
 }
 
-//509. 斐波那契数
-//https://leetcode-cn.com/problems/fibonacci-number/
+// 509. 斐波那契数
+// https://leetcode-cn.com/problems/fibonacci-number/
 func fib(n int) int {
 	if n == 0 {
 		return 0
@@ -464,8 +484,8 @@ func fib(n int) int {
 	return a
 }
 
-//1046. 最后一块石头的重量
-//https://leetcode-cn.com/problems/last-stone-weight/
+// 1046. 最后一块石头的重量
+// https://leetcode-cn.com/problems/last-stone-weight/
 func lastStoneWeight(stones []int) int {
 	sort.Sort(sort.Reverse(sort.IntSlice(stones)))
 
@@ -479,8 +499,8 @@ func lastStoneWeight(stones []int) int {
 	return stones[0]
 }
 
-//135. 分发糖果 (使用决策树)
-//https://leetcode-cn.com/problems/candy/
+// 135. 分发糖果 (使用决策树)
+// https://leetcode-cn.com/problems/candy/
 func candy(ratings []int) int {
 	lr := len(ratings)
 
@@ -521,8 +541,8 @@ func candy(ratings []int) int {
 	return sum
 }
 
-//387. 字符串中的第一个唯一字符
-//https://leetcode-cn.com/problems/first-unique-character-in-a-string/
+// 387. 字符串中的第一个唯一字符
+// https://leetcode-cn.com/problems/first-unique-character-in-a-string/
 func firstUniqChar(s string) int {
 	a := [26]int{}
 	for i := 0; i < len(s); i++ {
@@ -540,8 +560,8 @@ func firstUniqChar(s string) int {
 	return -1
 }
 
-//746. 使用最小花费爬楼梯
-//https://leetcode-cn.com/problems/min-cost-climbing-stairs/
+// 746. 使用最小花费爬楼梯
+// https://leetcode-cn.com/problems/min-cost-climbing-stairs/
 func minCostClimbingStairs(cost []int) int {
 	lc := len(cost)
 	dbtable := make([]int, lc+1)
@@ -553,8 +573,8 @@ func minCostClimbingStairs(cost []int) int {
 	return dbtable[lc]
 }
 
-//416. 分割等和子集
-//https://leetcode-cn.com/problems/partition-equal-subset-sum/
+// 416. 分割等和子集
+// https://leetcode-cn.com/problems/partition-equal-subset-sum/
 func canPartition(nums []int) bool {
 	sum, ln := 0, len(nums)
 	for i := 0; i < ln; i++ {
@@ -580,8 +600,8 @@ func canPartition(nums []int) bool {
 	return db1[sum]
 }
 
-//372. 超级次方
-//https://leetcode-cn.com/problems/super-pow/
+// 372. 超级次方
+// https://leetcode-cn.com/problems/super-pow/
 func superPow(a int, b []int) int {
 	base := 1337
 	var sPow func(a int, b []int) int
@@ -625,8 +645,8 @@ func superPow(a int, b []int) int {
 	return sPow(a, b)
 }
 
-//172. 阶乘后的零
-//https://leetcode-cn.com/problems/factorial-trailing-zeroes/
+// 172. 阶乘后的零
+// https://leetcode-cn.com/problems/factorial-trailing-zeroes/
 func trailingZeroes(n int) int {
 	d, res := 5, 0
 
@@ -638,8 +658,8 @@ func trailingZeroes(n int) int {
 	return res
 }
 
-//231. 2的幂
-//https://leetcode-cn.com/problems/power-of-two/
+// 231. 2的幂
+// https://leetcode-cn.com/problems/power-of-two/
 func isPowerOfTwo(n int) bool {
 	if n > 0 && n&(n-1) == 0 {
 		return true
@@ -647,8 +667,8 @@ func isPowerOfTwo(n int) bool {
 	return false
 }
 
-//241. 为运算表达式设计优先级
-//https://leetcode-cn.com/problems/different-ways-to-add-parentheses/
+// 241. 为运算表达式设计优先级
+// https://leetcode-cn.com/problems/different-ways-to-add-parentheses/
 func diffWaysToCompute(input string) []int {
 	li := len(input)
 
@@ -692,8 +712,8 @@ func toInt(s string) int {
 	return sum
 }
 
-//判断子序列
-//https://leetcode-cn.com/problems/is-subsequence/
+// 判断子序列
+// https://leetcode-cn.com/problems/is-subsequence/
 func isSubsequence(s string, t string) bool {
 	ls, lt := len(s), len(t)
 	m := make(map[uint8][]int)
@@ -719,8 +739,8 @@ func isSubsequence(s string, t string) bool {
 	return true
 }
 
-//398. 随机数索引
-//https://leetcode-cn.com/problems/random-pick-index/
+// 398. 随机数索引
+// https://leetcode-cn.com/problems/random-pick-index/
 type Solution struct {
 	nums []int
 	r    *rand.Rand
@@ -752,8 +772,8 @@ func (this *Solution) Pick(target int) int {
 	return res
 }
 
-//448. 找到所有数组中消失的数字
-//https://leetcode-cn.com/problems/find-all-numbers-disappeared-in-an-array/
+// 448. 找到所有数组中消失的数字
+// https://leetcode-cn.com/problems/find-all-numbers-disappeared-in-an-array/
 func findDisappearedNumbers(nums []int) []int {
 	var res []int
 	ln := len(nums)
@@ -774,8 +794,8 @@ func findDisappearedNumbers(nums []int) []int {
 	return res
 }
 
-//234. 回文链表
-//https://leetcode-cn.com/problems/palindrome-linked-list/
+// 234. 回文链表
+// https://leetcode-cn.com/problems/palindrome-linked-list/
 func isPalindrome(head *ListNode) bool {
 	slow, fast := head, head
 
@@ -800,8 +820,8 @@ func isPalindrome(head *ListNode) bool {
 	return res
 }
 
-//645. 错误的集合
-//https://leetcode-cn.com/problems/set-mismatch/
+// 645. 错误的集合
+// https://leetcode-cn.com/problems/set-mismatch/
 func findErrorNums(nums []int) []int {
 	dup, miss := 0, 0
 	ln := len(nums)
@@ -824,8 +844,8 @@ func findErrorNums(nums []int) []int {
 	return []int{dup, miss}
 }
 
-//268. 丢失的数字
-//https://leetcode-cn.com/problems/missing-number/
+// 268. 丢失的数字
+// https://leetcode-cn.com/problems/missing-number/
 func missingNumber(nums []int) int {
 	ln := len(nums)
 	res := ln
@@ -837,8 +857,8 @@ func missingNumber(nums []int) int {
 	return res
 }
 
-//20. 有效的括号
-//https://leetcode-cn.com/problems/valid-parentheses/
+// 20. 有效的括号
+// https://leetcode-cn.com/problems/valid-parentheses/
 func isValid(s string) bool {
 	var stack []uint8
 
@@ -877,8 +897,8 @@ func isValid(s string) bool {
 	return len(stack) == 0
 }
 
-//5. 最长回文子串
-//https://leetcode-cn.com/problems/longest-palindromic-substring/
+// 5. 最长回文子串
+// https://leetcode-cn.com/problems/longest-palindromic-substring/
 func longestPalindrome(s string) string {
 	res := ""
 	ls := len(s)
@@ -908,8 +928,8 @@ func longestPalindrome(s string) string {
 	return res
 }
 
-//26. 删除排序数组中的重复项
-//https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/
+// 26. 删除排序数组中的重复项
+// https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/
 func removeDuplicates(nums []int) int {
 	ln := len(nums)
 	if ln == 0 {
@@ -927,8 +947,8 @@ func removeDuplicates(nums []int) int {
 	return i + 1
 }
 
-//1011. 在 D 天内送达包裹的能力
-//https://leetcode-cn.com/problems/capacity-to-ship-packages-within-d-days/
+// 1011. 在 D 天内送达包裹的能力
+// https://leetcode-cn.com/problems/capacity-to-ship-packages-within-d-days/
 func shipWithinDays(weights []int, D int) int {
 	maxSpeed, lw := 0, len(weights)
 	maxWeight := 0
@@ -969,8 +989,8 @@ func shipWithinDays(weights []int, D int) int {
 	return left
 }
 
-//875. 爱吃香蕉的珂珂
-//https://leetcode-cn.com/problems/koko-eating-bananas/
+// 875. 爱吃香蕉的珂珂
+// https://leetcode-cn.com/problems/koko-eating-bananas/
 func minEatingSpeed(piles []int, H int) int {
 	maxSpeed, lp := 0, len(piles)
 
@@ -1004,8 +1024,8 @@ func minEatingSpeed(piles []int, H int) int {
 	return left
 }
 
-//计数质数
-//https://leetcode-cn.com/problems/count-primes/
+// 计数质数
+// https://leetcode-cn.com/problems/count-primes/
 func countPrimes(n int) int {
 	isNotPrime := make([]bool, n+1)
 	count := 0
@@ -1123,8 +1143,8 @@ func (this *LRUCache) Put(key int, value int) {
 	this.Len++
 }
 
-//求根到叶子节点数字之和
-//https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/
+// 求根到叶子节点数字之和
+// https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/
 func sumNumbers(root *TreeNode) int {
 	sum := 0
 	var path func(r *TreeNode, path int)
@@ -1152,8 +1172,8 @@ func sumNumbers(root *TreeNode) int {
 	return sum
 }
 
-//接雨水
-//https://leetcode-cn.com/problems/trapping-rain-water/
+// 接雨水
+// https://leetcode-cn.com/problems/trapping-rain-water/
 func trap(height []int) int {
 	left, right := 0, len(height)-1
 	lMax, rMax := 0, 0
@@ -1180,8 +1200,8 @@ func trap(height []int) int {
 	return res
 }
 
-//颜色填充
-//https://leetcode-cn.com/problems/color-fill-lcci/
+// 颜色填充
+// https://leetcode-cn.com/problems/color-fill-lcci/
 func floodFill(image [][]int, sr int, sc int, newColor int) [][]int {
 	var fill func(sr int, sc int, oldColor int)
 
@@ -1220,8 +1240,8 @@ func inArea(image [][]int, sr int, sc int) bool {
 	return sr >= 0 && sr <= len(image)-1 && sc >= 0 && sc <= len(image[sr])-1
 }
 
-//字符串相乘
-//https://leetcode-cn.com/problems/multiply-strings/
+// 字符串相乘
+// https://leetcode-cn.com/problems/multiply-strings/
 func multiply(num1 string, num2 string) string {
 	l1, l2, l3 := len(num1), len(num2), len(num1)+len(num2)
 	res := make([]uint8, l3)
@@ -1251,8 +1271,8 @@ func multiply(num1 string, num2 string) string {
 	}
 }
 
-//和为K的子数组
-//https://leetcode-cn.com/problems/subarray-sum-equals-k/
+// 和为K的子数组
+// https://leetcode-cn.com/problems/subarray-sum-equals-k/
 func subarraySum(nums []int, k int) int {
 	ans, sumI := 0, 0
 	preSum := map[int]int{}
@@ -1269,8 +1289,8 @@ func subarraySum(nums []int, k int) int {
 	return ans
 }
 
-//计算器
-//https://leetcode-cn.com/problems/calculator-lcci/
+// 计算器
+// https://leetcode-cn.com/problems/calculator-lcci/
 func calculate(s string) int {
 
 	var cal func() int
@@ -1339,8 +1359,8 @@ func calculate(s string) int {
 	return cal()
 }
 
-//位1的个数
-//https://leetcode-cn.com/problems/number-of-1-bits/
+// 位1的个数
+// https://leetcode-cn.com/problems/number-of-1-bits/
 func hammingWeight(num uint32) int {
 	res := 0
 
@@ -1352,8 +1372,8 @@ func hammingWeight(num uint32) int {
 	return res
 }
 
-//最长不含重复字符的子字符串
-//https://leetcode-cn.com/problems/zui-chang-bu-han-zhong-fu-zi-fu-de-zi-zi-fu-chuan-lcof/
+// 最长不含重复字符的子字符串
+// https://leetcode-cn.com/problems/zui-chang-bu-han-zhong-fu-zi-fu-de-zi-zi-fu-chuan-lcof/
 func lengthOfLongestSubstring(s string) int {
 	window := make(map[uint8]int)
 	left, right, res := 0, 0, 0
@@ -1415,8 +1435,8 @@ func findAnagrams(s2 string, s1 string) []int {
 	return res
 }
 
-//最小覆盖子串
-//https://leetcode-cn.com/problems/minimum-window-substring/
+// 最小覆盖子串
+// https://leetcode-cn.com/problems/minimum-window-substring/
 func minWindow(s string, t string) string {
 	lt, ls := len(t), len(s)
 	left, right, rleft, rright := 0, 0, 0, 1<<32
@@ -1460,8 +1480,8 @@ func minWindow(s string, t string) string {
 	return ""
 }
 
-//三数之和
-//https://leetcode-cn.com/problems/3sum/
+// 三数之和
+// https://leetcode-cn.com/problems/3sum/
 func threeSum(nums []int) [][]int {
 	var res [][]int
 
@@ -1511,8 +1531,8 @@ func threeSum(nums []int) [][]int {
 	return res
 }
 
-//三数之和
-//https://leetcode-cn.com/problems/3sum/
+// 三数之和
+// https://leetcode-cn.com/problems/3sum/
 func threeSum1(nums []int) [][]int {
 	var res [][]int
 
@@ -1540,7 +1560,7 @@ func threeSum1(nums []int) [][]int {
 	return res
 }
 
-//输入有序数组,求和等于target的不重复值
+// 输入有序数组,求和等于target的不重复值
 func twoNum(numbers []int, target int) [][]int {
 	l, r := 0, len(numbers)-1
 	var res [][]int
@@ -1592,8 +1612,8 @@ func twoSum2(numbers []int, target int) []int {
 	return []int{}
 }
 
-//两数之和
-//https://leetcode-cn.com/problems/two-sum/
+// 两数之和
+// https://leetcode-cn.com/problems/two-sum/
 func twoSum1(nums []int, target int) []int {
 	nl := len(nums)
 	if nl < 2 {
@@ -1614,8 +1634,8 @@ func twoSum1(nums []int, target int) []int {
 	return []int{}
 }
 
-//组合
-//https://leetcode-cn.com/problems/combinations/
+// 组合
+// https://leetcode-cn.com/problems/combinations/
 func combine(n int, k int) [][]int {
 	var res [][]int
 	nl := n
@@ -1644,8 +1664,8 @@ func combine(n int, k int) [][]int {
 	return res
 }
 
-//子集 II
-//https://leetcode-cn.com/problems/subsets-ii/
+// 子集 II
+// https://leetcode-cn.com/problems/subsets-ii/
 func subsetsWithDup(nums []int) [][]int {
 	res := make([][]int, 0)
 	nl := len(nums)
@@ -1677,8 +1697,8 @@ func subsetsWithDup(nums []int) [][]int {
 	return res
 }
 
-//子集
-//https://leetcode-cn.com/problems/subsets/
+// 子集
+// https://leetcode-cn.com/problems/subsets/
 func subsets(nums []int) [][]int {
 	res := make([][]int, 0)
 	nl := len(nums)
@@ -1700,8 +1720,8 @@ func subsets(nums []int) [][]int {
 	return res
 }
 
-//N皇后 II
-//https://leetcode-cn.com/problems/n-queens-ii/
+// N皇后 II
+// https://leetcode-cn.com/problems/n-queens-ii/
 func totalNQueens2(n int) int {
 	nl := n
 	var res [][]int
@@ -1761,8 +1781,8 @@ func totalNQueens2(n int) int {
 	return len(res)
 }
 
-//N 皇后
-//https://leetcode-cn.com/problems/n-queens/
+// N 皇后
+// https://leetcode-cn.com/problems/n-queens/
 func solveNQueens(n int) [][]string {
 	nl := n
 	var res [][]string
@@ -1825,7 +1845,7 @@ func solveNQueens(n int) [][]string {
 }
 
 // 全排列 II
-//https://leetcode-cn.com/problems/permutations-ii/
+// https://leetcode-cn.com/problems/permutations-ii/
 func permuteUnique(nums []int) [][]int {
 	var res [][]int
 	nl := len(nums)
@@ -1866,8 +1886,8 @@ func permuteUnique(nums []int) [][]int {
 	return res
 }
 
-//全排列
-//https://leetcode-cn.com/problems/permutations/
+// 全排列
+// https://leetcode-cn.com/problems/permutations/
 func permute(nums []int) [][]int {
 	var res [][]int
 	nl := len(nums)
@@ -1904,8 +1924,8 @@ func permute(nums []int) [][]int {
 	return res
 }
 
-//25. K 个一组翻转链表
-//https://leetcode-cn.com/problems/reverse-nodes-in-k-group/
+// 25. K 个一组翻转链表
+// https://leetcode-cn.com/problems/reverse-nodes-in-k-group/
 func reverseKGroup(head *ListNode, k int) *ListNode {
 	if head == nil {
 		return nil
@@ -1944,8 +1964,8 @@ func rList(head *ListNode, b *ListNode) *ListNode {
 	return pre
 }
 
-//反转链表 II
-//https://leetcode-cn.com/problems/reverse-linked-list-ii/
+// 反转链表 II
+// https://leetcode-cn.com/problems/reverse-linked-list-ii/
 func reverseBetween(head *ListNode, m int, n int) *ListNode {
 	if head == nil {
 		return head
@@ -1974,8 +1994,8 @@ func reverseBetween(head *ListNode, m int, n int) *ListNode {
 	return head
 }
 
-//反转链表
-//https://leetcode-cn.com/problems/reverse-linked-list/
+// 反转链表
+// https://leetcode-cn.com/problems/reverse-linked-list/
 func reverseList(head *ListNode) *ListNode {
 	if head == nil {
 		return head
@@ -2016,8 +2036,8 @@ func reverseList2(head *ListNode) *ListNode {
 	return pre
 }
 
-//滑动窗口最大值
-//https://leetcode-cn.com/problems/sliding-window-maximum/
+// 滑动窗口最大值
+// https://leetcode-cn.com/problems/sliding-window-maximum/
 func maxSlidingWindow(nums []int, k int) []int {
 	dq := &DQueue{}
 	res := make([]int, 0)
@@ -2035,8 +2055,8 @@ func maxSlidingWindow(nums []int, k int) []int {
 	return res
 }
 
-//链表中的下一个更大节点
-//https://leetcode-cn.com/problems/next-greater-node-in-linked-list/
+// 链表中的下一个更大节点
+// https://leetcode-cn.com/problems/next-greater-node-in-linked-list/
 func nextLargerNodes(head *ListNode) []int {
 	ans := make([]int, 0)
 	stack := make([]int, 0)
@@ -2073,8 +2093,8 @@ func nextLargerNodes(head *ListNode) []int {
 	return ans
 }
 
-//最大二叉树 II
-//https://leetcode-cn.com/problems/maximum-binary-tree-ii/
+// 最大二叉树 II
+// https://leetcode-cn.com/problems/maximum-binary-tree-ii/
 func insertIntoMaxTree(root *TreeNode, val int) *TreeNode {
 	if root == nil {
 		root = &TreeNode{Val: val}
@@ -2099,8 +2119,8 @@ func insertIntoMaxTree(root *TreeNode, val int) *TreeNode {
 	}
 }
 
-//最大二叉树
-//https://leetcode-cn.com/problems/maximum-binary-tree/
+// 最大二叉树
+// https://leetcode-cn.com/problems/maximum-binary-tree/
 func constructMaximumBinaryTree(nums []int) *TreeNode {
 	root := new(TreeNode)
 	nl := len(nums)
@@ -2116,8 +2136,8 @@ func constructMaximumBinaryTree(nums []int) *TreeNode {
 	return root
 }
 
-//正则表达式匹配
-//https://leetcode-cn.com/problems/regular-expression-matching/
+// 正则表达式匹配
+// https://leetcode-cn.com/problems/regular-expression-matching/
 func isMatch2(s string, p string) bool {
 	pl, sl := len(p), len(s)
 	if pl == 0 {
@@ -2189,8 +2209,8 @@ func isMatch(s string, p string) bool {
 	return isM(0, 0)
 }
 
-//打家劫舍 III
-//https://leetcode-cn.com/problems/house-robber-iii/
+// 打家劫舍 III
+// https://leetcode-cn.com/problems/house-robber-iii/
 func rob3(root *TreeNode) int {
 	var res []int
 	var r func(node *TreeNode) []int
@@ -2209,8 +2229,8 @@ func rob3(root *TreeNode) int {
 	return max(res[0], res[1])
 }
 
-//打家劫舍 II
-//https://leetcode-cn.com/problems/house-robber-ii/
+// 打家劫舍 II
+// https://leetcode-cn.com/problems/house-robber-ii/
 func rob2(nums []int) int {
 	nl := len(nums)
 
@@ -2235,8 +2255,8 @@ func rob2(nums []int) int {
 	return max(r(0, nl-2), r(1, nl-1))
 }
 
-//打家劫舍
-//https://leetcode-cn.com/problems/house-robber/
+// 打家劫舍
+// https://leetcode-cn.com/problems/house-robber/
 func rob1(nums []int) int {
 	nl := len(nums)
 
@@ -2251,8 +2271,8 @@ func rob1(nums []int) int {
 	return pre1
 }
 
-//买买卖股票的最佳时机 IV
-//https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iv/
+// 买买卖股票的最佳时机 IV
+// https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iv/
 func maxProfit4(k int, prices []int) int {
 	maxK := k
 	pl := len(prices)
@@ -2288,8 +2308,8 @@ func maxProfit4(k int, prices []int) int {
 	return dp[pl-1][maxK][0]
 }
 
-//买卖股票的最佳时机 III
-//https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iii/
+// 买卖股票的最佳时机 III
+// https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iii/
 func maxProfit3(prices []int) int {
 	maxK := 2
 	pl := len(prices)
@@ -2315,8 +2335,8 @@ func maxProfit3(prices []int) int {
 	return dp[pl-1][maxK][0]
 }
 
-//买卖股票的最佳时机 II
-//https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/
+// 买卖股票的最佳时机 II
+// https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/
 func maxProfit2(prices []int) int {
 	pre_has := math.MinInt32
 	pre_no_has := 0
@@ -2330,8 +2350,8 @@ func maxProfit2(prices []int) int {
 	return pre_no_has
 }
 
-//买卖股票的最佳时机
-//https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/
+// 买卖股票的最佳时机
+// https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/
 func maxProfit1(prices []int) int {
 	pre_has := math.MinInt32
 	pre_no_has := 0
@@ -2345,7 +2365,7 @@ func maxProfit1(prices []int) int {
 }
 
 // 删除被覆盖区间
-//https://leetcode-cn.com/problems/remove-covered-intervals/
+// https://leetcode-cn.com/problems/remove-covered-intervals/
 func removeCoveredIntervals(intervals [][]int) int {
 
 	sort.Slice(intervals, func(i, j int) bool {
@@ -2381,8 +2401,8 @@ func removeCoveredIntervals(intervals [][]int) int {
 	return li - res
 }
 
-//区间列表的交集
-//https://leetcode-cn.com/problems/interval-list-intersections/
+// 区间列表的交集
+// https://leetcode-cn.com/problems/interval-list-intersections/
 func intervalIntersection(A [][]int, B [][]int) [][]int {
 	i, j, la, lb := 0, 0, len(A), len(B)
 	res := [][]int{}
@@ -2404,8 +2424,8 @@ func intervalIntersection(A [][]int, B [][]int) [][]int {
 	return res
 }
 
-//合并区间
-//https://leetcode-cn.com/problems/merge-intervals/
+// 合并区间
+// https://leetcode-cn.com/problems/merge-intervals/
 func merge(intervals [][]int) [][]int {
 	var res [][]int
 
@@ -2424,8 +2444,8 @@ func merge(intervals [][]int) [][]int {
 	return res
 }
 
-//无重叠区间
-//https://leetcode-cn.com/problems/non-overlapping-intervals/
+// 无重叠区间
+// https://leetcode-cn.com/problems/non-overlapping-intervals/
 func eraseOverlapIntervals(intervals [][]int) int {
 	li := len(intervals)
 	res := 0
