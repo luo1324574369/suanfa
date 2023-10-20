@@ -8,6 +8,47 @@ import (
 	"time"
 )
 
+// 1071. 字符串的最大公因子
+// https://leetcode.cn/problems/greatest-common-divisor-of-strings/
+func gcdOfStrings(str1 string, str2 string) string {
+	shortStr := str1
+	if len(str2) > len(str1) {
+		shortStr = str1
+	} else {
+		shortStr = str2
+	}
+
+	for i := len(shortStr); i >= 1; i-- {
+		tempStr := str1[0:i]
+		isSubStr1 := isSubStr(tempStr, str1)
+		isSubStr2 := isSubStr(tempStr, str2)
+		if isSubStr1 && isSubStr2 {
+			return tempStr
+		}
+	}
+	return ""
+}
+
+func isSubStr(str1 string, str2 string) bool {
+	str1Len := len(str1)
+	str2Len := len(str2)
+	if str2Len%str1Len != 0 || str2Len < str1Len {
+		return false
+	}
+	i := 0
+	for {
+		index := str1Len * i
+		if index+str1Len > str2Len {
+			break
+		}
+		if str1 != str2[index:index+str1Len] {
+			return false
+		}
+		i++
+	}
+	return true
+}
+
 // 34. 在排序数组中查找元素的第一个和最后一个位置
 // https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/submissions/
 func searchRange(nums []int, target int) []int {
