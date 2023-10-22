@@ -8,6 +8,46 @@ import (
 	"time"
 )
 
+// 72. 编辑距离
+// https://leetcode.cn/problems/edit-distance/description/
+func minDistance(word1 string, word2 string) int {
+	word1Len := len(word1)
+	word2Len := len(word2)
+
+	dp := make(map[int][]int, word1Len+1)
+	for i := 0; i <= word1Len; i++ {
+		dp[i] = make([]int, word2Len+1)
+		dp[i][0] = i
+	}
+
+	for i := 0; i <= word2Len; i++ {
+		dp[0][i] = i
+	}
+
+	for i := 1; i <= word1Len; i++ {
+		for j := 1; j <= word2Len; j++ {
+			if word1[i-1] == word2[j-1] {
+				dp[i][j] = dp[i-1][j-1]
+			} else {
+				dp[i][j] = min3(dp[i-1][j-1]+1, dp[i-1][j]+1, dp[i][j-1]+1)
+			}
+		}
+	}
+
+	return dp[word1Len][word2Len]
+}
+
+func min3(a, b, c int) int {
+	return min2(a, min2(b, c))
+}
+
+func min2(a, b int) int {
+	if a > b {
+		return b
+	}
+	return a
+}
+
 // 139. 单词拆分
 // https://leetcode.cn/problems/word-break/submissions/
 func wordBreak(s string, wordDict []string) bool {
