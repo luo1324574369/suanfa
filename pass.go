@@ -8,6 +8,28 @@ import (
 	"time"
 )
 
+// 518. 零钱兑换 II
+// https://leetcode.cn/problems/coin-change-ii/submissions/
+func change(amount int, coins []int) int {
+	coinsLen := len(coins)
+	dp := make(map[int][]int, coinsLen)
+	for i := 0; i <= coinsLen; i++ {
+		dp[i] = make([]int, amount+1)
+		dp[i][0] = 1
+	}
+
+	for i := 1; i <= coinsLen; i++ {
+		for j := 1; j <= amount; j++ {
+			if j-coins[i-1] < 0 {
+				dp[i][j] = dp[i-1][j]
+			} else {
+				dp[i][j] = dp[i-1][j] + dp[i][j-coins[i-1]]
+			}
+		}
+	}
+	return dp[coinsLen][amount]
+}
+
 // 72. 编辑距离
 // https://leetcode.cn/problems/edit-distance/description/
 func minDistance(word1 string, word2 string) int {
