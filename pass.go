@@ -8,6 +8,41 @@ import (
 	"time"
 )
 
+// 139. 单词拆分
+// https://leetcode.cn/problems/word-break/submissions/
+func wordBreak(s string, wordDict []string) bool {
+	memo := make(map[int]bool)
+	return dp(s, wordDict, 0, memo)
+}
+
+func dp(target string, wordDict []string, index int, memo map[int]bool) bool {
+	targetLen := len(target)
+	if index == targetLen {
+		return true
+	}
+	if index >= targetLen {
+		return false
+	}
+	for _, w := range wordDict {
+		if index+len(w) > targetLen {
+			continue
+		}
+		if target[index:index+len(w)] != w {
+			continue
+		}
+		if _, ok := memo[index]; ok {
+			return memo[index]
+		}
+		subDp := dp(target, wordDict, index+len(w), memo)
+		if subDp {
+			memo[index] = true
+			return true
+		}
+	}
+	memo[index] = false
+	return false
+}
+
 // 160. 相交链表
 // https://leetcode.cn/problems/intersection-of-two-linked-lists/
 func getIntersectionNode(headA, headB *ListNode) *ListNode {
