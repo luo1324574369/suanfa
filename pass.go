@@ -4,9 +4,34 @@ import (
 	"math"
 	"math/rand"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 )
+
+// 494. 目标和
+// https://leetcode.cn/problems/target-sum/submissions/
+func findTargetSumWays(nums []int, target int) int {
+	memo := make(map[string]int)
+	return dpFindTargetSumWays(nums, target, 0, 0, memo)
+}
+
+func dpFindTargetSumWays(nums []int, target int, index int, sum int, memo map[string]int) int {
+	if index == len(nums) {
+		if sum == target {
+			return 1
+		} else {
+			return 0
+		}
+	}
+	key := strconv.Itoa(index) + "," + strconv.Itoa(target-sum)
+	if _, ok := memo[key]; ok {
+		return memo[key]
+	}
+	dpResult := dpFindTargetSumWays(nums, target, index+1, sum+nums[index], memo) + dpFindTargetSumWays(nums, target, index+1, sum-nums[index], memo)
+	memo[key] = dpResult
+	return dpResult
+}
 
 // 72. 编辑距离
 // https://leetcode.cn/problems/edit-distance/description/
