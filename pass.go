@@ -9,6 +9,40 @@ import (
 	"time"
 )
 
+// 496. 下一个更大元素 I
+// https://leetcode.cn/problems/next-greater-element-i/submissions/
+func nextGreaterElement(nums1 []int, nums2 []int) []int {
+	greater := nextGreaterElements(nums2)
+	greaterMap := make(map[int]int)
+	for i := 0; i < len(nums2); i++ {
+		greaterMap[nums2[i]] = greater[i]
+	}
+
+	var result []int
+	for i := 0; i < len(nums1); i++ {
+		result = append(result, greaterMap[nums1[i]])
+	}
+	return result
+}
+
+func nextGreaterElements(nums []int) []int {
+	var stack []int
+	result := make([]int, len(nums))
+
+	for i := len(nums) - 1; i >= 0; i-- {
+		for len(stack) > 0 && nums[i] >= stack[len(stack)-1] {
+			stack = stack[:len(stack)-1]
+		}
+		if len(stack) == 0 {
+			result[i] = -1
+		} else {
+			result[i] = stack[len(stack)-1]
+		}
+		stack = append(stack, nums[i])
+	}
+	return result
+}
+
 // 494. 目标和
 // https://leetcode.cn/problems/target-sum/submissions/
 func findTargetSumWays(nums []int, target int) int {
