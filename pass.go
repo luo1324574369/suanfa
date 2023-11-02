@@ -9,6 +9,31 @@ import (
 	"time"
 )
 
+// 124. 二叉树中的最大路径和
+// https://leetcode.cn/problems/binary-tree-maximum-path-sum/submissions/
+func maxPathSum(root *TreeNode) int {
+	res := math.MinInt
+	var deepMaxPathSum func(root *TreeNode) int
+	deepMaxPathSum = func(root *TreeNode) int {
+		if root == nil {
+			return 0
+		}
+		v := root.Val
+		leftValue, rightValue := 0, 0
+		if root.Left != nil {
+			leftValue = max(deepMaxPathSum(root.Left), 0)
+		}
+		if root.Right != nil {
+			rightValue = max(deepMaxPathSum(root.Right), 0)
+		}
+
+		res = max(v+leftValue+rightValue, res)
+		return max(v+rightValue, v+leftValue)
+	}
+	deepMaxPathSum(root)
+	return res
+}
+
 // 496. 下一个更大元素 I
 // https://leetcode.cn/problems/next-greater-element-i/submissions/
 func nextGreaterElement(nums1 []int, nums2 []int) []int {
