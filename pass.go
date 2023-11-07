@@ -9,6 +9,46 @@ import (
 	"time"
 )
 
+// 394. 字符串解码
+// https://leetcode.cn/problems/decode-string/
+func decodeString(s string) string {
+	return decode(s, 1)
+}
+
+func decode(s string, times int) string {
+	currentTimes := 0
+	subIndex := -1
+	index := 0
+
+	for index < len(s) {
+		for '0' <= s[index] && s[index] <= '9' {
+			if subIndex == -1 {
+				subIndex = index
+			}
+			currentTimes = currentTimes*10 + int(s[index]-'0')
+			index++
+		}
+		if s[index] == '[' {
+			s = s[0:subIndex] + decode(s[index+1:], currentTimes)
+			index = subIndex
+			subIndex = -1
+			currentTimes = 0
+		}
+		if s[index] == ']' {
+			break
+		}
+		index++
+	}
+
+	if subIndex == -1 {
+		subIndex = 0
+	}
+	if index == len(s) {
+		return strings.Repeat(s[:index], times)
+	}
+	return strings.Repeat(s[subIndex:index], times) + s[index+1:]
+}
+
 // 124. 二叉树中的最大路径和
 // https://leetcode.cn/problems/binary-tree-maximum-path-sum/submissions/
 func maxPathSum(root *TreeNode) int {
