@@ -9,6 +9,46 @@ import (
 	"time"
 )
 
+// 437. 路径总和 III
+// https://leetcode.cn/problems/path-sum-iii/
+func pathSum(root *TreeNode, targetSum int) int {
+	if root == nil {
+		return 0
+	}
+	var result int
+	deepPath(root, targetSum, &result)
+	return result
+}
+
+func deepPath(root *TreeNode, targetSum int, result *int) {
+	if root == nil {
+		return
+	}
+	deepSum(root, targetSum, result)
+	if root.Left != nil {
+		deepPath(root.Left, targetSum, result)
+	}
+	if root.Right != nil {
+		deepPath(root.Right, targetSum, result)
+	}
+}
+
+func deepSum(root *TreeNode, target int, result *int) {
+	if root == nil {
+		return
+	}
+	if target-root.Val == 0 {
+		*result++
+	}
+	if root.Left != nil {
+		deepSum(root.Left, target-root.Val, result)
+	}
+	if root.Right != nil {
+		deepSum(root.Right, target-root.Val, result)
+	}
+	return
+}
+
 // 394. 字符串解码
 // https://leetcode.cn/problems/decode-string/
 func decodeString(s string) string {
