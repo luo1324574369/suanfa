@@ -9,6 +9,36 @@ import (
 	"time"
 )
 
+// 1372. 二叉树中的最长交错路径
+// https://leetcode.cn/problems/longest-zigzag-path-in-a-binary-tree/
+func longestZigZag(root *TreeNode) int {
+	result := 0
+	deepPathLongestZigZag(root, 0, 0, &result)
+	return result
+}
+
+func deepPathLongestZigZag(root *TreeNode, rightValue, leftValue int, result *int) {
+	if root == nil {
+		return
+	}
+
+	if rightValue > *result {
+		*result = rightValue
+	}
+
+	if leftValue > *result {
+		*result = leftValue
+	}
+
+	if root.Left != nil {
+		deepPathLongestZigZag(root.Left, leftValue+1, 0, result)
+	}
+
+	if root.Right != nil {
+		deepPathLongestZigZag(root.Right, 0, rightValue+1, result)
+	}
+}
+
 // 437. 路径总和 III
 // https://leetcode.cn/problems/path-sum-iii/
 func pathSum(root *TreeNode, targetSum int) int {
