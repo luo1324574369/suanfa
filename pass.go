@@ -4,6 +4,7 @@ import (
 	"math"
 	"math/rand"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -28,6 +29,199 @@ func change(amount int, coins []int) int {
 		}
 	}
 	return dp[coinsLen][amount]
+}
+
+// 1372. 二叉树中的最长交错路径
+// https://leetcode.cn/problems/longest-zigzag-path-in-a-binary-tree/
+func longestZigZag(root *TreeNode) int {
+	result := 0
+	deepPathLongestZigZag(root, 0, 0, &result)
+	return result
+}
+
+func deepPathLongestZigZag(root *TreeNode, rightValue, leftValue int, result *int) {
+	if root == nil {
+		return
+	}
+
+	if rightValue > *result {
+		*result = rightValue
+	}
+
+	if leftValue > *result {
+		*result = leftValue
+	}
+
+	if root.Left != nil {
+		deepPathLongestZigZag(root.Left, leftValue+1, 0, result)
+	}
+
+	if root.Right != nil {
+		deepPathLongestZigZag(root.Right, 0, rightValue+1, result)
+	}
+}
+
+// 437. 路径总和 III
+// https://leetcode.cn/problems/path-sum-iii/
+func pathSum(root *TreeNode, targetSum int) int {
+	if root == nil {
+		return 0
+	}
+	var result int
+	deepPath(root, targetSum, &result)
+	return result
+}
+
+func deepPath(root *TreeNode, targetSum int, result *int) {
+	if root == nil {
+		return
+	}
+	deepSum(root, targetSum, result)
+	if root.Left != nil {
+		deepPath(root.Left, targetSum, result)
+	}
+	if root.Right != nil {
+		deepPath(root.Right, targetSum, result)
+	}
+}
+
+func deepSum(root *TreeNode, target int, result *int) {
+	if root == nil {
+		return
+	}
+	if target-root.Val == 0 {
+		*result++
+	}
+	if root.Left != nil {
+		deepSum(root.Left, target-root.Val, result)
+	}
+	if root.Right != nil {
+		deepSum(root.Right, target-root.Val, result)
+	}
+	return
+}
+
+// 394. 字符串解码
+// https://leetcode.cn/problems/decode-string/
+func decodeString(s string) string {
+	return decode(s, 1)
+}
+
+func decode(s string, times int) string {
+	currentTimes := 0
+	subIndex := -1
+	index := 0
+
+	for index < len(s) {
+		for '0' <= s[index] && s[index] <= '9' {
+			if subIndex == -1 {
+				subIndex = index
+			}
+			currentTimes = currentTimes*10 + int(s[index]-'0')
+			index++
+		}
+		if s[index] == '[' {
+			s = s[0:subIndex] + decode(s[index+1:], currentTimes)
+			index = subIndex
+			subIndex = -1
+			currentTimes = 0
+		}
+		if s[index] == ']' {
+			break
+		}
+		index++
+	}
+
+	if subIndex == -1 {
+		subIndex = 0
+	}
+	if index == len(s) {
+		return strings.Repeat(s[:index], times)
+	}
+	return strings.Repeat(s[subIndex:index], times) + s[index+1:]
+}
+
+// 124. 二叉树中的最大路径和
+// https://leetcode.cn/problems/binary-tree-maximum-path-sum/submissions/
+func maxPathSum(root *TreeNode) int {
+	res := math.MinInt
+	var deepMaxPathSum func(root *TreeNode) int
+	deepMaxPathSum = func(root *TreeNode) int {
+		if root == nil {
+			return 0
+		}
+		v := root.Val
+		leftValue, rightValue := 0, 0
+		if root.Left != nil {
+			leftValue = max(deepMaxPathSum(root.Left), 0)
+		}
+		if root.Right != nil {
+			rightValue = max(deepMaxPathSum(root.Right), 0)
+		}
+
+		res = max(v+leftValue+rightValue, res)
+		return max(v+rightValue, v+leftValue)
+	}
+	deepMaxPathSum(root)
+	return res
+}
+
+// 496. 下一个更大元素 I
+// https://leetcode.cn/problems/next-greater-element-i/submissions/
+func nextGreaterElement(nums1 []int, nums2 []int) []int {
+	greater := nextGreaterElements(nums2)
+	greaterMap := make(map[int]int)
+	for i := 0; i < len(nums2); i++ {
+		greaterMap[nums2[i]] = greater[i]
+	}
+
+	var result []int
+	for i := 0; i < len(nums1); i++ {
+		result = append(result, greaterMap[nums1[i]])
+	}
+	return result
+}
+
+func nextGreaterElements(nums []int) []int {
+	var stack []int
+	result := make([]int, len(nums))
+
+	for i := len(nums) - 1; i >= 0; i-- {
+		for len(stack) > 0 && nums[i] >= stack[len(stack)-1] {
+			stack = stack[:len(stack)-1]
+		}
+		if len(stack) == 0 {
+			result[i] = -1
+		} else {
+			result[i] = stack[len(stack)-1]
+		}
+		stack = append(stack, nums[i])
+	}
+	return result
+}
+
+// 494. 目标和
+// https://leetcode.cn/problems/target-sum/submissions/
+func findTargetSumWays(nums []int, target int) int {
+	memo := make(map[string]int)
+	return dpFindTargetSumWays(nums, target, 0, 0, memo)
+}
+
+func dpFindTargetSumWays(nums []int, target int, index int, sum int, memo map[string]int) int {
+	if index == len(nums) {
+		if sum == target {
+			return 1
+		} else {
+			return 0
+		}
+	}
+	key := strconv.Itoa(index) + "," + strconv.Itoa(target-sum)
+	if _, ok := memo[key]; ok {
+		return memo[key]
+	}
+	dpResult := dpFindTargetSumWays(nums, target, index+1, sum+nums[index], memo) + dpFindTargetSumWays(nums, target, index+1, sum-nums[index], memo)
+	memo[key] = dpResult
+	return dpResult
 }
 
 // 72. 编辑距离
