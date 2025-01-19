@@ -718,7 +718,7 @@ func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
 
 // 88. 合并两个有序数组
 // https://leetcode-cn.com/problems/merge-sorted-array/submissions/
-func merge(nums1 []int, m int, nums2 []int, n int) {
+func merge_2(nums1 []int, m int, nums2 []int, n int) {
 	for p := m + n - 1; m > 0 && n > 0; p-- {
 		if nums2[n-1] >= nums1[m-1] {
 			nums1[p] = nums2[n-1]
