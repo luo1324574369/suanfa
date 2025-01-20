@@ -9,6 +9,87 @@ import (
 	"time"
 )
 
+// 707. 设计链表
+// https://leetcode.cn/problems/design-linked-list/
+// type MyLinkedList struct {
+// 	preHead *Node // next指向head节点
+// 	tail    *Node // 实际的tail节点
+// 	size    int
+// }
+
+// type Node struct {
+// 	Val  int
+// 	Next *Node
+// }
+
+// func Constructor() MyLinkedList {
+// 	head := &Node{}
+// 	return MyLinkedList{preHead: head, tail: head}
+// }
+
+// func (this *MyLinkedList) Get(index int) int {
+// 	if index < 0 || index >= this.size {
+// 		return -1
+// 	}
+// 	pre := this.preHead
+// 	for i := 0; i < index; i++ {
+// 		pre = pre.Next
+// 	}
+// 	current := pre.Next
+// 	return current.Val
+// }
+
+// func (this *MyLinkedList) AddAtHead(val int) {
+// 	valNode := &Node{Val: val}
+// 	valNode.Next = this.preHead.Next
+// 	this.preHead.Next = valNode
+// 	if this.size == 0 {
+// 		this.tail = valNode
+// 	}
+// 	this.size++
+// }
+
+// func (this *MyLinkedList) AddAtTail(val int) {
+// 	valNode := &Node{Val: val}
+// 	this.tail.Next = valNode
+// 	this.tail = valNode
+// 	this.size++
+// }
+
+// func (this *MyLinkedList) AddAtIndex(index int, val int) {
+// 	if index < 0 || index > this.size {
+// 		return
+// 	}
+// 	if index == this.size {
+// 		this.AddAtTail(val)
+// 		return
+// 	}
+// 	pre := this.preHead
+// 	for i := 0; i < index; i++ {
+// 		pre = pre.Next
+// 	}
+// 	valNode := &Node{Val: val}
+// 	valNode.Next = pre.Next
+// 	pre.Next = valNode
+// 	this.size++
+// }
+
+// func (this *MyLinkedList) DeleteAtIndex(index int) {
+// 	if index < 0 || index >= this.size {
+// 		return
+// 	}
+// 	pre := this.preHead
+// 	for i := 0; i < index; i++ {
+// 		pre = pre.Next
+// 	}
+// 	current := pre.Next
+// 	pre.Next = current.Next
+// 	if index == this.size-1 {
+// 		this.tail = pre
+// 	}
+// 	this.size--
+// }
+
 // 518. 零钱兑换 II
 // https://leetcode.cn/problems/coin-change-ii/submissions/
 func change(amount int, coins []int) int {

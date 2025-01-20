@@ -8,8 +8,7 @@ func main() {
 	fmt.Println(isPowerOfTwo(16))
 }
 
-
-//*****************常用*************************//
+// *****************常用*************************//
 func binarySearch(nums []int, target int) int {
 	left, right := 0, len(nums)-1
 
@@ -27,8 +26,8 @@ func binarySearch(nums []int, target int) int {
 	return -1
 }
 
-func leftBound(nums []int,target int) int {
-	left,right := 0,len(nums)-1
+func leftBound(nums []int, target int) int {
+	left, right := 0, len(nums)-1
 
 	for left <= right {
 		mid := left + (right-left)/2
@@ -99,7 +98,7 @@ func abs(x int) int {
 	return -x
 }
 
-//*****************队列*************************//
+// *****************队列*************************//
 type DQueue struct {
 	data []int
 	len  int
@@ -153,7 +152,7 @@ func (dq *DQueue) Pop(n int) int {
 	return 0
 }
 
-//*****************链表*************************//
+// *****************链表*************************//
 type ListNode struct {
 	Val  int
 	Next *ListNode
@@ -231,7 +230,7 @@ func printListNodes(node *ListNode) {
 //	return tmp
 //}
 
-//****************树***************************//
+// ****************树***************************//
 type TreeNode struct {
 	Val   int
 	Left  *TreeNode
@@ -243,7 +242,7 @@ type Node struct {
 	Children []*Node
 }
 
-//根据一个int切片,创建一个二叉树
+// 根据一个int切片,创建一个二叉树
 func CreateTree(Nums []int) *TreeNode {
 	if len(Nums) == 0 {
 		return nil
@@ -276,7 +275,7 @@ func CreateTree(Nums []int) *TreeNode {
 	return root
 }
 
-//前序遍历树
+// 前序遍历树
 func frontPrintTree(root *TreeNode) {
 	if root == nil {
 		return
