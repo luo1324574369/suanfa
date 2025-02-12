@@ -1,6 +1,7 @@
 package main
 
 import (
+	"container/heap"
 	"math"
 	"math/rand"
 	"sort"
@@ -8,6 +9,31 @@ import (
 	"strings"
 	"time"
 )
+
+// 373. 查找和最小的 K 对数字
+// https://leetcode.cn/problems/find-k-pairs-with-smallest-sums/description/
+func kSmallestPairs(nums1 []int, nums2 []int, k int) [][]int {
+	p := &PriorityQueue{}
+	heap.Init(p)
+
+	for i := 0; i < len(nums1); i++ {
+		heap.Push(p, []int{nums1[i], nums2[0], 0})
+	}
+
+	ik := 0
+	var res [][]int
+	for p.Len() > 0 && ik < k {
+		current := heap.Pop(p).([]int)
+		ik++
+		res = append(res, []int{current[0], current[1]})
+
+		nextIndex := current[2] + 1
+		if nextIndex < len(nums2) {
+			heap.Push(p, []int{current[0], nums2[nextIndex], nextIndex})
+		}
+	}
+	return res
+}
 
 // 707. 设计链表
 // https://leetcode.cn/problems/design-linked-list/

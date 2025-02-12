@@ -5,10 +5,33 @@ import (
 )
 
 func main() {
-	fmt.Println(isPowerOfTwo(16))
+	kSmallestPairs([]int{1, 7, 11}, []int{2, 4, 6}, 3)
 }
 
 // *****************常用*************************//
+
+type PriorityQueue [][]int
+
+func (p PriorityQueue) Len() int {
+	return len(p)
+}
+func (p PriorityQueue) Less(i, j int) bool {
+	return (p[i][0] + p[i][1]) < (p[j][0] + p[j][1])
+}
+func (p PriorityQueue) Swap(i, j int) {
+	p[i], p[j] = p[j], p[i]
+}
+func (p *PriorityQueue) Push(x interface{}) {
+	*p = append(*p, x.([]int))
+}
+func (p *PriorityQueue) Pop() interface{} {
+	old := *p
+	n := len(old)
+	item := old[n-1]
+	*p = old[0 : n-1]
+	return item
+}
+
 func binarySearch(nums []int, target int) int {
 	left, right := 0, len(nums)-1
 
