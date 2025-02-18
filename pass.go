@@ -10,6 +10,67 @@ import (
 	"time"
 )
 
+// 71. 简化路径
+// https://leetcode.cn/problems/simplify-path/description/
+func simplifyPath(path string) string {
+	var stack []string
+	var cache string
+
+	for i := 0; i < len(path); i++ {
+		c := path[i]
+		if c != '/' {
+			cache += string(c)
+			continue
+		}
+		if cache == "." {
+			cache = ""
+		}
+		if cache == ".." {
+			if len(stack) > 2 {
+				stack = stack[:len(stack)-2]
+			} else {
+				stack = []string{"/"}
+			}
+			cache = ""
+		}
+		if cache != "" {
+			stack = append(stack, string(cache))
+			cache = ""
+		}
+		if len(stack) == 0 || stack[len(stack)-1] != "/" {
+			stack = append(stack, string(c))
+		}
+	}
+	if len(cache) != 0 {
+		if cache == "." {
+			cache = ""
+		}
+		if cache == ".." {
+			if len(stack) > 2 {
+				stack = stack[:len(stack)-2]
+			} else {
+				stack = []string{"/"}
+			}
+			cache = ""
+		}
+		if cache != "" {
+			stack = append(stack, string(cache))
+			cache = ""
+		}
+	}
+	res := ""
+	if stack[0] != "/" {
+		res += "/"
+	}
+	if len(stack) > 1 && stack[len(stack)-1] == "/" {
+		stack = stack[:len(stack)-1]
+	}
+	for i := 0; i < len(stack); i++ {
+		res += stack[i]
+	}
+	return res
+}
+
 // 373. 查找和最小的 K 对数字
 // https://leetcode.cn/problems/find-k-pairs-with-smallest-sums/description/
 func kSmallestPairs(nums1 []int, nums2 []int, k int) [][]int {

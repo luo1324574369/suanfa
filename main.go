@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	kSmallestPairs([]int{1, 7, 11}, []int{2, 4, 6}, 3)
+	simplifyPath("/a//b////c/d//././/..")
 }
 
 // *****************常用*************************//
