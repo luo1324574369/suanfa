@@ -10,6 +10,37 @@ import (
 	"time"
 )
 
+// 143. 重排链表
+// https://leetcode.cn/problems/reorder-list/description/
+func reorderList(head *ListNode) {
+	var l1 []*ListNode
+	p := head
+	for p != nil {
+		next := p.Next
+		p.Next = nil
+		l1 = append(l1, p)
+		p = next
+	}
+
+	l, r := 1, len(l1)-1
+	p1 := head
+	for l <= r {
+		if l == r {
+			p1.Next = l1[l]
+			p1 = p1.Next
+			l++
+			continue
+		}
+		p1.Next = l1[r]
+		p1 = p1.Next
+		r--
+
+		p1.Next = l1[l]
+		p1 = p1.Next
+		l++
+	}
+}
+
 // 71. 简化路径
 // https://leetcode.cn/problems/simplify-path/description/
 func simplifyPath(path string) string {

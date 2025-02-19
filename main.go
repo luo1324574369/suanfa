@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	simplifyPath("/a//b////c/d//././/..")
+	reorderList(createListNode([]int{1}))
 }
 
 // *****************常用*************************//
