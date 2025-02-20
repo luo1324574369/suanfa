@@ -10,34 +10,61 @@ import (
 	"time"
 )
 
+// 388. 文件的最长绝对路径
+// https://leetcode.cn/problems/longest-absolute-file-path/submissions/601484357/
+func lengthLongestPath(input string) int {
+	var stack []string
+
+	parts := strings.Split(input, "\n")
+	maxLength := 0
+
+	for i := 0; i < len(parts); i++ {
+		part := parts[i]
+		level := strings.LastIndex(part, "\t") + 1
+
+		for len(stack) > level {
+			stack = stack[:len(stack)-1]
+		}
+		stack = append(stack, part[level:])
+
+		if strings.Contains(part, ".") {
+			currentLength := 0
+			for j := 0; j < len(stack); j++ {
+				currentLength += len(stack[j])
+				currentLength += 1
+			}
+			currentLength -= 1
+			if currentLength > maxLength {
+				maxLength = currentLength
+			}
+		}
+
+	}
+	return maxLength
+}
+
 // 143. 重排链表
 // https://leetcode.cn/problems/reorder-list/description/
 func reorderList(head *ListNode) {
-	var l1 []*ListNode
+	var stack []*ListNode
 	p := head
 	for p != nil {
-		next := p.Next
-		p.Next = nil
-		l1 = append(l1, p)
-		p = next
+		stack = append(stack, p)
+		p = p.Next
 	}
 
-	l, r := 1, len(l1)-1
-	p1 := head
-	for l <= r {
-		if l == r {
-			p1.Next = l1[l]
-			p1 = p1.Next
-			l++
-			continue
+	p = head
+	for p != nil {
+		lastNode := stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+		next := p.Next
+		if lastNode.Next == next || lastNode == next {
+			lastNode.Next = nil
+			break
 		}
-		p1.Next = l1[r]
-		p1 = p1.Next
-		r--
-
-		p1.Next = l1[l]
-		p1 = p1.Next
-		l++
+		p.Next = lastNode
+		lastNode.Next = next
+		p = next
 	}
 }
 
