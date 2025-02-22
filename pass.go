@@ -10,6 +10,85 @@ import (
 	"time"
 )
 
+// 641. 设计循环双端队列
+// https://leetcode.cn/problems/design-circular-deque/submissions/602125330/
+type MyCircularDeque struct {
+	head  int
+	tail  int
+	queue []int
+}
+
+func Constructor2(k int) MyCircularDeque {
+	return MyCircularDeque{
+		queue: make([]int, k+1),
+	}
+}
+
+func (this *MyCircularDeque) InsertFront(value int) bool {
+	if this.IsFull() {
+		return false
+	}
+	this.head = (this.head - 1 + len(this.queue)) % len(this.queue)
+	this.queue[this.head] = value
+	return true
+}
+
+func (this *MyCircularDeque) InsertLast(value int) bool {
+	if this.IsFull() {
+		return false
+	}
+	this.queue[this.tail] = value
+	this.tail = (this.tail + 1) % len(this.queue)
+	return true
+}
+
+func (this *MyCircularDeque) DeleteFront() bool {
+	if this.IsEmpty() {
+		return false
+	}
+	this.head = (this.head + 1) % len(this.queue)
+	this.queue[this.head] = 0
+	return true
+}
+
+func (this *MyCircularDeque) DeleteLast() bool {
+	if this.IsEmpty() {
+		return false
+	}
+	this.tail = (this.tail - 1 + len(this.queue)) % len(this.queue)
+	this.queue[this.tail] = 0
+	return true
+}
+
+func (this *MyCircularDeque) GetFront() int {
+	return this.queue[this.head]
+}
+
+func (this *MyCircularDeque) GetRear() int {
+	return this.queue[(this.tail-1+len(this.queue))%len(this.queue)]
+}
+
+func (this *MyCircularDeque) IsEmpty() bool {
+	return this.tail == this.head
+}
+
+func (this *MyCircularDeque) IsFull() bool {
+	return (this.tail+1)%len(this.queue) == this.head
+}
+
+/**
+ * Your MyCircularDeque object will be instantiated and called as such:
+ * obj := Constructor(k);
+ * param_1 := obj.InsertFront(value);
+ * param_2 := obj.InsertLast(value);
+ * param_3 := obj.DeleteFront();
+ * param_4 := obj.DeleteLast();
+ * param_5 := obj.GetFront();
+ * param_6 := obj.GetRear();
+ * param_7 := obj.IsEmpty();
+ * param_8 := obj.IsFull();
+ */
+
 // 388. 文件的最长绝对路径
 // https://leetcode.cn/problems/longest-absolute-file-path/submissions/601484357/
 func lengthLongestPath(input string) int {

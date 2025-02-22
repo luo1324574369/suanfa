@@ -2,3 +2,4 @@
 .vscode
 test/
 .trunk
+*__debug_*

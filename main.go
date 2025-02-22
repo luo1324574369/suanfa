@@ -5,7 +5,20 @@ import (
 )
 
 func main() {
-	print(lengthLongestPath("dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext"))
+	obj := Constructor2(3)
+	fmt.Println(obj.InsertLast(1))
+	fmt.Println(obj.InsertLast(2))
+	fmt.Println(obj.InsertFront(3))
+	fmt.Println(obj.InsertFront(4))
+	fmt.Println(obj.GetRear())
+	fmt.Println(obj.IsFull())
+	fmt.Println(obj.DeleteLast())
+	fmt.Println(obj.InsertFront(4))
+	fmt.Println(obj.GetFront())
+	// param_3 := obj.Front()
+	// param_4 := obj.Rear()
+	// param_5 := obj.IsEmpty()
+	// param_6 := obj.IsFull()
 }
 
 // *****************常用*************************//
