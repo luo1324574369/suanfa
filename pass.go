@@ -10,6 +10,82 @@ import (
 	"time"
 )
 
+// 1670. 设计前中后队列
+// https://leetcode.cn/problems/design-front-middle-back-queue/
+type FrontMiddleBackQueue struct {
+	elements []int
+}
+
+func Constructor4() FrontMiddleBackQueue {
+	return FrontMiddleBackQueue{}
+}
+
+func (this *FrontMiddleBackQueue) PushFront(val int) {
+	if len(this.elements) == 0 {
+		this.PushBack(val)
+		return
+	}
+	this.elements = append([]int{val}, this.elements...)
+}
+
+func (this *FrontMiddleBackQueue) PushMiddle(val int) {
+	if len(this.elements) == 0 {
+		this.PushBack(val)
+		return
+	}
+	mid := len(this.elements) / 2
+	tail := make([]int, len(this.elements[mid:]))
+	copy(tail, this.elements[mid:])
+	this.elements = append(this.elements[:mid], val)
+	this.elements = append(this.elements[:mid+1], tail...)
+}
+
+func (this *FrontMiddleBackQueue) PushBack(val int) {
+	this.elements = append(this.elements, val)
+}
+
+func (this *FrontMiddleBackQueue) PopFront() int {
+	if len(this.elements) == 0 {
+		return -1
+	}
+	front := this.elements[0]
+	this.elements = this.elements[1:]
+	return front
+}
+
+func (this *FrontMiddleBackQueue) PopMiddle() int {
+	if len(this.elements) <= 1 {
+		return this.PopFront()
+	}
+	midIndex := (len(this.elements) / 2)
+	if len(this.elements)%2 == 0 {
+		midIndex--
+	}
+	mid := this.elements[midIndex]
+	this.elements = append(this.elements[:midIndex], this.elements[midIndex+1:]...)
+	return mid
+}
+
+func (this *FrontMiddleBackQueue) PopBack() int {
+	if len(this.elements) <= 1 {
+		return this.PopFront()
+	}
+	tail := this.elements[len(this.elements)-1]
+	this.elements = this.elements[:len(this.elements)-1]
+	return tail
+}
+
+/**
+ * Your FrontMiddleBackQueue object will be instantiated and called as such:
+ * obj := Constructor();
+ * obj.PushFront(val);
+ * obj.PushMiddle(val);
+ * obj.PushBack(val);
+ * param_4 := obj.PopFront();
+ * param_5 := obj.PopMiddle();
+ * param_6 := obj.PopBack();
+ */
+
 // 641. 设计循环双端队列
 // https://leetcode.cn/problems/design-circular-deque/submissions/602125330/
 type MyCircularDeque struct {

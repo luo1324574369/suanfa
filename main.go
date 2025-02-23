@@ -5,20 +5,16 @@ import (
 )
 
 func main() {
-	obj := Constructor2(3)
-	fmt.Println(obj.InsertLast(1))
-	fmt.Println(obj.InsertLast(2))
-	fmt.Println(obj.InsertFront(3))
-	fmt.Println(obj.InsertFront(4))
-	fmt.Println(obj.GetRear())
-	fmt.Println(obj.IsFull())
-	fmt.Println(obj.DeleteLast())
-	fmt.Println(obj.InsertFront(4))
-	fmt.Println(obj.GetFront())
-	// param_3 := obj.Front()
-	// param_4 := obj.Rear()
-	// param_5 := obj.IsEmpty()
-	// param_6 := obj.IsFull()
+	obj := Constructor4()
+	obj.PushFront(1)
+	obj.PushBack(2)
+	obj.PushMiddle(3)
+	obj.PushMiddle(4)
+	fmt.Println(obj.PopFront())
+	fmt.Println(obj.PopMiddle())
+	fmt.Println(obj.PopMiddle())
+	fmt.Println(obj.PopBack())
+	fmt.Println(obj.PopFront())
 }
 
 // *****************常用*************************//
