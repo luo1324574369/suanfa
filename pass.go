@@ -10,6 +10,35 @@ import (
 	"time"
 )
 
+// 129. 求根节点到叶节点数字之和
+// https://leetcode.cn/problems/sum-root-to-leaf-numbers/description/
+func binaryTreePaths(root *TreeNode) []string {
+	var res []string
+	if root == nil {
+		return res
+	}
+	addPathToleaf(root, []string{}, &res)
+	return res
+}
+
+func addPathToleaf(root *TreeNode, path []string, res *[]string) {
+	if root == nil {
+		return
+	}
+	if root.Left == nil && root.Right == nil {
+		path = append(path,strconv.Itoa(root.Val))
+		*res = append(*res, strings.Join(path,"->"))
+		return
+	}
+	path = append(path, strconv.Itoa(root.Val))
+	if root.Left != nil {
+		addPathToleaf(root.Left, path, res)
+	}
+	if root.Right != nil {
+		addPathToleaf(root.Right, path, res)
+	}
+}
+
 // 1670. 设计前中后队列
 // https://leetcode.cn/problems/design-front-middle-back-queue/
 type FrontMiddleBackQueue struct {

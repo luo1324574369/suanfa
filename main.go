@@ -5,16 +5,7 @@ import (
 )
 
 func main() {
-	obj := Constructor4()
-	obj.PushFront(1)
-	obj.PushBack(2)
-	obj.PushMiddle(3)
-	obj.PushMiddle(4)
-	fmt.Println(obj.PopFront())
-	fmt.Println(obj.PopMiddle())
-	fmt.Println(obj.PopMiddle())
-	fmt.Println(obj.PopBack())
-	fmt.Println(obj.PopFront())
+	fmt.Println(binaryTreePaths(CreateTree([]int{1, 2, 3, -1, 5})))
 }
 
 // *****************常用*************************//
