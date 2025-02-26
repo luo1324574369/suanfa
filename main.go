@@ -5,7 +5,8 @@ import (
 )
 
 func main() {
-	fmt.Println(binaryTreePaths(CreateTree([]int{1, 2, 3, -1, 5})))
+	a := allPossibleFBT(2)
+	println(a)
 }
 
 // *****************常用*************************//

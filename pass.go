@@ -10,6 +10,58 @@ import (
 	"time"
 )
 
+// 894. 所有可能的真二叉树
+// https://leetcode.cn/problems/all-possible-full-binary-trees/
+func allPossibleFBT(n int) []*TreeNode {
+	s := &Solution2{
+		memo: make(map[int][]*TreeNode),
+	}
+	return s.allPossibleFBT(n)
+}
+
+type Solution2 struct {
+	memo map[int][]*TreeNode
+}
+
+func (s *Solution2) allPossibleFBT(n int) []*TreeNode {
+	if n%2 == 0 {
+		return []*TreeNode{}
+	}
+	return s.build(n)
+}
+
+func (s *Solution2) build(n int) []*TreeNode {
+	if n == 1 {
+		return []*TreeNode{
+			&TreeNode{},
+		}
+	}
+
+	if v, ok := s.memo[n]; ok {
+		return v
+	}
+
+	var res []*TreeNode
+	for i := 1; i < n; i += 2 {
+		j := n - i - 1
+
+		left := s.build(i)
+		right := s.build(j)
+
+		for _, l := range left {
+			for _, r := range right {
+				root := &TreeNode{}
+				root.Left = l
+				root.Right = r
+				res = append(res, root)
+			}
+		}
+	}
+
+	s.memo[n] = res
+	return res
+}
+
 // 129. 求根节点到叶节点数字之和
 // https://leetcode.cn/problems/sum-root-to-leaf-numbers/description/
 func binaryTreePaths(root *TreeNode) []string {
@@ -26,8 +78,8 @@ func addPathToleaf(root *TreeNode, path []string, res *[]string) {
 		return
 	}
 	if root.Left == nil && root.Right == nil {
-		path = append(path,strconv.Itoa(root.Val))
-		*res = append(*res, strings.Join(path,"->"))
+		path = append(path, strconv.Itoa(root.Val))
+		*res = append(*res, strings.Join(path, "->"))
 		return
 	}
 	path = append(path, strconv.Itoa(root.Val))
