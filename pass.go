@@ -10,6 +10,47 @@ import (
 	"time"
 )
 
+// 654. 最大二叉树
+// https://leetcode.cn/problems/maximum-binary-tree/description/
+func constructMaximumBinaryTree2(nums []int) *TreeNode {
+	if len(nums) == 0 {
+		return nil
+	}
+	return build(nums, 0, len(nums)-1)
+}
+
+func build(nums []int, left, right int) *TreeNode {
+	if left > right {
+		return nil
+	}
+
+	maxIndex := findMax(nums, left, right)
+	root := &TreeNode{Val: nums[maxIndex]}
+
+	if maxIndex-left > 0 {
+		left := build(nums, left, maxIndex-1)
+		root.Left = left
+	}
+	if right-maxIndex > 0 {
+		right := build(nums, maxIndex+1, right)
+		root.Right = right
+	}
+
+	return root
+}
+
+func findMax(nums []int, left, right int) int {
+	max := nums[left]
+	maxIndex := left
+	for i := left + 1; i <= right; i++ {
+		if nums[i] > max {
+			max = nums[i]
+			maxIndex = i
+		}
+	}
+	return maxIndex
+}
+
 // 894. 所有可能的真二叉树
 // https://leetcode.cn/problems/all-possible-full-binary-trees/
 func allPossibleFBT(n int) []*TreeNode {

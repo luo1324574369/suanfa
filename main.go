@@ -5,8 +5,7 @@ import (
 )
 
 func main() {
-	a := allPossibleFBT(2)
-	println(a)
+	frontPrintTree(constructMaximumBinaryTree2([]int{3, 2, 1, 6, 0, 5}))
 }
 
 // *****************常用*************************//
