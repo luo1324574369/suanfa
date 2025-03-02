@@ -10,6 +10,52 @@ import (
 	"time"
 )
 
+// 450. 删除二叉搜索树中的节点
+// https://leetcode.cn/problems/delete-node-in-a-bst/submissions/604967098/
+func deleteNode(root *TreeNode, key int) *TreeNode {
+	return delete(root, key)
+}
+
+func delete(root *TreeNode, key int) *TreeNode {
+	if root == nil {
+		return root
+	}
+
+	root.Left = delete(root.Left, key)
+	root.Right = delete(root.Right, key)
+
+	if key != root.Val {
+		return root
+	}
+
+	if root.Left == nil && root.Right == nil {
+		return nil
+	}
+
+	if root.Left == nil {
+		return root.Right
+	}
+
+	if root.Right == nil {
+		return root.Left
+	}
+
+	min := getMin(root.Right)
+	root.Val = min.Val
+	root.Right = delete(root.Right, min.Val)
+	return root
+}
+
+func getMin(root *TreeNode) *TreeNode {
+	if root == nil {
+		return root
+	}
+	if root.Left == nil {
+		return root
+	}
+	return getMin(root.Left)
+}
+
 // 98. 验证二叉搜索树
 // https://leetcode.cn/problems/validate-binary-search-tree/description/
 func isValidBST(root *TreeNode) bool {
@@ -2005,25 +2051,25 @@ func (this *LRUCache) Get(key int) int {
 }
 
 func (this *LRUCache) Put(key int, value int) {
-	if v, ok := this.Map[key]; ok {
-		this.List.Delete(v)
+	// if v, ok := this.Map[key]; ok {
+	// 	this.List.Delete(v)
 
-		d := &DoubleNode{Key: key, Value: value}
-		this.List.Append(d)
-		this.Map[key] = d
-		return
-	}
+	// 	d := &DoubleNode{Key: key, Value: value}
+	// 	this.List.Append(d)
+	// 	this.Map[key] = d
+	// 	return
+	// }
 
-	if this.Len == this.Cap {
-		head := this.List.DeleteHead()
-		delete(this.Map, head.Key)
-		this.Len--
-	}
+	// if this.Len == this.Cap {
+	// 	head := this.List.DeleteHead()
+	// 	delete(this.Map, head.Key)
+	// 	this.Len--
+	// }
 
-	d := &DoubleNode{Key: key, Value: value}
-	this.Map[key] = d
-	this.List.Append(d)
-	this.Len++
+	// d := &DoubleNode{Key: key, Value: value}
+	// this.Map[key] = d
+	// this.List.Append(d)
+	// this.Len++
 }
 
 // 求根到叶子节点数字之和

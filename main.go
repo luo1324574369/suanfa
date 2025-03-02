@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	a := isValidBST(CreateTree([]int{5, 4, 6, -1, -1, 3, 7}))
+	a := deleteNode(CreateTree([]int{5, 3, 6, 2, 4, -1, 7}), 3)
 	fmt.Println(a)
 }
 
