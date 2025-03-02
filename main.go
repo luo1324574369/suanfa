@@ -5,7 +5,8 @@ import (
 )
 
 func main() {
-	frontPrintTree(constructMaximumBinaryTree2([]int{3, 2, 1, 6, 0, 5}))
+	a := isValidBST(CreateTree([]int{5, 4, 6, -1, -1, 3, 7}))
+	fmt.Println(a)
 }
 
 // *****************常用*************************//

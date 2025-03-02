@@ -10,6 +10,34 @@ import (
 	"time"
 )
 
+// 98. 验证二叉搜索树
+// https://leetcode.cn/problems/validate-binary-search-tree/description/
+func isValidBST(root *TreeNode) bool {
+	maxVal := math.MinInt
+	return traverse(root, &maxVal)
+}
+
+func traverse(root *TreeNode, maxVal *int) bool {
+	if root == nil {
+		return true
+	}
+
+	if traverse(root.Left, maxVal) == false {
+		return false
+	}
+
+	if root.Val <= *maxVal {
+		return false
+	}
+	*maxVal = root.Val
+
+	if traverse(root.Right, maxVal) == false {
+		return false
+	}
+
+	return true
+}
+
 // 654. 最大二叉树
 // https://leetcode.cn/problems/maximum-binary-tree/description/
 func constructMaximumBinaryTree2(nums []int) *TreeNode {
