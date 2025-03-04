@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	a := deleteNode(CreateTree([]int{5, 3, 6, 2, 4, -1, 7}), 3)
+	a := deckRevealedIncreasing([]int{17,13,11,2,3,5,7})
 	fmt.Println(a)
 }
 

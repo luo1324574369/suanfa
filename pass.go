@@ -10,6 +10,24 @@ import (
 	"time"
 )
 
+// 950. 按递增顺序显示卡牌
+// https://leetcode.cn/problems/reveal-cards-in-increasing-order/description/
+func deckRevealedIncreasing(deck []int) []int {
+	sort.Ints(deck)
+
+	var res []int
+	for i := len(deck) - 1; i >= 0; i-- {
+		if len(res) > 0 {
+			last := res[len(res)-1]
+			res = res[:len(res)-1]
+			res = append([]int{last}, res...)
+		}
+		res = append([]int{deck[i]}, res...)
+	}
+
+	return res
+}
+
 // 450. 删除二叉搜索树中的节点
 // https://leetcode.cn/problems/delete-node-in-a-bst/submissions/604967098/
 func deleteNode(root *TreeNode, key int) *TreeNode {
