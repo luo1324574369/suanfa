@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	a := deckRevealedIncreasing([]int{17,13,11,2,3,5,7})
+	a := isBipartite([][]int{[]int{1, 3}, []int{0, 2}, []int{1, 3}, []int{0, 2}})
 	fmt.Println(a)
 }
 

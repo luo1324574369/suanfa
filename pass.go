@@ -10,6 +10,40 @@ import (
 	"time"
 )
 
+// 785. 判断二分图
+// https://leetcode.cn/problems/is-graph-bipartite/submissions/606683511/
+func isBipartite(graph [][]int) bool {
+	res := true
+
+	for i := 0; i < len(graph); i++ {
+		if !res {
+			break
+		}
+		viststed := make(map[int]int)
+		traverse2(graph, i, 1, &viststed, &res)
+	}
+
+	return res
+}
+
+func traverse2(graph [][]int, v int, vFlag int, viststed *map[int]int, res *bool) {
+	if (*viststed)[v] != 0 {
+		return
+	}
+
+	(*viststed)[v] = vFlag
+	for _, vv := range graph[v] {
+		if (*viststed)[vv] == 0 {
+			traverse2(graph, vv, -vFlag, viststed, res)
+		} else {
+			if (*viststed)[v]+(*viststed)[vv] != 0 {
+				*res = false
+				return
+			}
+		}
+	}
+}
+
 // 950. 按递增顺序显示卡牌
 // https://leetcode.cn/problems/reveal-cards-in-increasing-order/description/
 func deckRevealedIncreasing(deck []int) []int {
