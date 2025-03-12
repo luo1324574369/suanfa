@@ -5,11 +5,50 @@ import (
 )
 
 func main() {
-	a := isBipartite([][]int{[]int{1, 3}, []int{0, 2}, []int{1, 3}, []int{0, 2}})
+	a := findRedundantConnection([][]int{[]int{1, 2}, []int{2, 3}, []int{3, 4}, []int{1, 4}, []int{1, 3}})
 	fmt.Println(a)
 }
 
 // *****************常用*************************//
+
+type UF struct {
+	Parent []int
+	count  int
+}
+
+func NewUnionFind(n int) *UF {
+	parent := make([]int, n)
+	size := make([]int, n)
+
+	for i := range parent {
+		parent[i] = i
+		size[i] = 1
+	}
+	return &UF{parent, n}
+}
+
+func (u *UF) Find(x int) int {
+	if u.Parent[x] != x {
+		u.Parent[x] = u.Find(u.Parent[x])
+	}
+	return u.Parent[x]
+}
+
+func (u *UF) Union(x, y int) {
+	rootX := u.Find(x)
+	rootY := u.Find(y)
+
+	if rootX == rootY {
+		return
+	}
+
+	u.Parent[rootX] = rootY
+	u.count--
+}
+
+func (u *UF) Count() int {
+	return u.count
+}
 
 type PriorityQueue [][]int
 

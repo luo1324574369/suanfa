@@ -10,16 +10,49 @@ import (
 	"time"
 )
 
+// 684. 冗余连接
+// https://leetcode.cn/problems/redundant-connection/description/
+func findRedundantConnection(edges [][]int) []int {
+	parent := make([]int, len(edges)+1)
+	for i := range edges {
+		parent[i] = i
+	}
+
+	var find func(x int) int
+	find = func(x int) int {
+		if parent[x] != x {
+			parent[x] = find(parent[x])
+		}
+		return parent[x]
+	}
+	union := func(x, y int) bool {
+		parentX := find(x)
+		parentY := find(y)
+
+		if parentX == parentY {
+			return false
+		}
+		parent[parentX] = parentY
+		return true
+	}
+	for _, edge := range edges {
+		if !union(edge[0], edge[1]) {
+			return edge
+		}
+	}
+	return nil
+}
+
 // 785. 判断二分图
 // https://leetcode.cn/problems/is-graph-bipartite/submissions/606683511/
 func isBipartite(graph [][]int) bool {
 	res := true
+	viststed := make(map[int]int)
 
 	for i := 0; i < len(graph); i++ {
 		if !res {
 			break
 		}
-		viststed := make(map[int]int)
 		traverse2(graph, i, 1, &viststed, &res)
 	}
 
