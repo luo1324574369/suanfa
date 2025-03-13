@@ -5,8 +5,9 @@ import (
 )
 
 func main() {
-	a := findRedundantConnection([][]int{[]int{1, 2}, []int{2, 3}, []int{3, 4}, []int{1, 4}, []int{1, 3}})
-	fmt.Println(a)
+	// res := equationsPossible([]string{"a==b", "b==c", "c==d", "d==e","e!=a"})
+	res := equationsPossible([]string{"v==a", "q!=e", "c!=l", "r!=w", "r!=g", "x!=h", "f!=n", "b!=i", "v==d", "h==o", "q!=n", "y!=d", "u==y", "w!=r"})
+	fmt.Println(res)
 }
 
 // *****************常用*************************//

@@ -10,6 +10,50 @@ import (
 	"time"
 )
 
+// 990. 等式方程的可满足性
+// https://leetcode.cn/problems/satisfiability-of-equality-equations/submissions/609863133/
+func equationsPossible(equations []string) bool {
+	parent := make(map[int]int, 26)
+	for i := 0; i < 26; i++ {
+		parent[i] = i
+	}
+
+	var find func(x int) int
+	find = func(x int) int {
+		if parent[x] != x {
+			parent[x] = find(parent[x])
+		}
+		return parent[x]
+	}
+
+	union := func(x, y int) {
+		parentX := find(x)
+		parentY := find(y)
+
+		if parentX == parentY {
+			return
+		}
+		parent[parentX] = parentY
+	}
+
+	for _, eq := range equations {
+		if eq[1] == '=' {
+			union(int(eq[0]-'a'), int(eq[3]-'a'))
+		}
+	}
+
+	for _, eq := range equations {
+		if eq[1] == '!' {
+			parentA := find(int(eq[0] - 'a'))
+			parentB := find(int(eq[3] - 'a'))
+			if parentA == parentB {
+				return false
+			}
+		}
+	}
+	return true
+}
+
 // 684. 冗余连接
 // https://leetcode.cn/problems/redundant-connection/description/
 func findRedundantConnection(edges [][]int) []int {
