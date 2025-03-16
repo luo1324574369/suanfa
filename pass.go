@@ -10,6 +10,28 @@ import (
 	"time"
 )
 
+// 743. 网络延迟时间
+// https://leetcode.cn/problems/network-delay-time/
+func networkDelayTime(times [][]int, n int, k int) int {
+	graph := make([]map[int]int, n+1)
+	for i := 0; i < n+1; i++ {
+		graph[i] = make(map[int]int)
+	}
+	for _, edge := range times {
+		graph[edge[0]][edge[1]] = edge[2]
+	}
+
+	distTo := dijkstra(k, graph)
+	res := 0
+	for i := 1; i < len(distTo); i++ {
+		if distTo[i] == math.MaxInt64 {
+			return -1
+		}
+		res = max(res, distTo[i])
+	}
+	return res
+}
+
 // 1584. 连接所有点的最小费用
 // https://leetcode.cn/problems/min-cost-to-connect-all-points/description/
 func minCostConnectPoints(points [][]int) int {

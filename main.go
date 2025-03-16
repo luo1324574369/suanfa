@@ -1,15 +1,50 @@
 package main
 
 import (
+	"container/heap"
 	"fmt"
+	"math"
 )
 
 func main() {
-	res := minCostConnectPoints([][]int{[]int{3,12},[]int{-2,5},[]int{-4,1}})
+	res := networkDelayTime([][]int{[]int{2, 1, 1}, []int{2, 3, 1}, []int{3, 4, 1}}, 4, 2)
 	fmt.Println(res)
 }
 
 // *****************常用*************************//
+
+func dijkstra(start int, graph []map[int]int) []int {
+	v := len(graph)
+	distTo := make([]int, v)
+	for i := 0; i < v; i++ {
+		distTo[i] = math.MaxInt64
+	}
+
+	distTo[start] = 0
+	pq := make(PriorityQueue, 0)
+	heap.Init(&pq)
+	heap.Push(&pq, []int{start, 0})
+
+	for pq.Len() > 0 {
+		current := heap.Pop(&pq).([]int)
+		curNodeId := current[0]
+		curDistFromStart := current[1]
+
+		if curDistFromStart > distTo[curNodeId] {
+			continue
+		}
+
+		for nextNodeId,_  := range graph[curNodeId] {
+			distNextNode := distTo[curNodeId] + graph[curNodeId][nextNodeId]
+			if distTo[nextNodeId] < 0 || distTo[nextNodeId] > distNextNode {
+				distTo[nextNodeId] = distNextNode
+				heap.Push(&pq, []int{nextNodeId,distNextNode})
+			}
+		}
+	}
+
+	return distTo
+}
 
 type UF struct {
 	Parent []int
