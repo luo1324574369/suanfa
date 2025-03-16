@@ -5,8 +5,7 @@ import (
 )
 
 func main() {
-	// res := equationsPossible([]string{"a==b", "b==c", "c==d", "d==e","e!=a"})
-	res := equationsPossible([]string{"v==a", "q!=e", "c!=l", "r!=w", "r!=g", "x!=h", "f!=n", "b!=i", "v==d", "h==o", "q!=n", "y!=d", "u==y", "w!=r"})
+	res := minCostConnectPoints([][]int{[]int{3,12},[]int{-2,5},[]int{-4,1}})
 	fmt.Println(res)
 }
 

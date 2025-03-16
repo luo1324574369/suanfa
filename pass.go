@@ -10,11 +10,69 @@ import (
 	"time"
 )
 
+// 1584. 连接所有点的最小费用
+// https://leetcode.cn/problems/min-cost-to-connect-all-points/description/
+func minCostConnectPoints(points [][]int) int {
+	var edges [][]int
+
+	l := len(points)
+	for i := 0; i < l; i++ {
+		for j := i + 1; j < l; j++ {
+			xi, yi := points[i][0], points[i][1]
+			xj, yj := points[j][0], points[j][1]
+
+			edges = append(edges, []int{i, j, int(math.Abs(float64(xi)-float64(xj))) + int(math.Abs(float64(yi)-float64(yj)))})
+		}
+	}
+
+	sort.Slice(edges, func(a, b int) bool {
+		return edges[a][2] < edges[b][2]
+	})
+
+	parent := make([]int, l)
+	for i := 0; i < l; i++ {
+		parent[i] = i
+	}
+
+	var find func(x int) int
+	find = func(x int) int {
+		if parent[x] != x {
+			parent[x] = find(parent[x])
+		}
+		return parent[x]
+	}
+
+	union := func(x, y int) {
+		parentX := find(x)
+		parentY := find(y)
+
+		if parentX == parentY {
+			return
+		}
+
+		parent[parentX] = parentY
+	}
+
+	isConnect := func(x, y int) bool {
+		return find(x) == find(y)
+	}
+
+	mst := 0
+	for _, edge := range edges {
+		if isConnect(edge[0], edge[1]) {
+			continue
+		}
+		mst += edge[2]
+		union(edge[0], edge[1])
+	}
+	return mst
+}
+
 // 990. 等式方程的可满足性
 // https://leetcode.cn/problems/satisfiability-of-equality-equations/submissions/609863133/
 func equationsPossible(equations []string) bool {
 	parent := make(map[int]int, 26)
-	for i := 0; i < 26; i++ {
+	for i := 0; i < 3; i++ {
 		parent[i] = i
 	}
 
