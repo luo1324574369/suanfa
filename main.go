@@ -7,8 +7,20 @@ import (
 )
 
 func main() {
-	res := networkDelayTime([][]int{[]int{2, 1, 1}, []int{2, 3, 1}, []int{3, 4, 1}}, 4, 2)
-	fmt.Println(res)
+	original := [][]byte{
+		{'5', '3', '.', '.', '7', '.', '.', '.', '.'},
+		{'6', '.', '.', '1', '9', '5', '.', '.', '.'},
+		{'.', '9', '8', '.', '.', '.', '.', '6', '.'},
+		{'8', '.', '.', '.', '6', '.', '.', '.', '3'},
+		{'4', '.', '.', '8', '.', '3', '.', '.', '1'},
+		{'7', '.', '.', '.', '2', '.', '.', '.', '6'},
+		{'.', '6', '.', '.', '.', '.', '2', '8', '.'},
+		{'.', '.', '.', '4', '1', '9', '.', '.', '5'},
+		{'.', '.', '.', '.', '8', '.', '.', '7', '9'},
+	}
+
+	solveSudoku(original)
+	fmt.Println(original)
 }
 
 // *****************常用*************************//
@@ -34,11 +46,11 @@ func dijkstra(start int, graph []map[int]int) []int {
 			continue
 		}
 
-		for nextNodeId,_  := range graph[curNodeId] {
+		for nextNodeId, _ := range graph[curNodeId] {
 			distNextNode := distTo[curNodeId] + graph[curNodeId][nextNodeId]
 			if distTo[nextNodeId] < 0 || distTo[nextNodeId] > distNextNode {
 				distTo[nextNodeId] = distNextNode
-				heap.Push(&pq, []int{nextNodeId,distNextNode})
+				heap.Push(&pq, []int{nextNodeId, distNextNode})
 			}
 		}
 	}

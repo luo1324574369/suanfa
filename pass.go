@@ -10,6 +10,63 @@ import (
 	"time"
 )
 
+// 37. 解数独
+// https://leetcode.cn/problems/sudoku-solver/submissions/611631707/
+func solveSudoku(board [][]byte) {
+	isFound := false
+	var backtrack func(board [][]byte, index int)
+	backtrack = func(board [][]byte, index int) {
+		m, n := 9, 9
+		if index == m*n {
+			isFound = true
+			return
+		}
+
+		if isFound {
+			return
+		}
+
+		r, c := index/9, index%9
+
+		if board[r][c] != '.' {
+			backtrack(board, index+1)
+			return
+		}
+
+		for i := 1; i <= 9; i++ {
+			if !isValid2(board, r, c, i) {
+				continue
+			}
+
+			board[r][c] = byte('0' + i)
+			backtrack(board, index+1)
+			if isFound {
+				return
+			}
+			board[r][c] = '.'
+		}
+	}
+
+	backtrack(board, 0)
+}
+
+func isValid2(board [][]byte, r, c, num int) bool {
+	for i := 0; i < 9; i++ {
+		if board[r][i] == byte('0'+num) {
+			return false
+		}
+
+		if board[i][c] == byte('0'+num) {
+			return false
+		}
+
+		if board[r/3*3+i/3][c/3*3+i%3] == byte('0'+num) {
+			return false
+		}
+	}
+	return true
+}
+
 // 743. 网络延迟时间
 // https://leetcode.cn/problems/network-delay-time/
 func networkDelayTime(times [][]int, n int, k int) int {
