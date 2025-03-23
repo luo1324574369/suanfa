@@ -10,6 +10,43 @@ import (
 	"time"
 )
 
+// 93. 复原 IP 地址
+// https://leetcode.cn/problems/restore-ip-addresses/submissions/614270541/
+func restoreIpAddresses(s string) []string {
+	var res []string
+	backtrack(s, 0, []string{}, &res)
+	return res
+}
+
+func backtrack(s string, start int, path []string, res *[]string) {
+	if start >= len(s) && len(path) == 4 {
+		temp := strings.Join(path, ".")
+		*res = append(*res, temp)
+		return
+	}
+
+	for i := start; i < len(s); i++ {
+		if !isValid3(s[start : i+1]) {
+			continue
+		}
+
+		path = append(path, s[start:i+1])
+		backtrack(s, i+1, path, res)
+		path = path[:len(path)-1]
+	}
+}
+
+func isValid3(s string) bool {
+	if len(s) > 1 && s[0] == '0' {
+		return false
+	}
+	i, _ := strconv.Atoi(s)
+	if i < 0 || i > 255 {
+		return false
+	}
+	return true
+}
+
 // 37. 解数独
 // https://leetcode.cn/problems/sudoku-solver/submissions/611631707/
 func solveSudoku(board [][]byte) {
