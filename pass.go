@@ -10,6 +10,55 @@ import (
 	"time"
 )
 
+// 1593. 拆分字符串使唯一子字符串的数目最大
+// https://leetcode.cn/problems/split-a-string-into-the-max-number-of-unique-substrings/submissions/614364689/
+func maxUniqueSplit(s string) int {
+	set := make(map[string]bool)
+	var backtrack func(string, int)
+	res := 0
+
+	backtrack = func(s string, index int) {
+		if index == len(s) {
+			// Calculate the maximum number of unique substrings
+			if len(set) > res {
+				res = len(set)
+			}
+			return
+		}
+
+		for i := index; i < len(s); i++ {
+			sub := s[index : i+1]
+			if set[sub] {
+				continue
+			}
+
+			set[sub] = true
+			backtrack(s, i+1)
+			delete(set, sub)
+		}
+
+		// // 选择不切，什么都不做，直接走到下一个索引空隙
+		// backtrack(s, index+1)
+
+		// // 选择切，把 s[0..index] 切分出来作为一个子串
+		// sub := s[:index+1]
+		// // 按照题目要求，不能有重复的子串
+		// if !set[sub] {
+		//     // 做选择
+		//     set[sub] = true
+
+		//     // 剩下的字符继续穷举
+		//     backtrack(s[index+1:], 0)
+
+		//     // 撤销选择
+		//     delete(set, sub)
+		// }
+	}
+
+	backtrack(s, 0)
+	return res
+}
+
 // 93. 复原 IP 地址
 // https://leetcode.cn/problems/restore-ip-addresses/submissions/614270541/
 func restoreIpAddresses(s string) []string {
@@ -316,16 +365,16 @@ func deckRevealedIncreasing(deck []int) []int {
 // 450. 删除二叉搜索树中的节点
 // https://leetcode.cn/problems/delete-node-in-a-bst/submissions/604967098/
 func deleteNode(root *TreeNode, key int) *TreeNode {
-	return delete(root, key)
+	return deleteN(root, key)
 }
 
-func delete(root *TreeNode, key int) *TreeNode {
+func deleteN(root *TreeNode, key int) *TreeNode {
 	if root == nil {
 		return root
 	}
 
-	root.Left = delete(root.Left, key)
-	root.Right = delete(root.Right, key)
+	root.Left = deleteN(root.Left, key)
+	root.Right = deleteN(root.Right, key)
 
 	if key != root.Val {
 		return root
@@ -345,7 +394,7 @@ func delete(root *TreeNode, key int) *TreeNode {
 
 	min := getMin(root.Right)
 	root.Val = min.Val
-	root.Right = delete(root.Right, min.Val)
+	root.Right = deleteN(root.Right, min.Val)
 	return root
 }
 

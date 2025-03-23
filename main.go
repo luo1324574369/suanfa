@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	res := restoreIpAddresses("101023")
+	res := maxUniqueSplit("ababccc")
 	fmt.Println(res)
 }
 
