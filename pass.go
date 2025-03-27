@@ -10,6 +10,54 @@ import (
 	"time"
 )
 
+// 310. 最小高度树
+// https://leetcode.cn/problems/minimum-height-trees/
+func findMinHeightTrees(n int, edges [][]int) []int {
+	if n == 1 {
+		// base case，只有一个节点 0 的话，无法形成边，所以直接返回节点 0
+		return []int{0}
+	}
+
+	gragh := make([][]int, n)
+
+	for _, v := range edges {
+		gragh[v[0]] = append(gragh[v[0]], v[1])
+		gragh[v[1]] = append(gragh[v[1]], v[0])
+	}
+
+	var q []int
+	for k, v := range gragh {
+		if len(v) == 1 {
+			q = append(q, k)
+		}
+	}
+
+	curCount := n
+	for curCount > 2 {
+		qSize := len(q)
+		for i := 0; i < qSize; i++ {
+			cur := q[0]
+			q = q[1:]
+			curCount--
+
+			for _, neighbor := range gragh[cur] {
+				gragh[cur] = []int{}
+				for kk, vv := range gragh[neighbor] {
+					if vv == cur {
+						gragh[neighbor] = append(gragh[neighbor][:kk], gragh[neighbor][kk+1:]...)
+					}
+				}
+
+				if len(gragh[neighbor]) == 1 {
+					q = append(q, neighbor)
+				}
+			}
+		}
+	}
+
+	return q
+}
+
 // 1593. 拆分字符串使唯一子字符串的数目最大
 // https://leetcode.cn/problems/split-a-string-into-the-max-number-of-unique-substrings/submissions/614364689/
 func maxUniqueSplit(s string) int {

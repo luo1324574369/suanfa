@@ -7,8 +7,8 @@ import (
 )
 
 func main() {
-	res := maxUniqueSplit("ababccc")
-	fmt.Println(res)
+	a := findMinHeightTrees(4, [][]int{[]int{1, 0}, []int{1, 2}, []int{1, 3}})
+	fmt.Println(a)
 }
 
 // *****************常用*************************//
