@@ -10,6 +10,46 @@ import (
 	"time"
 )
 
+// 528. 按权重随机选择
+// https://leetcode.cn/problems/random-pick-with-weight/submissions/619349703/
+type Solution5 struct {
+	preSum []int
+}
+
+func Constructor5(w []int) Solution5 {
+	preSum := make([]int, len(w)+1)
+
+	for i := 0; i < len(w); i++ {
+		preSum[i+1] = preSum[i] + w[i]
+	}
+
+	return Solution5{
+		preSum: preSum,
+	}
+}
+
+func (this *Solution5) PickIndex() int {
+	max := this.preSum[len(this.preSum)-1]
+	target := rand.Intn(max) + 1
+	return leftBound(this.preSum, target) - 1
+}
+
+func leftBound5(nums []int, target int) int {
+	left, right := 0, len(nums)-1
+
+	for left <= right {
+		mid := left + (right-left)/2
+		if nums[mid] == target {
+			right = mid - 1
+		} else if nums[mid] < target {
+			left = mid + 1
+		} else if nums[mid] > target {
+			right = mid - 1
+		}
+	}
+	return left
+}
+
 // 310. 最小高度树
 // https://leetcode.cn/problems/minimum-height-trees/
 func findMinHeightTrees(n int, edges [][]int) []int {
@@ -41,7 +81,6 @@ func findMinHeightTrees(n int, edges [][]int) []int {
 			curCount--
 
 			for _, neighbor := range gragh[cur] {
-				gragh[cur] = []int{}
 				for kk, vv := range gragh[neighbor] {
 					if vv == cur {
 						gragh[neighbor] = append(gragh[neighbor][:kk], gragh[neighbor][kk+1:]...)
@@ -52,6 +91,8 @@ func findMinHeightTrees(n int, edges [][]int) []int {
 					q = append(q, neighbor)
 				}
 			}
+
+			gragh[cur] = []int{}
 		}
 	}
 
