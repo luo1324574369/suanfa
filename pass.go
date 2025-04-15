@@ -10,6 +10,29 @@ import (
 	"time"
 )
 
+// 11. 盛最多水的容器
+// https://leetcode.cn/problems/container-with-most-water/description/
+func maxArea(height []int) int {
+	var result int
+	left := 0
+	right := len(height) - 1
+
+	for left < right {
+		temp := min(height[left], height[right]) * (right - left)
+		if temp > result {
+			result = temp
+		}
+
+		if height[left] > height[right] {
+			right--
+		} else {
+			left++
+		}
+	}
+
+	return result
+}
+
 // 528. 按权重随机选择
 // https://leetcode.cn/problems/random-pick-with-weight/submissions/619349703/
 type Solution5 struct {

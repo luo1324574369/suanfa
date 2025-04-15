@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	result := trap([]int{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1})
+	result := maxArea([]int{8,7,2,1})
 	fmt.Println(result)
 }
 
