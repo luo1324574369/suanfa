@@ -7,10 +7,8 @@ import (
 )
 
 func main() {
-	w := []int{1, 3}
-	obj := Constructor5(w)
-	param_1 := obj.PickIndex()
-	fmt.Println(param_1)
+	result := trap([]int{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1})
+	fmt.Println(result)
 }
 
 func searchInsert(nums []int, target int) int {
