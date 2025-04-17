@@ -10,6 +10,36 @@ import (
 	"time"
 )
 
+// 2176. 统计数组中相等且可以被整除的数对
+// https://leetcode.cn/problems/count-equal-and-divisible-pairs-in-an-array/description/?envType=daily-question&envId=2025-04-17
+func countPairs(nums []int, k int) int {
+	res := 0
+	for i := 0; i < len(nums); i++ {
+		backtrap(nums, i, []int{}, k, &res)
+	}
+	return res
+}
+
+func backtrap(nums []int, start int, path []int, k int, res *int) {
+	if len(path) == 1 {
+		*res++
+		return
+	}
+
+	for i := start + 1; i < len(nums); i++ {
+		if (start*i)%k != 0 {
+			continue
+		}
+		if nums[start] != nums[i] {
+			continue
+		}
+
+		path = append(path, i)
+		backtrap(nums, start, path, k, res)
+		path = path[:len(path)-1]
+	}
+}
+
 // 2537. 统计好子数组的数目
 // https://leetcode.cn/problems/count-the-number-of-good-subarrays/description/
 func countGood(nums []int, k int) int64 {
