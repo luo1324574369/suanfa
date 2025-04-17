@@ -10,6 +10,47 @@ import (
 	"time"
 )
 
+// 2537. 统计好子数组的数目
+// https://leetcode.cn/problems/count-the-number-of-good-subarrays/description/
+func countGood(nums []int, k int) int64 {
+	n := len(nums)
+	same := 0 // 存储符合 满足 i < j 且 arr[i] == arr[j] 的数量
+	var ans int64 = 0
+	left, right := 0, 0
+	cnt := make(map[int]int) // 存储每个数字的出现次数
+
+	for right < n {
+		same += cnt[nums[right]]
+		cnt[nums[right]]++
+
+		for same >= k {
+			ans += int64(n - right)
+
+			cnt[nums[left]]--
+			same -= cnt[nums[left]]
+			left++
+		}
+		right++
+	}
+
+	// same, right := 0, -1
+	// cnt := make(map[int]int)
+	// var ans int64 = 0
+	// for left := 0; left < n; left++ {
+	//     for same < k && right + 1 < n {
+	//         right++
+	//         same += cnt[nums[right]]
+	//         cnt[nums[right]]++
+	//     }
+	//     if same >= k {
+	//         ans += int64(n - right)
+	//     }
+	//     cnt[nums[left]]--
+	//     same -= cnt[nums[left]]
+	// }
+	return ans
+}
+
 // 11. 盛最多水的容器
 // https://leetcode.cn/problems/container-with-most-water/description/
 func maxArea(height []int) int {

@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	result := maxArea([]int{8,7,2,1})
+	result := countGood([]int{3, 1, 4, 3, 2, 2, 4}, 2)
 	fmt.Println(result)
 }
 
