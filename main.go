@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	result := countPairs([]int{3, 1, 2, 2, 2, 1, 3}, 2)
+	result := countLargestGroup(13)
 	fmt.Println(result)
 }
 

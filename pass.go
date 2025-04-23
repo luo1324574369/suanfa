@@ -10,6 +10,39 @@ import (
 	"time"
 )
 
+// 1399. 统计最大组的数目
+// https://leetcode.cn/problems/count-largest-group/description/
+func countLargestGroup(n int) int {
+	maxNum := 0
+	frenquence := make(map[int]int)
+
+	for i := 1; i <= n; i++ {
+		s := sumNum(i)
+		frenquence[s]++
+		if frenquence[s] > maxNum {
+			maxNum = frenquence[s]
+		}
+	}
+
+	result := 0
+	for _, v := range frenquence {
+		if v == maxNum {
+			result++
+		}
+	}
+
+	return result
+}
+
+func sumNum(num int) int {
+	result := 0
+	for num != 0 {
+		result += num % 10
+		num = num / 10
+	}
+	return result
+}
+
 // 2176. 统计数组中相等且可以被整除的数对
 // https://leetcode.cn/problems/count-equal-and-divisible-pairs-in-an-array/description/?envType=daily-question&envId=2025-04-17
 func countPairs(nums []int, k int) int {
