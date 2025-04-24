@@ -10,6 +10,36 @@ import (
 	"time"
 )
 
+// 2799. 统计完全子数组的数目
+// https://leetcode.cn/problems/count-complete-subarrays-in-an-array/submissions/625055083/?envType=daily-question&envId=2025-04-24
+func countCompleteSubarrays(nums []int) int {
+	diff := make(map[int]int)
+	for _, v := range nums {
+		diff[v]++
+	}
+	diffNum := len(diff)
+
+	result := 0
+	left, right := 0, 0
+	windowDiff := make(map[int]int)
+	for right < len(nums) {
+		windowDiff[nums[right]]++
+		right++
+
+		for len(windowDiff) == diffNum {
+			result += len(nums) - right + 1
+
+			if windowDiff[nums[left]] == 1 {
+				delete(windowDiff, nums[left])
+			} else {
+				windowDiff[nums[left]]--
+			}
+			left++
+		}
+	}
+	return result
+}
+
 // 1399. 统计最大组的数目
 // https://leetcode.cn/problems/count-largest-group/description/
 func countLargestGroup(n int) int {

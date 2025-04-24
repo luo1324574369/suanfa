@@ -7,7 +7,12 @@ import (
 )
 
 func main() {
-	result := countLargestGroup(13)
+	// a := []int{3, 2, 1}
+	// for  v := range a {
+	// 	println(v)
+	// }
+
+	result := countCompleteSubarrays([]int{1, 3, 1, 2, 2})
 	fmt.Println(result)
 }
 
