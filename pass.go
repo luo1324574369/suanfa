@@ -10,6 +10,36 @@ import (
 	"time"
 )
 
+// 2962. 统计最大元素出现至少 K 次的子数组
+// https://leetcode.cn/problems/count-subarrays-where-max-element-appears-at-least-k-times/?envType=daily-question&envId=2025-04-29
+func countSubarrays(nums []int, k int) int64 {
+	maxNum := 0
+	for i := 0; i < len(nums); i++ {
+		if nums[i] > maxNum {
+			maxNum = nums[i]
+		}
+	}
+
+	maxCount := 0
+	left, right := 0, 0
+	var res int64
+	for right < len(nums) {
+		if nums[right] == maxNum {
+			maxCount++
+		}
+		right++
+
+		for maxCount >= k {
+			if nums[left] == maxNum {
+				maxCount--
+			}
+			left++
+		}
+		res += int64(left)
+	}
+	return res
+}
+
 // 2799. 统计完全子数组的数目
 // https://leetcode.cn/problems/count-complete-subarrays-in-an-array/submissions/625055083/?envType=daily-question&envId=2025-04-24
 func countCompleteSubarrays(nums []int) int {

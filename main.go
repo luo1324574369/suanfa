@@ -7,12 +7,8 @@ import (
 )
 
 func main() {
-	// a := []int{3, 2, 1}
-	// for  v := range a {
-	// 	println(v)
-	// }
-
-	result := countCompleteSubarrays([]int{1, 3, 1, 2, 2})
+	// result := countSubarrays([]int{28, 5, 58, 91, 24, 91, 53, 9, 48, 85, 16, 70, 91, 91, 47, 91, 61, 4, 54, 61, 49}, 1)
+	result := countSubarrays([]int{1, 3, 2, 3, 3}, 2)
 	fmt.Println(result)
 }
 
