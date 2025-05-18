@@ -7,8 +7,10 @@ import (
 )
 
 func main() {
-	// result := countSubarrays([]int{28, 5, 58, 91, 24, 91, 53, 9, 48, 85, 16, 70, 91, 91, 47, 91, 61, 4, 54, 61, 49}, 1)
-	result := countSubarrays([]int{1, 3, 2, 3, 3}, 2)
+	// println(0|0)
+	// println(0|1)
+	result := getLongestSubsequence([]string{"vyv", "msl", "d", "bu", "ubl", "bgk", "sz", "njv", "pf", "s"}, []int{1, 0, 1, 1, 0, 0, 1, 0, 1, 0})
+	// result := getLongestSubsequence([]string{"e", "a", "b"}, []int{0, 0, 1})
 	fmt.Println(result)
 }
 

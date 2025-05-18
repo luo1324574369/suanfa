@@ -10,6 +10,40 @@ import (
 	"time"
 )
 
+// 2900. 最长相邻不相等子序列 I
+// https://leetcode.cn/problems/longest-unequal-adjacent-groups-subsequence-i/
+func getLongestSubsequence(words []string, groups []int) []string {
+	dp := make([]int, len(words))
+	dpStr := make([][]string, len(words))
+	for i := 0; i < len(words); i++ {
+		dp[i] = 1
+		dpStr[i] = []string{words[i]}
+	}
+
+	for i := 0; i < len(words); i++ {
+		for j := 0; j < i; j++ {
+			if groups[i] != groups[j] {
+				if dp[j]+1 > dp[i] {
+					dp[i] = dp[j] + 1
+					// 创建一个新的切片并复制 dpStr[j] 的内容
+					newSeq := make([]string, len(dpStr[j]))
+					copy(newSeq, dpStr[j])
+					// 追加当前元素
+					dpStr[i] = append(newSeq, words[i])
+				}
+			}
+		}
+	}
+
+	var res []string
+	for i := 0; i < len(dpStr); i++ {
+		if len(res) < len(dpStr[i]) {
+			res = dpStr[i]
+		}
+	}
+	return res
+}
+
 // 2962. 统计最大元素出现至少 K 次的子数组
 // https://leetcode.cn/problems/count-subarrays-where-max-element-appears-at-least-k-times/?envType=daily-question&envId=2025-04-29
 func countSubarrays(nums []int, k int) int64 {
