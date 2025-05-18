@@ -10,6 +10,57 @@ import (
 	"time"
 )
 
+// 64. 最小路径和
+// https://leetcode.cn/problems/minimum-path-sum/description/?envType=study-plan-v2&envId=dynamic-programming
+func minPathSum(grid [][]int) int {
+	m, n := len(grid), len(grid[0])
+
+	dp := make([][]int, m)
+	for i := 0; i < m; i++ {
+		dp[i] = make([]int, n)
+	}
+
+	dp[0][0] = grid[0][0]
+	for i := 1; i < n; i++ {
+		dp[0][i] = dp[0][i-1] + grid[0][i]
+	}
+	for i := 1; i < m; i++ {
+		dp[i][0] = dp[i-1][0] + grid[i][0]
+	}
+
+	for i := 1; i < m; i++ {
+		for j := 1; j < n; j++ {
+			dp[i][j] = min(dp[i-1][j], dp[i][j-1]) + grid[i][j]
+		}
+	}
+
+	return dp[m-1][n-1]
+}
+
+// 198. 打家劫舍
+// https://leetcode.cn/problems/house-robber/?envType=study-plan-v2&envId=dynamic-programming
+func rob(nums []int) int {
+	memo := make([]int, len(nums))
+	for i := 0; i < len(nums); i++ {
+		memo[i] = -1
+	}
+	return dpFunc(nums, memo, 0)
+}
+
+func dpFunc(nums []int, memo []int, index int) int {
+	if index >= len(nums) {
+		return 0
+	}
+
+	if memo[index] != -1 {
+		return memo[index]
+	}
+
+	res := max(dpFunc(nums, memo, index+1), dpFunc(nums, memo, index+2)+nums[index])
+	memo[index] = res
+	return res
+}
+
 // 2900. 最长相邻不相等子序列 I
 // https://leetcode.cn/problems/longest-unequal-adjacent-groups-subsequence-i/
 func getLongestSubsequence(words []string, groups []int) []string {

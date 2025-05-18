@@ -7,10 +7,8 @@ import (
 )
 
 func main() {
-	// println(0|0)
-	// println(0|1)
-	result := getLongestSubsequence([]string{"vyv", "msl", "d", "bu", "ubl", "bgk", "sz", "njv", "pf", "s"}, []int{1, 0, 1, 1, 0, 0, 1, 0, 1, 0})
-	// result := getLongestSubsequence([]string{"e", "a", "b"}, []int{0, 0, 1})
+	// result := minPathSum([][]int{{1, 3, 1}, {1, 5, 1}, {4, 2, 1}})
+	result := minPathSum([][]int{{1, 2, 3}, {4, 5, 6}})
 	fmt.Println(result)
 }
 
