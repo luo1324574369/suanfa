@@ -10,6 +10,41 @@ import (
 	"time"
 )
 
+// 2131. 连接两字母单词得到的最长回文串
+// https://leetcode.cn/problems/longest-palindrome-by-concatenating-two-letter-words/description/?envType=daily-question&envId=2025-05-25
+func longestPalindrome2(words []string) int {
+	allWords := make(map[string]int)
+	for i := 0; i < len(words); i++ {
+		allWords[words[i]]++
+	}
+
+	res := 0
+	mid := false
+	for word, _ := range allWords {
+		reverseWord := string(word[1]) + string(word[0])
+
+		if reverseWord == word {
+			if allWords[word]%2 == 1 {
+				mid = true
+			}
+			res += (allWords[word] / 2) * 4
+		} else {
+			_, ok := allWords[reverseWord]
+			if !ok {
+				continue
+			}
+			res += min(allWords[word], allWords[reverseWord]) * 4
+			delete(allWords, reverseWord)
+		}
+	}
+
+	if mid {
+		res += 2
+	}
+
+	return res
+}
+
 // 64. 最小路径和
 // https://leetcode.cn/problems/minimum-path-sum/description/?envType=study-plan-v2&envId=dynamic-programming
 func minPathSum(grid [][]int) int {

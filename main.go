@@ -7,9 +7,8 @@ import (
 )
 
 func main() {
-	// result := minPathSum([][]int{{1, 3, 1}, {1, 5, 1}, {4, 2, 1}})
-	result := minPathSum([][]int{{1, 2, 3}, {4, 5, 6}})
-	fmt.Println(result)
+	res := longestPalindrome2([]string{"lc", "cl", "gg"})
+	fmt.Println(res)
 }
 
 func searchInsert(nums []int, target int) int {
