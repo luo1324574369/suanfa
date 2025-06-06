@@ -10,6 +10,51 @@ import (
 	"time"
 )
 
+// 2359. 找到离给定两个节点最近的节点
+// https://leetcode.cn/problems/find-closest-node-to-given-two-nodes/description/
+func closestMeetingNode(edges []int, node1 int, node2 int) int {
+	lenEdges := len(edges)
+	node1Distance := make([]int, lenEdges)
+	node2Distance := make([]int, lenEdges)
+
+	for i := 0; i < lenEdges; i++ {
+		node1Distance[i] = -1
+		node2Distance[i] = -1
+	}
+
+	countDistance(edges, node1, node1Distance)
+	countDistance(edges, node2, node2Distance)
+
+	minDistance := -1
+	minNode := -1
+	for i := 0; i < lenEdges; i++ {
+		if node1Distance[i] != -1 && node2Distance[i] != -1 {
+			currentMinDistance := max(node1Distance[i], node2Distance[i])
+			if currentMinDistance < minDistance || minDistance == -1 {
+				minDistance = currentMinDistance
+				minNode = i
+			} else if currentMinDistance == minDistance && i < minNode {
+				minNode = i
+			}
+		}
+	}
+
+	return minNode
+}
+
+func countDistance(edges []int, startNode int, nodeDistance []int) {
+	tempNode := startNode
+	currentDistance := 0
+	for nodeDistance[tempNode] == -1 {
+		nodeDistance[tempNode] = currentDistance
+		currentDistance++
+		if edges[tempNode] == -1 {
+			break
+		}
+		tempNode = edges[tempNode]
+	}
+}
+
 // 2131. 连接两字母单词得到的最长回文串
 // https://leetcode.cn/problems/longest-palindrome-by-concatenating-two-letter-words/description/?envType=daily-question&envId=2025-05-25
 func longestPalindrome2(words []string) int {
