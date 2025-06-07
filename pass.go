@@ -10,6 +10,39 @@ import (
 	"time"
 )
 
+// 3170. 删除星号以后字典序最小的字符串
+// https://leetcode.cn/problems/lexicographically-minimum-string-after-removing-stars/description/?envType=daily-question&envId=2025-06-07
+func clearStars(s string) string {
+	slack := make([][]int, 26)
+	for i := 0; i < 26; i++ {
+		slack[i] = make([]int, 0)
+	}
+
+	bs := []byte(s)
+	for i := 0; i < len(s); i++ {
+		if s[i] != '*' {
+			slack[s[i]-'a'] = append(slack[s[i]-'a'], i)
+		} else {
+			for j := 0; j < 26; j++ {
+				if len(slack[j]) != 0 {
+					last := slack[j][len(slack[j])-1]
+					bs[last] = '*'
+					slack[j] = slack[j][:len(slack[j])-1]
+					break
+				}
+			}
+		}
+	}
+
+	res := ""
+	for i := 0; i < len(s); i++ {
+		if bs[i] != '*' {
+			res += string(bs[i])
+		}
+	}
+	return res
+}
+
 // 2359. 找到离给定两个节点最近的节点
 // https://leetcode.cn/problems/find-closest-node-to-given-two-nodes/description/
 func closestMeetingNode(edges []int, node1 int, node2 int) int {

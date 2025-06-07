@@ -7,10 +7,7 @@ import (
 )
 
 func main() {
-	res := closestMeetingNode([]int{4, 4, 4, 5, 1, 2, 2}, 1, 1)
-	// res := closestMeetingNode([]int{2, 2, 3, -1}, 0, 1)
-	// res := closestMeetingNode([]int{4, 3, 0, 5, 3, -1}, 4, 0)
-	// res := closestMeetingNode([]int{5, 4, 5, 4, 3, 6, -1}, 0, 1)
+	res := clearStars("ddeyey***ek**y*d*d*ekd*k*d*")
 	fmt.Println(res)
 }
 
