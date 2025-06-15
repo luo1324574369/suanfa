@@ -7,10 +7,8 @@ import (
 )
 
 func main() {
-	result := maxDiff(555)
-	result2 := maxDiff(123456)
+	result := uniquePathsWithObstacles([][]int{[]int{0, 1}, []int{0, 0}})
 	fmt.Println(result)
-	fmt.Println(result2)
 }
 
 func searchInsert(nums []int, target int) int {

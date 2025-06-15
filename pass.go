@@ -10,6 +10,47 @@ import (
 	"time"
 )
 
+// 63. 不同路径 II
+// https://leetcode.cn/problems/unique-paths-ii/?envType=study-plan-v2&envId=dynamic-programming
+func uniquePathsWithObstacles(obstacleGrid [][]int) int {
+	if obstacleGrid[0][0] == 1 {
+		return 0
+	}
+
+	m := len(obstacleGrid)
+	n := len(obstacleGrid[0])
+	allPath := make([][]int, m)
+	for i := 0; i < m; i++ {
+		allPath[i] = make([]int, n)
+	}
+	allPath[0][0] = 1
+	for i := 1; i < m; i++ {
+		if obstacleGrid[i][0] == 1 {
+			allPath[i][0] = 0
+			continue
+		}
+		allPath[i][0] = allPath[i-1][0]
+	}
+	for i := 1; i < n; i++ {
+		if obstacleGrid[0][i] == 1 {
+			allPath[0][i] = 0
+			continue
+		}
+		allPath[0][i] = allPath[0][i-1]
+	}
+
+	for i := 1; i < m; i++ {
+		for j := 1; j < n; j++ {
+			if obstacleGrid[i][j] == 1 {
+				allPath[i][j] = 0
+				continue
+			}
+			allPath[i][j] = allPath[i-1][j] + allPath[i][j-1]
+		}
+	}
+	return allPath[m-1][n-1]
+}
+
 // 62. 不同路径
 // https://leetcode.cn/problems/unique-paths/description/?envType=study-plan-v2&envId=dynamic-programming
 func maxDiff(num int) int {
