@@ -2,33 +2,45 @@ package main
 
 import (
 	"container/heap"
+	"encoding/json"
 	"fmt"
 	"math"
 )
 
 func main() {
-	result := uniquePathsWithObstacles([][]int{[]int{0, 1}, []int{0, 0}})
+	param := convertTo2DArrayByte(`[["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]`)
+	result := maximalSquare(param)
 	fmt.Println(result)
 }
 
-func searchInsert(nums []int, target int) int {
-	left, right := 0, len(nums)-1
+// *****************常用*************************//
 
-	for left <= right {
-		mid := left + ((right - left) / 2)
-		if nums[mid] == target {
-			return mid
-		} else if nums[mid] < target {
-			left = mid + 1
-		} else if nums[mid] > target {
-			right = mid - 1
-		}
+func convertTo2DArrayByte(input string) [][]byte {
+	var result [][]int
+	err := json.Unmarshal([]byte(input), &result)
+	if err != nil {
+		return nil
 	}
 
-	return -1
+	// Convert [][]int to [][]byte
+	converted := make([][]byte, len(result))
+	for i := range result {
+		converted[i] = make([]byte, len(result[i]))
+		for j := range result[i] {
+			converted[i][j] = byte(result[i][j])
+		}
+	}
+	return converted
 }
 
-// *****************常用*************************//
+func convertTo2DArray(input string) [][]int {
+	var result [][]int
+	err := json.Unmarshal([]byte(input), &result)
+	if err != nil {
+		return nil
+	}
+	return result
+}
 
 func dijkstra(start int, graph []map[int]int) []int {
 	v := len(graph)
