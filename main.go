@@ -7,8 +7,10 @@ import (
 )
 
 func main() {
-	res := clearStars("ddeyey***ek**y*d*d*ekd*k*d*")
-	fmt.Println(res)
+	result := maxDiff(555)
+	result2 := maxDiff(123456)
+	fmt.Println(result)
+	fmt.Println(result2)
 }
 
 func searchInsert(nums []int, target int) int {

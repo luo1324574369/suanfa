@@ -10,6 +10,41 @@ import (
 	"time"
 )
 
+// 62. 不同路径
+// https://leetcode.cn/problems/unique-paths/description/?envType=study-plan-v2&envId=dynamic-programming
+func maxDiff(num int) int {
+	maxNum, minNum := 0, math.MaxInt
+
+	numStr := strconv.Itoa(num)
+	var allMaxChange []int
+	var allMinChange []int
+	for i := 0; i < 9; i++ {
+		n, _ := strconv.Atoi(strings.Replace(numStr, strconv.Itoa(i), "9", -1))
+		allMaxChange = append(allMaxChange, n)
+	}
+	for i := 1; i < 10; i++ {
+		if string(numStr[0]) == strconv.Itoa(i) {
+			n, _ := strconv.Atoi(strings.Replace(numStr, strconv.Itoa(i), "1", -1))
+			allMinChange = append(allMinChange, n)
+			continue
+		}
+		n, _ := strconv.Atoi(strings.Replace(numStr, strconv.Itoa(i), "0", -1))
+		allMinChange = append(allMinChange, n)
+	}
+
+	for i := 0; i < len(allMaxChange); i++ {
+		if maxNum < allMaxChange[i] {
+			maxNum = allMaxChange[i]
+		}
+	}
+	for i := 0; i < len(allMinChange); i++ {
+		if minNum > allMinChange[i] {
+			minNum = allMinChange[i]
+		}
+	}
+	return maxNum - minNum
+}
+
 // 3170. 删除星号以后字典序最小的字符串
 // https://leetcode.cn/problems/lexicographically-minimum-string-after-removing-stars/description/?envType=daily-question&envId=2025-06-07
 func clearStars(s string) string {
