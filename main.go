@@ -5,41 +5,43 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
+	"strconv"
 )
 
 func main() {
-	param := convertTo2DArrayByte(`[["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]`)
-	result := maximalSquare(param)
+	result := divideString("dabdcbdcdcdq", 3, 'a')
 	fmt.Println(result)
 }
 
 // *****************常用*************************//
-
-func convertTo2DArrayByte(input string) [][]byte {
+func convertTo2DArrayInt(input string) [][]int {
+	// 解析为字符串数组
 	var result [][]int
-	err := json.Unmarshal([]byte(input), &result)
-	if err != nil {
-		return nil
-	}
-
-	// Convert [][]int to [][]byte
-	converted := make([][]byte, len(result))
-	for i := range result {
-		converted[i] = make([]byte, len(result[i]))
-		for j := range result[i] {
-			converted[i][j] = byte(result[i][j])
-		}
-	}
-	return converted
-}
-
-func convertTo2DArray(input string) [][]int {
-	var result [][]int
-	err := json.Unmarshal([]byte(input), &result)
-	if err != nil {
+	if err := json.Unmarshal([]byte(input), &result); err != nil {
+		fmt.Printf("JSON解析错误: %v\n", err)
 		return nil
 	}
 	return result
+}
+func convertTo2DArrayByte(input string) [][]byte {
+	// 解析为字符串数组
+	var stringArrays [][]string
+	if err := json.Unmarshal([]byte(input), &stringArrays); err != nil {
+		fmt.Printf("JSON解析错误: %v\n", err)
+		return nil
+	}
+
+	// 转换为[][]byte
+	byteArrays := make([][]byte, len(stringArrays))
+	for i := range stringArrays {
+		byteArrays[i] = make([]byte, len(stringArrays[i]))
+		for j := range stringArrays[i] {
+			number, _ := strconv.Atoi(stringArrays[i][j])
+			byteArrays[i][j] = byte(number)
+		}
+	}
+
+	return byteArrays
 }
 
 func dijkstra(start int, graph []map[int]int) []int {

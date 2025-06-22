@@ -10,6 +10,59 @@ import (
 	"time"
 )
 
+// 2138. 将字符串拆分为若干长度为 k 的组
+// https://leetcode.cn/problems/divide-a-string-into-groups-of-size-k/?envType=daily-question&envId=2025-06-22
+func divideString(s string, k int, fill byte) []string {
+	var result []string
+
+	for {
+		if len(s) < k {
+			result = append(result, s+strings.Repeat(string(fill), k-len(s)))
+			break
+		}
+		result = append(result, string(s[:k]))
+		s = s[k:]
+		if len(s) == 0 {
+			break
+		}
+	}
+	return result
+}
+
+// 673. 最长递增子序列的个数
+// https://leetcode.cn/problems/number-of-longest-increasing-subsequence/?envType=study-plan-v2&envId=dynamic-programming
+func findNumberOfLIS(nums []int) int {
+	n := len(nums)
+	dp := make([][]int, n)
+	for i := 0; i < n; i++ {
+		dp[i] = []int{1, 1}
+	}
+
+	for i := 0; i < n; i++ {
+		for j := 0; j < i; j++ {
+			if nums[j] < nums[i] {
+				if dp[j][0]+1 > dp[i][0] {
+					dp[i] = []int{dp[j][0] + 1, dp[j][1]}
+				} else if dp[j][0]+1 == dp[i][0] {
+					dp[i][1] += dp[j][1]
+				}
+			}
+		}
+	}
+
+	maxLen := 0
+	maxNum := 0
+	for i := 0; i < n; i++ {
+		if dp[i][0] > maxLen {
+			maxLen = dp[i][0]
+			maxNum = dp[i][1]
+		} else if dp[i][0] == maxLen {
+			maxNum += dp[i][1]
+		}
+	}
+	return maxNum
+}
+
 func maximalSquare(matrix [][]byte) int {
 	m, n := len(matrix), len(matrix[0])
 
@@ -36,7 +89,7 @@ func maximalSquare(matrix [][]byte) int {
 	for i := 1; i < m; i++ {
 		for j := 1; j < n; j++ {
 			if matrix[i][j] == 1 {
-				dp[i][j] = min(dp[i-1][j], min(dp[i-1][j-1], dp[i][j-1]))
+				dp[i][j] = min(dp[i-1][j], min(dp[i-1][j-1], dp[i][j-1])) + 1
 				if maxSize < dp[i][j] {
 					maxSize = dp[i][j]
 				}
