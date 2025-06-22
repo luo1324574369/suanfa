@@ -9,7 +9,8 @@ import (
 )
 
 func main() {
-	result := divideString("dabdcbdcdcdq", 3, 'a')
+	// result := maximalSquare2(convertTo2DArrayByte(`[["0","1"],["1","0"]]`))
+	result := maximalSquare2(convertTo2DArrayByte(`[["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]`))
 	fmt.Println(result)
 }
 

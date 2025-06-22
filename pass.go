@@ -10,6 +10,41 @@ import (
 	"time"
 )
 
+// 221. 最大正方形
+// https://leetcode.cn/problems/maximal-square/?envType=study-plan-v2&envId=dynamic-programming
+func maximalSquare2(matrix [][]byte) int {
+	m := len(matrix)
+	n := len(matrix[0])
+	dp := make([][]int, m)
+
+	maxSize := 0
+	for i := 0; i < m; i++ {
+		dp[i] = make([]int, n)
+	}
+
+	for i := 0; i < m; i++ {
+		for j := 0; j < n; j++ {
+			if matrix[i][j] == 1 {
+				dp[i][j] = 1
+				maxSize = 1
+			}
+		}
+	}
+
+	for i := 1; i < m; i++ {
+		for j := 1; j < n; j++ {
+			if dp[i][j] == 1 {
+				dp[i][j] = min(dp[i-1][j], min(dp[i][j-1], dp[i-1][j-1])) + 1
+				if dp[i][j] > maxSize {
+					maxSize = dp[i][j]
+				}
+			}
+		}
+	}
+
+	return maxSize * maxSize
+}
+
 // 2138. 将字符串拆分为若干长度为 k 的组
 // https://leetcode.cn/problems/divide-a-string-into-groups-of-size-k/?envType=daily-question&envId=2025-06-22
 func divideString(s string, k int, fill byte) []string {
