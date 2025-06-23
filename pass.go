@@ -10,6 +10,37 @@ import (
 	"time"
 )
 
+// 1143. 最长公共子序列
+// https://leetcode.cn/problems/longest-common-subsequence/description/?envType=study-plan-v2&envId=dynamic-programming
+func longestCommonSubsequence(text1 string, text2 string) int {
+	m, n := len(text1), len(text2)
+	memo := make([][]int, m)
+	for i := 0; i < m; i++ {
+		memo[i] = make([]int, n)
+		for j := 0; j < n; j++ {
+			memo[i][j] = -1
+		}
+	}
+	return dpCommon(text1, text2, 0, 0, memo)
+}
+
+func dpCommon(text1, text2 string, text1Index, text2Index int, memo [][]int) int {
+	if text1Index >= len(text1) || text2Index >= len(text2) {
+		return 0
+	}
+
+	if memo[text1Index][text2Index] != -1 {
+		return memo[text1Index][text2Index]
+	}
+
+	if text1[text1Index] == text2[text2Index] {
+		memo[text1Index][text2Index] = dpCommon(text1, text2, text1Index+1, text2Index+1, memo) + 1
+		return memo[text1Index][text2Index]
+	}
+	memo[text1Index][text2Index] = max(dpCommon(text1, text2, text1Index+1, text2Index, memo), dpCommon(text1, text2, text1Index, text2Index+1, memo))
+	return memo[text1Index][text2Index]
+}
+
 // 221. 最大正方形
 // https://leetcode.cn/problems/maximal-square/?envType=study-plan-v2&envId=dynamic-programming
 func maximalSquare2(matrix [][]byte) int {

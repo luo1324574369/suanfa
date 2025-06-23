@@ -9,8 +9,7 @@ import (
 )
 
 func main() {
-	// result := maximalSquare2(convertTo2DArrayByte(`[["0","1"],["1","0"]]`))
-	result := maximalSquare2(convertTo2DArrayByte(`[["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]`))
+	result := longestCommonSubsequence("abcde", "ace")
 	fmt.Println(result)
 }
 
