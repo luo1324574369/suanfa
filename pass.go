@@ -10,22 +10,30 @@ import (
 	"time"
 )
 
-func longestSubsequence(s string, k int) int {
-	m := len(s)
-	maxLen := 0
+//	找到初始输入字符串 I
+//
+// https://leetcode.cn/problems/find-the-original-typed-string-i/solutions/?envType=daily-question&envId=2025-07-01
+func possibleStringCount(word string) int {
+	l, r := 0, 0
+	res := 0
 
-	for i := 0; i < m; i++ {
-		for j := 0; j <= i; j++ {
-			if j-i > maxLen && toTen(s[i:j+1]) < k {
-				maxLen = j - i
-			}
+	for r < len(word) {
+		tempCount := 0
+		if word[l] != word[r] && l <= r {
+			tempCount += r - l - 1
+			l = r
+		} else if r == len(word)-1 {
+			tempCount += r - l
 		}
+
+		if tempCount > 0 {
+			res += tempCount
+		}
+
+		r++
 	}
 
-	return maxLen
-}
-
-func toTen(s string) int {
+	return res
 }
 
 // 1143. 最长公共子序列

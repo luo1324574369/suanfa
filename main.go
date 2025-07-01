@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	result := longestCommonSubsequence("abcde", "ace")
+	result := possibleStringCount("abbcccc")
 	fmt.Println(result)
 }
 
