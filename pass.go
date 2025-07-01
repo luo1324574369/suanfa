@@ -10,6 +10,24 @@ import (
 	"time"
 )
 
+func longestSubsequence(s string, k int) int {
+	m := len(s)
+	maxLen := 0
+
+	for i := 0; i < m; i++ {
+		for j := 0; j <= i; j++ {
+			if j-i > maxLen && toTen(s[i:j+1]) < k {
+				maxLen = j - i
+			}
+		}
+	}
+
+	return maxLen
+}
+
+func toTen(s string) int {
+}
+
 // 1143. 最长公共子序列
 // https://leetcode.cn/problems/longest-common-subsequence/description/?envType=study-plan-v2&envId=dynamic-programming
 func longestCommonSubsequence(text1 string, text2 string) int {
