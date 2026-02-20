@@ -2588,7 +2588,9 @@ func minCostClimbingStairs(cost []int) int {
 // 416. 分割等和子集
 // https://leetcode-cn.com/problems/partition-equal-subset-sum/
 func canPartition(nums []int) bool {
-	sum, ln := 0, len(nums)
+	ln := len(nums)
+	sum := 0
+
 	for i := 0; i < ln; i++ {
 		sum += nums[i]
 	}
@@ -2596,20 +2598,49 @@ func canPartition(nums []int) bool {
 	if sum%2 != 0 {
 		return false
 	}
+
 	sum = sum / 2
+	dp := make([]map[int]bool, ln+1)
 
-	db1 := make([]bool, sum+1)
-	db1[0] = true
+	for i := 0; i < ln+1; i++ {
+		dp[i] = make(map[int]bool, sum+1)
+		dp[i][0] = true
+	}
 
-	for i := 1; i <= ln; i++ {
-		for j := sum; j >= 0; j-- {
-			if j-nums[i-1] >= 0 {
-				db1[j] = db1[j] || db1[j-nums[i-1]]
+	for i := 1; i < ln+1; i++ {
+		num := nums[i-1]
+		for j := 1; j <= sum; j++ {
+			if j < num {
+				dp[i][j] = dp[i-1][j]
+			} else {
+				dp[i][j] = dp[i-1][j] || dp[i-1][j-num]
 			}
 		}
 	}
 
-	return db1[sum]
+	return dp[ln][sum]
+	// sum, ln := 0, len(nums)
+	// for i := 0; i < ln; i++ {
+	// 	sum += nums[i]
+	// }
+
+	// if sum%2 != 0 {
+	// 	return false
+	// }
+	// sum = sum / 2
+
+	// db1 := make([]bool, sum+1)
+	// db1[0] = true
+
+	// for i := 1; i <= ln; i++ {
+	// 	for j := sum; j >= 0; j-- {
+	// 		if j-nums[i-1] >= 0 {
+	// 			db1[j] = db1[j] || db1[j-nums[i-1]]
+	// 		}
+	// 	}
+	// }
+
+	// return db1[sum]
 }
 
 // 372. 超级次方
