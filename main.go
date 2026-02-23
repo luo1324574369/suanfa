@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	result := possibleStringCount("abbcccc")
+	result := isMatch("cbbbaccbcacbcca", "b*.*b*a*.a*b*.a*")
 	fmt.Println(result)
 }
 

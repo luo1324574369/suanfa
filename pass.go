@@ -4229,54 +4229,100 @@ func isMatch2(s string, p string) bool {
 	return firstMatch && isMatch(s[1:], p[1:])
 }
 
+// func isMatch(s string, p string) bool {
+// 	dp := make([][]int, len(s)+1)
+// 	for k, _ := range dp {
+// 		dp[k] = make([]int, len(p)+1)
+// 	}
+
+// 	var isM func(si int, pj int) bool
+
+// 	isM = func(si int, pj int) bool {
+// 		if dp[si][pj] != 0 {
+// 			return dp[si][pj] == 2
+// 		}
+
+// 		sl, pl := len(s[si:]), len(p[pj:])
+
+// 		if pl == 0 {
+// 			if sl == 0 {
+// 				return true
+// 			} else {
+// 				return false
+// 			}
+// 		}
+
+// 		firstMatch := false
+// 		if sl != 0 {
+// 			firstMatch = p[pj+0] == s[si+0] || p[pj+0] == '.'
+// 		}
+
+// 		if pl >= 2 && p[pj+1] == '*' {
+// 			r := isM(si, pj+2) || (firstMatch && isM(si+1, pj))
+// 			if r == true {
+// 				dp[si][pj] = 2
+// 			} else {
+// 				dp[si][pj] = 1
+// 			}
+// 			return r
+// 		}
+
+// 		r := firstMatch && isM(si+1, pj+1)
+// 		if r == true {
+// 			dp[si][pj] = 2
+// 		} else {
+// 			dp[si][pj] = 1
+// 		}
+// 		return r
+// 	}
+
+// 	return isM(0, 0)
+// }
+
 func isMatch(s string, p string) bool {
-	dp := make([][]int, len(s)+1)
-	for k, _ := range dp {
-		dp[k] = make([]int, len(p)+1)
+	memo := make(map[[2]int]bool) // 改用二维坐标作为key，避免冲突
+	return dpIsMatch(s, 0, p, 0, memo)
+}
+
+func dpIsMatch(s string, si int, p string, pi int, memo map[[2]int]bool) bool {
+	sl := len(s)
+	pl := len(p)
+
+	if pi == pl {
+		return si == sl
 	}
 
-	var isM func(si int, pj int) bool
-
-	isM = func(si int, pj int) bool {
-		if dp[si][pj] != 0 {
-			return dp[si][pj] == 2
+	if si == sl {
+		if (pl-pi)%2 != 0 {
+			return false
 		}
-
-		sl, pl := len(s[si:]), len(p[pj:])
-
-		if pl == 0 {
-			if sl == 0 {
-				return true
-			} else {
+		for i := pi + 1; i < pl; i += 2 {
+			if p[i] != '*' {
 				return false
 			}
 		}
-
-		firstMatch := false
-		if sl != 0 {
-			firstMatch = p[pj+0] == s[si+0] || p[pj+0] == '.'
-		}
-
-		if pl >= 2 && p[pj+1] == '*' {
-			r := isM(si, pj+2) || (firstMatch && isM(si+1, pj))
-			if r == true {
-				dp[si][pj] = 2
-			} else {
-				dp[si][pj] = 1
-			}
-			return r
-		}
-
-		r := firstMatch && isM(si+1, pj+1)
-		if r == true {
-			dp[si][pj] = 2
-		} else {
-			dp[si][pj] = 1
-		}
-		return r
+		return true
 	}
 
-	return isM(0, 0)
+	key := [2]int{si, pi}
+	if v, ok := memo[key]; ok {
+		return v
+	}
+
+	if pi+1 < pl && p[pi+1] == '*' {
+		if s[si] == p[pi] || p[pi] == '.' {
+			memo[key] = dpIsMatch(s, si, p, pi+2, memo) || dpIsMatch(s, si+1, p, pi, memo)
+		} else {
+			memo[key] = dpIsMatch(s, si, p, pi+2, memo)
+		}
+	} else {
+		if s[si] == p[pi] || p[pi] == '.' {
+			memo[key] = dpIsMatch(s, si+1, p, pi+1, memo)
+		} else {
+			memo[key] = false
+		}
+	}
+	return memo[key]
 }
 
 // 打家劫舍 III
