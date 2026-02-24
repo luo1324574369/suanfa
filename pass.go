@@ -4563,11 +4563,11 @@ func merge(intervals [][]int) [][]int {
 // 无重叠区间
 // https://leetcode-cn.com/problems/non-overlapping-intervals/
 func eraseOverlapIntervals(intervals [][]int) int {
-	li := len(intervals)
-	res := 0
-	if li == 0 {
-		return res
-	}
+	// li := len(intervals)
+	// res := 0
+	// if li == 0 {
+	// 	return res
+	// }
 
 	//冒泡排序
 	//for i:=0;i<li;i++{
@@ -4577,19 +4577,34 @@ func eraseOverlapIntervals(intervals [][]int) int {
 	//		}
 	//	}
 	//}
+	// sort.Slice(intervals, func(i, j int) bool {
+	// 	return intervals[i][1] < intervals[j][1]
+	// })
+
+	// end := intervals[0][1]
+	// for i := 1; i < li; i++ {
+	// 	if intervals[i][0] < end {
+	// 		res++
+	// 	} else {
+	// 		end = intervals[i][1]
+	// 	}
+	// }
+
+	// return res
 	sort.Slice(intervals, func(i, j int) bool {
 		return intervals[i][1] < intervals[j][1]
 	})
 
-	end := intervals[0][1]
-	for i := 1; i < li; i++ {
-		if intervals[i][0] < end {
+	xEnd := intervals[0][1]
+	res := 0
+
+	for i := 1; i < len(intervals); i++ {
+		if intervals[i][0] < xEnd {
 			res++
 		} else {
-			end = intervals[i][1]
+			xEnd = intervals[i][1]
 		}
 	}
-
 	return res
 }
 
