@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	result := isMatch("cbbbaccbcacbcca", "b*.*b*a*.a*b*.a*")
+	result := maxSlidingWindow([]int{1, 3, -1, -3, 5, 3, 6, 7}, 3)
 	fmt.Println(result)
 }
 
