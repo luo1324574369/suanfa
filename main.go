@@ -9,8 +9,10 @@ import (
 )
 
 func main() {
-	result := maxSlidingWindow([]int{1, 3, -1, -3, 5, 3, 6, 7}, 3)
-	fmt.Println(result)
+	result := generateParenthesis(3)
+	for _, v := range result {
+		fmt.Println(v)
+	}
 }
 
 // *****************常用*************************//
