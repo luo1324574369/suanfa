@@ -2891,9 +2891,9 @@ func findErrorNums(nums []int) []int {
 // https://leetcode-cn.com/problems/missing-number/
 func missingNumber(nums []int) int {
 	ln := len(nums)
-	res := ln
+	res := 0 ^ ln
 
-	for i := 0; i < ln; i++ {
+	for i := 0; i <= ln; i++ {
 		// res += i - nums[i]
 		res ^= i ^ nums[i]
 	}
