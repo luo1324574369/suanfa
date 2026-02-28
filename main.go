@@ -9,7 +9,9 @@ import (
 )
 
 func main() {
-	result := maxSlidingWindow([]int{1, 3, -1, -3, 5, 3, 6, 7}, 3)
+	// result := slidingPuzzle([][]int{{1, 2, 3}, {4, 0, 5}})
+	// result := slidingPuzzle([][]int{{1, 2, 3}, {4, 5, 0}})
+	result := slidingPuzzle([][]int{{4, 1, 2}, {5, 0, 3}})
 	fmt.Println(result)
 }
 

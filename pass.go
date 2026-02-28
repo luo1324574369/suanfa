@@ -10,6 +10,101 @@ import (
 	"time"
 )
 
+// 773. 滑动谜题
+// https://leetcode.cn/problems/sliding-puzzle/submissions/701113041/
+func slidingPuzzle(board [][]int) int {
+	target := "123450"
+	current := make([]byte, 0)
+	q := make([][]byte, 0)
+	res := 0
+	visited := make(map[string]bool, 0)
+
+	for i := 0; i < len(board); i++ {
+		for j := 0; j < len(board[i]); j++ {
+			current = append(current, byte('0'+board[i][j]))
+		}
+	}
+	q = append(q, current)
+	visited[string(current)] = true
+
+	nextStep := [][]int{
+		{1, 3},
+		{0, 4, 2},
+		{1, 5},
+		{0, 4},
+		{3, 1, 5},
+		{2, 4},
+	}
+
+	for len(q) > 0 {
+		lq := len(q)
+		for j := 0; j < lq; j++ {
+			c := q[0]
+			q = q[1:]
+			if target == string(c) {
+				return res
+			}
+
+			currentZeroIndex := 0
+			for i := 0; i < len(c); i++ {
+				if c[i] == '0' {
+					currentZeroIndex = i
+					break
+				}
+			}
+
+			for _, step := range nextStep[currentZeroIndex] {
+				newStep := changeSlidingPuzzle(c, currentZeroIndex, step)
+				if visited[string(newStep)] {
+					continue
+				}
+				q = append(q, newStep)
+				visited[string(newStep)] = true
+			}
+		}
+		res++
+	}
+	return -1
+}
+
+func changeSlidingPuzzle(input []byte, a, b int) []byte {
+	temp := make([]byte, len(input))
+	copy(temp, input)
+	temp[a], temp[b] = temp[b], temp[a]
+	return temp
+}
+
+// 22. 括号生成
+// https://leetcode.cn/problems/generate-parentheses/submissions/700811816/
+func generateParenthesis(n int) []string {
+	res := make([]string, 0)
+	track := make([]byte, 0)
+
+	backtrack_generateParenthesis(n, n, track, &res)
+	return res
+}
+
+func backtrack_generateParenthesis(left, right int, track []byte, res *[]string) {
+	if left > right { // left > right 表示右括号数量多，无效
+		return
+	}
+	if left < 0 || right < 0 {
+		return
+	}
+	if left == 0 && right == 0 {
+		(*res) = append((*res), string(track))
+		return
+	}
+
+	track = append(track, '(')
+	backtrack_generateParenthesis(left-1, right, track, res)
+	track = track[:len(track)-1]
+
+	track = append(track, ')')
+	backtrack_generateParenthesis(left, right-1, track, res)
+	track = track[:len(track)-1]
+}
+
 //	找到初始输入字符串 I
 //
 // https://leetcode.cn/problems/find-the-original-typed-string-i/solutions/?envType=daily-question&envId=2025-07-01
@@ -3996,7 +4091,7 @@ func permute(nums []int) [][]int {
 
 // 25. K 个一组翻转链表
 // https://leetcode-cn.com/problems/reverse-nodes-in-k-group/
-func reverseKGroup(head *ListNode, k int) *ListNode {
+func reverseKGroup(head *ListNode, k int) *ListNode { // todo!!!
 	if head == nil {
 		return nil
 	}
@@ -4036,31 +4131,59 @@ func rList(head *ListNode, b *ListNode) *ListNode {
 
 // 反转链表 II
 // https://leetcode-cn.com/problems/reverse-linked-list-ii/
-func reverseBetween(head *ListNode, m int, n int) *ListNode {
+// func reverseBetween(head *ListNode, m int, n int) *ListNode {
+// 	if head == nil {
+// 		return head
+// 	}
+
+// 	var rlN func(h *ListNode, n int) *ListNode
+// 	var lastNext *ListNode
+// 	rlN = func(h *ListNode, n int) *ListNode {
+// 		if n == 1 {
+// 			lastNext = h.Next
+// 			return h
+// 		}
+
+// 		last := rlN(h.Next, n-1)
+// 		h.Next.Next = h
+// 		h.Next = lastNext
+// 		return last
+// 	}
+
+// 	if m == 1 {
+// 		return rlN(head, n)
+// 	}
+
+// 	head.Next = reverseBetween(head.Next, m-1, n-1)
+
+//		return head
+//	}
+var reverseLastNode *ListNode
+
+func reverseBetween(head *ListNode, left int, right int) *ListNode {
 	if head == nil {
 		return head
 	}
+	return reverseIn(head, left, right)
+}
 
-	var rlN func(h *ListNode, n int) *ListNode
-	var lastNext *ListNode
-	rlN = func(h *ListNode, n int) *ListNode {
-		if n == 1 {
-			lastNext = h.Next
-			return h
-		}
-
-		last := rlN(h.Next, n-1)
-		h.Next.Next = h
-		h.Next = lastNext
-		return last
+func reverseN(head *ListNode, n int) *ListNode {
+	if n == 1 {
+		reverseLastNode = head.Next
+		return head
 	}
+	last := reverseN(head.Next, n-1)
+	head.Next.Next = head
+	head.Next = reverseLastNode
+	return last
+}
 
-	if m == 1 {
-		return rlN(head, n)
+func reverseIn(head *ListNode, left, right int) *ListNode {
+	if left == 1 {
+		return reverseN(head, right)
 	}
-
-	head.Next = reverseBetween(head.Next, m-1, n-1)
-
+	last := reverseIn(head.Next, left-1, right-1)
+	head.Next = last
 	return head
 }
 
