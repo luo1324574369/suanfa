@@ -10,6 +10,70 @@ import (
 	"time"
 )
 
+// 773. 滑动谜题
+// https://leetcode.cn/problems/sliding-puzzle/submissions/701113041/
+func slidingPuzzle(board [][]int) int {
+	target := "123450"
+	current := make([]byte, 0)
+	q := make([][]byte, 0)
+	res := 0
+	visited := make(map[string]bool, 0)
+
+	for i := 0; i < len(board); i++ {
+		for j := 0; j < len(board[i]); j++ {
+			current = append(current, byte('0'+board[i][j]))
+		}
+	}
+	q = append(q, current)
+	visited[string(current)] = true
+
+	nextStep := [][]int{
+		{1, 3},
+		{0, 4, 2},
+		{1, 5},
+		{0, 4},
+		{3, 1, 5},
+		{2, 4},
+	}
+
+	for len(q) > 0 {
+		lq := len(q)
+		for j := 0; j < lq; j++ {
+			c := q[0]
+			q = q[1:]
+			if target == string(c) {
+				return res
+			}
+
+			currentZeroIndex := 0
+			for i := 0; i < len(c); i++ {
+				if c[i] == '0' {
+					currentZeroIndex = i
+					break
+				}
+			}
+
+			for _, step := range nextStep[currentZeroIndex] {
+				newStep := changeSlidingPuzzle(c, currentZeroIndex, step)
+				if visited[string(newStep)] {
+					continue
+				}
+				q = append(q, newStep)
+				visited[string(newStep)] = true
+			}
+		}
+		res++
+	}
+	return -1
+}
+
+func changeSlidingPuzzle(input []byte, a, b int) []byte {
+	temp := make([]byte, len(input))
+	copy(temp, input)
+	temp[a], temp[b] = temp[b], temp[a]
+	return temp
+}
+
 // 22. 括号生成
 // https://leetcode.cn/problems/generate-parentheses/submissions/700811816/
 func generateParenthesis(n int) []string {

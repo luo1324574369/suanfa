@@ -9,10 +9,10 @@ import (
 )
 
 func main() {
-	result := generateParenthesis(3)
-	for _, v := range result {
-		fmt.Println(v)
-	}
+	// result := slidingPuzzle([][]int{{1, 2, 3}, {4, 0, 5}})
+	// result := slidingPuzzle([][]int{{1, 2, 3}, {4, 5, 0}})
+	result := slidingPuzzle([][]int{{4, 1, 2}, {5, 0, 3}})
+	fmt.Println(result)
 }
 
 // *****************常用*************************//
