@@ -9,9 +9,7 @@ import (
 )
 
 func main() {
-	// result := slidingPuzzle([][]int{{1, 2, 3}, {4, 0, 5}})
-	// result := slidingPuzzle([][]int{{1, 2, 3}, {4, 5, 0}})
-	result := slidingPuzzle([][]int{{4, 1, 2}, {5, 0, 3}})
+	result := isPalindrome(createListNode([]int{1, 2, 3, 1, 1}))
 	fmt.Println(result)
 }
 

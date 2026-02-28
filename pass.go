@@ -2935,27 +2935,40 @@ func findDisappearedNumbers(nums []int) []int {
 // 234. 回文链表
 // https://leetcode-cn.com/problems/palindrome-linked-list/
 func isPalindrome(head *ListNode) bool {
-	slow, fast := head, head
+	// slow, fast := head, head
 
-	for fast != nil && fast.Next != nil {
-		slow = slow.Next
-		fast = fast.Next.Next
-	}
-	if fast != nil {
-		slow = slow.Next
-	}
+	// for fast != nil && fast.Next != nil {
+	// 	slow = slow.Next
+	// 	fast = fast.Next.Next
+	// }
+	// if fast != nil {
+	// 	slow = slow.Next
+	// }
 
-	res := true
-	left, right := head, reverseList2(slow)
-	for left != nil && right != nil {
-		if left.Val != right.Val {
-			res = false
-			break
+	// res := true
+	// left, right := head, reverseList2(slow)
+	// for left != nil && right != nil {
+	// 	if left.Val != right.Val {
+	// 		res = false
+	// 		break
+	// 	}
+	// 	left = left.Next
+	// 	right = right.Next
+	// }
+	// return res
+	var traverseIsPalinddrome func(tHead *ListNode) bool
+
+	traverseIsPalinddrome = func(tHead *ListNode) bool {
+		if tHead == nil {
+			return true
 		}
-		left = left.Next
-		right = right.Next
+		res := traverseIsPalinddrome(tHead.Next)
+		res = res && (tHead.Val == head.Val)
+		head = head.Next
+		return res
 	}
-	return res
+
+	return traverseIsPalinddrome(head)
 }
 
 // 645. 错误的集合
