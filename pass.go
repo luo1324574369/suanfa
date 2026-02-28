@@ -10,6 +10,71 @@ import (
 	"time"
 )
 
+// 130. 被围绕的区域
+// https://leetcode.cn/problems/surrounded-regions/
+func solve(board [][]byte) {
+	m := len(board)
+	n := len(board[0])
+
+	for i := 0; i < m; i++ {
+		if board[i][0] == 'O' {
+			bfsSlove(board, i, 0)
+		}
+		if board[i][n-1] == 'O' {
+			bfsSlove(board, i, n-1)
+		}
+	}
+
+	for i := 0; i < n; i++ {
+		if board[0][i] == 'O' {
+			bfsSlove(board, 0, i)
+		}
+		if board[m-1][i] == 'O' {
+			bfsSlove(board, m-1, i)
+		}
+	}
+
+	for i := 0; i < m; i++ {
+		for j := 0; j < n; j++ {
+			if board[i][j] == 'O' {
+				board[i][j] = 'X'
+			}
+			if board[i][j] == '1' {
+				board[i][j] = 'O'
+			}
+		}
+	}
+}
+
+func bfsSlove(board [][]byte, i, j int) {
+	q := make([][2]int, 0)
+	q = append(q, [2]int{i, j})
+	board[i][j] = '1'
+
+	for len(q) > 0 {
+		c := q[0]
+		q = q[1:]
+		x, y := c[0], c[1]
+
+		if x-1 >= 0 && board[x-1][y] == 'O' {
+			board[x-1][y] = '1'
+			q = append(q, [2]int{x - 1, y})
+		}
+		if x+1 < len(board) && board[x+1][y] == 'O' {
+			board[x+1][y] = '1'
+			q = append(q, [2]int{x + 1, y})
+		}
+		if y-1 >= 0 && board[x][y-1] == 'O' {
+			board[x][y-1] = '1'
+			q = append(q, [2]int{x, y - 1})
+		}
+		if y+1 < len(board[0]) && board[x][y+1] == 'O' {
+			board[x][y+1] = '1'
+			q = append(q, [2]int{x, y + 1})
+		}
+	}
+}
+
 // 773. 滑动谜题
 // https://leetcode.cn/problems/sliding-puzzle/submissions/701113041/
 func slidingPuzzle(board [][]int) int {

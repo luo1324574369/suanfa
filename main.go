@@ -9,8 +9,9 @@ import (
 )
 
 func main() {
-	result := isPalindrome(createListNode([]int{1, 2, 3, 1, 1}))
-	fmt.Println(result)
+	board := [][]byte{{'X', 'X', 'X', 'X'}, {'X', 'O', 'O', 'X'}, {'X', 'X', 'O', 'X'}, {'X', 'O', 'X', 'X'}}
+	solve(board)
+	fmt.Println(board)
 }
 
 // *****************常用*************************//
